@@ -1,0 +1,71 @@
+---
+name: resolve-rules
+description: Resolve and return rule docs from configured layers. Called by other skills — not intended for direct use.
+user-invocable: false
+allowed-tools: Read, Glob, Grep
+---
+
+Discover and read rule docs from the base rules directory and any configured layers.
+
+## Input
+
+The calling skill passes context via $ARGUMENTS:
+
+- `mode:all` — return every resolved rule doc.
+- `mode:keyword <terms>` — match terms against frontmatter `keywords` arrays.
+- `mode:explicit <title1>, <title2>` — match listed titles against H1 headings.
+- Optional modifier: `scope:<value>` — filter results by the `scope` frontmatter field. Can be appended to any mode (e.g., `mode:all scope:bootstrap`).
+
+If $ARGUMENTS is empty, default to `mode:all`.
+
+## Resolution
+
+### Determine mode
+
+Build the layer list from available sources:
+
+1. Check if `${CLAUDE_PLUGIN_ROOT}/rules/` exists (plugin-bundled rules). If so, add it as the lowest-precedence layer.
+2. Check if `~/.claude/rules/` exists (user rules). If so, add it above plugin rules.
+3. Check if `~/.config/devenv/rule-layers` exists and is non-empty. If yes, read line by line — each line is an absolute path to a rule directory. Prepend these as higher-precedence layers (first line = highest precedence).
+
+If only one source exists, use flat mode (single layer). If multiple sources exist, use layered mode with precedence as described.
+
+### Build the resolution map
+
+Walk layers in order (highest precedence first). In flat mode, there is only one layer.
+
+1. In each layer directory, find all `.md` files (excluding `rules.md`, which is documentation, not a rule).
+2. Read YAML frontmatter (between `---` delimiters) from each file.
+3. Build a resolution map keyed by filename:
+   - First occurrence of a filename → add it (path, keywords, title).
+   - Subsequent occurrence → check the new doc's `extends` frontmatter:
+     - `extends: true` → mark as extension. Read both: higher-precedence doc first, then this one appends.
+     - `extends: false` or omitted → skip. Higher-precedence version already won.
+4. For docs without frontmatter, use the H1 title and blockquote description for matching. These docs are still resolved but can only be matched by title.
+5. Skip missing layer directories with a warning. Do not error.
+6. If no rules are found across all layers, this is a valid state — proceed to output with no rules.
+
+## Matching
+
+Apply the mode from $ARGUMENTS:
+
+### all
+Return every resolved doc.
+
+### keyword
+Scan each term against resolved docs' `keywords` arrays. Return all matches.
+
+### explicit
+Match each title against the H1 heading of resolved docs. Return all matches.
+
+### Scope filtering
+
+If a `scope:<value>` modifier is present in $ARGUMENTS, apply it as a post-filter after mode matching. Keep rules where the frontmatter `scope` field matches the requested value OR equals `all`. Rules with no `scope` field default to `all` and are always included.
+
+Example: `mode:all scope:bootstrap` returns rules with `scope: bootstrap`, `scope: all`, or no `scope` field. Rules with `scope: feature` are excluded.
+
+If no `scope` modifier is present, skip this filter — return all mode-matched rules regardless of scope. This preserves backward compatibility.
+
+## Output
+
+Print: "Applying rules: \<list of matched titles\> (from \<layer path\>)". If no rules match, print: "No rules apply to this task."
