@@ -1,0 +1,11 @@
+{
+  "name": "devloop",
+  "description": "Structured development workflow for Claude Code — research, plan, design, implement",
+  "version": "1.0.0",
+  "author": {
+    "name": "minusblindfold"
+  },
+  "repository": "https://github.com/minusblindfold/devloop",
+  "license": "MIT",
+  "keywords": ["workflow", "planning", "design", "implementation", "skills"]
+}

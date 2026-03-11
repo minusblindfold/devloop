@@ -1,0 +1,8 @@
+{
+  "backups": {
+    "maxPerArtifact": 5
+  },
+  "work": {
+    "dir": ".work"
+  }
+}
