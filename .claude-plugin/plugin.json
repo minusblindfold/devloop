@@ -5,6 +5,7 @@
   "author": {
     "name": "minusblindfold"
   },
+  "homepage": "https://github.com/minusblindfold/devloop",
   "repository": "https://github.com/minusblindfold/devloop",
   "license": "MIT",
   "keywords": ["workflow", "planning", "design", "implementation", "skills"]
