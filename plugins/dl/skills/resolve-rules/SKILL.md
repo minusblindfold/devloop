@@ -22,11 +22,19 @@ If $ARGUMENTS is empty, default to `mode:all`.
 
 ### Determine mode
 
-Build the layer list from available sources:
+Build the layer list using four tiers (highest precedence first):
 
-1. Check if `${CLAUDE_PLUGIN_ROOT}/rules/` exists (plugin-bundled rules). If so, add it as the lowest-precedence layer.
-2. Check if `~/.claude/rules/` exists (user rules). If so, add it above plugin rules.
-3. Check if `~/.config/devenv/rule-layers` exists and is non-empty. If yes, read line by line — each line is an absolute path to a rule directory. Prepend these as higher-precedence layers (first line = highest precedence).
+| Precedence | Layer | Path | Description |
+|---|---|---|---|
+| 1 (highest) | User | `~/.claude/rules/` | Claude Code native, personal overrides |
+| 2 | Project | `{cwd}/devloop/rules/` | Project-specific rules |
+| 3 | Shared/org | `~/devloop/rules/` | Rule packs managed by devloop CLI |
+| 4 (lowest) | Plugin-bundled | `${CLAUDE_PLUGIN_ROOT}/rules/` | Defaults shipped with devloop |
+
+1. Check if `~/.claude/rules/` exists (user rules). If so, add it as the highest-precedence layer.
+2. Check if `{cwd}/devloop/rules/` exists (project rules). If so, add it as the next layer. Skip silently if it doesn't exist.
+3. Check if `~/devloop/rules/` exists (shared/org rule packs). If so, scan this directory and all its subdirectories — each subdirectory is an enabled pack. Add all discovered rule directories as layers. Skip silently if it doesn't exist.
+4. Check if `${CLAUDE_PLUGIN_ROOT}/rules/` exists (plugin-bundled rules). If so, add it as the lowest-precedence layer.
 
 If only one source exists, use flat mode (single layer). If multiple sources exist, use layered mode with precedence as described.
 

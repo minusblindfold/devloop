@@ -66,7 +66,16 @@ For a deeper walkthrough, see [docs/workflow.md](docs/workflow.md).
 
 ## Rules
 
-Rules are markdown files that guide skills at runtime — coding patterns, project structure, naming conventions. Drop `.md` files with YAML frontmatter into `~/.claude/rules/` and skills pick them up automatically via keyword matching.
+Rules are markdown files that guide skills at runtime — coding patterns, project structure, naming conventions. Skills resolve rules from four layers, highest precedence first:
+
+| Precedence | Layer | Path | Description |
+|---|---|---|---|
+| 1 (highest) | User | `~/.claude/rules/` | Claude Code native, personal overrides |
+| 2 | Project | `{cwd}/devloop/rules/` | Project-specific rules |
+| 3 | Shared/org | `~/devloop/rules/` | Rule packs managed by devloop CLI |
+| 4 (lowest) | Plugin-bundled | `${CLAUDE_PLUGIN_ROOT}/rules/` | Defaults shipped with devloop |
+
+Drop `.md` files with YAML frontmatter into any of these directories and skills pick them up automatically via keyword matching. For project-specific rules, create a `devloop/rules/` directory in your project root and commit it to version control.
 
 ```yaml
 ---
@@ -79,7 +88,7 @@ keywords: [entity, model, JPA, persistence]
 - Pattern one — what to do and why.
 ```
 
-Rules are optional. Without them, skills work from codebase context alone. Start by dropping `.md` files with keyword frontmatter into `~/.claude/rules/` — skills discover them automatically. When you want organized, reusable rule sets, see [devloop-rules](https://github.com/minusblindfold/devloop-rules) for packs with a management CLI. The full format spec is in [`rules/rules.md`](rules/rules.md).
+Rules are optional. Without them, skills work from codebase context alone. Start by dropping `.md` files with keyword frontmatter into `~/.claude/rules/` — skills discover them automatically. When you want organized, reusable rule sets, see [devloop-rules](https://github.com/minusblindfold/devloop-rules) for packs with a management CLI. The full format spec is in [`plugins/dl/rules/rules.md`](plugins/dl/rules/rules.md).
 
 ## Working directory
 
