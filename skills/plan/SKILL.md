@@ -25,7 +25,8 @@ If $ARGUMENTS is empty → list `<work.dir>/plans/`. None: ask what to plan. One
    - If no bootstrap context: ask as normal, including stack questions if the project's tech isn't clear from CLAUDE.md.
 3. Create tasks with `TaskCreate`. Make them small, meaningful, and ordered by dependency.
 4. Save plan to `<work.dir>/plans/YYYY-MM-DD-<slug>.md`.
-5. Ask the user to review. Once confirmed, suggest running `/design` to architect the feature.
+5. Verify: run `ls` on the saved file path to confirm it exists, has the correct directory (`plans/`), and follows the `YYYY-MM-DD-<slug>.md` naming convention. If wrong, fix it before continuing.
+6. Ask the user to review. Once confirmed, suggest running `/design` to architect the feature.
 
 ## Refine mode
 
