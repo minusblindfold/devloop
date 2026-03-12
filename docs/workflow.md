@@ -6,12 +6,11 @@ Each step produces an artifact that the next step reads. No step touches code un
 
 ## The loop
 
-```mermaid
-graph LR
-    R["/dl:research"] -->|context| P["/dl:plan"]
-    P -->|task list| D["/dl:design"]
-    D -->|specs + diagrams| I["/dl:implement"]
-    I -.->|discoveries| R
+```
+    /dl:research  →  /dl:plan  →  /dl:design  →  /dl:implement
+         ↑               ↑             ↑               │
+         └───────────────┴─────────────┴───────────────┘
+              re-enter research when discoveries surface
 ```
 
 During any phase, run `/dl:research` to feed discoveries back into plans and designs.
