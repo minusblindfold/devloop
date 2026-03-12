@@ -1,11 +1,11 @@
 # devloop
 
-A Claude Code plugin that structures feature work into phases. Each phase produces an artifact the next one reads — no step touches code until `/devloop:implement`.
+A Claude Code plugin that structures feature work into phases. Each phase produces an artifact the next one reads — no step touches code until `/dl:implement`.
 
 ## The workflow
 
 ```
-/devloop:research  →  /devloop:plan  →  /devloop:design  →  /devloop:implement
+/dl:research  →  /dl:plan  →  /dl:design  →  /dl:implement
 ```
 
 - **research** — scan rules and codebase for context relevant to a topic
@@ -13,7 +13,7 @@ A Claude Code plugin that structures feature work into phases. Each phase produc
 - **design** — generate architecture, diagrams, and a spec for each task
 - **implement** — implement one task at a time against the spec
 
-`/devloop:bootstrap` scaffolds a new project from rule docs. `/devloop:research` can re-enter at any stage — run it before planning, after design, or when discoveries surface during implementation.
+`/dl:bootstrap` scaffolds a new project from rule docs. `/dl:research` can re-enter at any stage — run it before planning, after design, or when discoveries surface during implementation.
 
 ## Install
 
@@ -21,7 +21,7 @@ A Claude Code plugin that structures feature work into phases. Each phase produc
 
 ```bash
 claude plugin marketplace add minusblindfold/devloop
-claude plugin install devloop
+claude plugin install dl
 ```
 
 ### For development
@@ -37,14 +37,14 @@ Use `/reload-plugins` after making changes during development.
 
 | Skill | What it does |
 |-------|-------------|
-| `/devloop:research` | Scan rules and codebase, produce structured context |
-| `/devloop:plan` | Ask clarifying questions, create an ordered task list |
-| `/devloop:design` | Generate architecture, diagrams, and per-task specs |
-| `/devloop:implement` | Implement one task at a time against the spec |
-| `/devloop:bootstrap` | Scaffold a new project from rule docs |
-| `/devloop:document` | Sync documentation after changes |
+| `/dl:research` | Scan rules and codebase, produce structured context |
+| `/dl:plan` | Ask clarifying questions, create an ordered task list |
+| `/dl:design` | Generate architecture, diagrams, and per-task specs |
+| `/dl:implement` | Implement one task at a time against the spec |
+| `/dl:bootstrap` | Scaffold a new project from rule docs |
+| `/dl:document` | Sync documentation after changes |
 
-`/devloop:plan` and `/devloop:design` support refine mode — invoke with no args when existing artifacts are found.
+`/dl:plan` and `/dl:design` support refine mode — invoke with no args when existing artifacts are found.
 
 ## Rules
 

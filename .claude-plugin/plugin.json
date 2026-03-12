@@ -1,5 +1,5 @@
 {
-  "name": "devloop",
+  "name": "dl",
   "description": "Structured development workflow for Claude Code — research, plan, design, implement",
   "version": "1.0.0",
   "author": {
