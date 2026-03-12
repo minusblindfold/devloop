@@ -52,7 +52,7 @@ Follow the matched rule docs when creating or modifying files that fall under th
 - If out-of-scope work was discovered, suggest running `/plan` refine to capture it.
 - Suggest a git commit scoped to this task.
 - Recommend follow-up skills — only skills found in `.claude/skills/`.
-- Save an implementation note — see [implementation-note.md](implementation-note.md).
+- Save an implementation note — see [implementation-note.md](implementation-note.md). After saving, run `ls` on the file path to verify it exists in the correct directory with the expected naming convention. If wrong, fix it before continuing.
 
 ## Rules
 

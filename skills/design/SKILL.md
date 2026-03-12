@@ -24,7 +24,7 @@ For simple features where no plan exists yet. Treats $ARGUMENTS as the feature d
 
 1. Ask 1–2 focused clarifying questions (scope and any key constraints). Wait for answers.
 2. Create a minimal plan — typically 1–3 tasks — using the format in the `/plan` skill's `## Plan format` section.
-3. Save it to `<work.dir>/plans/YYYY-MM-DD-<slug>.md`.
+3. Save it to `<work.dir>/plans/YYYY-MM-DD-<slug>.md`. Run `ls` on the file path to verify it exists with the correct naming convention.
 4. Confirm the plan with the user ("Here's the plan I'll design from — does this look right?"). Adjust if needed.
 5. Proceed to create mode using the saved plan.
 
@@ -39,7 +39,8 @@ For simple features where no plan exists yet. Treats $ARGUMENTS as the feature d
 5. Choose diagrams that best illuminate the plan — see [diagrams.md](diagrams.md). A feature may warrant more than one; omit diagrams for trivial tasks. Save each as a `.mmd` file in `<work.dir>/designs/diagrams/`. List them in the doc; do not embed code inline.
 6. For each plan task write a spec: Goal, Interfaces, Implementation notes, Acceptance criteria, Dependencies. Also note which rules apply by title (e.g., `**Rules:** JPA Entity Rules, Liquibase Migration Rules`). This tells `/implement` which docs to apply via `/resolve-rules` explicit mode.
 7. Save design to `<work.dir>/designs/YYYY-MM-DD-<slug>-design.md`.
-8. Ask the user to review. Once confirmed, suggest running `/implement` to begin.
+8. Verify: run `ls` on the saved file path to confirm it exists, has the correct directory (`designs/`), and follows the `YYYY-MM-DD-<slug>-design.md` naming convention. If wrong, fix it before continuing.
+9. Ask the user to review. Once confirmed, suggest running `/implement` to begin.
 
 ## Refine mode
 

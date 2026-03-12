@@ -42,7 +42,7 @@ For each matched rule, extract:
 
 ## Output
 
-Write to `<work.dir>/research/YYYY-MM-DD-<slug>-research.md` (or `health-check.md` for health-check mode).
+Write to `<work.dir>/research/YYYY-MM-DD-<slug>-research.md` (or `health-check.md` for health-check mode). After saving, run `ls` on the file path to verify it exists in the correct directory with the expected naming convention. If wrong, fix it before continuing.
 
 ```markdown
 # <Topic> Research
