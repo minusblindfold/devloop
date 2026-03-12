@@ -2,11 +2,11 @@ Review the changes made in this session and update all documentation to match.
 
 ## Content mapping
 
-- `skills/*/SKILL.md` → Skills section in `README.md`
-- `skills/backup.md` → referenced by plan and design skills
-- `commands/document.md` → Commands section in `README.md`
-- `rules/rules.md` → Rules section in `README.md`
-- `devenv.json` → Config section in `README.md`
+- `plugins/dl/skills/*/SKILL.md` → Skills section in `README.md`
+- `plugins/dl/skills/backup.md` → referenced by plan and design skills
+- `plugins/dl/commands/document.md` → Commands section in `README.md`
+- `plugins/dl/rules/rules.md` → Rules section in `README.md`
+- `plugins/dl/devenv.json` → Config section in `README.md`
 - `.claude-plugin/plugin.json` → version, description in `README.md`
 
 ## Doc sync targets
