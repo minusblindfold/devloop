@@ -60,6 +60,18 @@ Rule packs (managed by [devloop-rules](https://github.com/minusblindfold/devloop
 
 **Note on `paths:` frontmatter.** Claude Code's native rules support a `paths:` field that controls which files trigger the rule to load (e.g., `paths: ["src/**/*.ts"]`). That's file-glob scoping — different from this system's `scope:` field, which controls workflow phase (bootstrap vs feature work). You can use both in the same file if needed.
 
+## Progressive model
+
+Rules are additive — start with none and layer in structure as needed.
+
+**No rules** — Skills work from codebase context alone. They read your existing code, infer patterns, and follow them. This is the default and it works for most tasks.
+
+**Flat files** — Drop `.md` files with `keywords` frontmatter into `~/.claude/rules/`. Skills discover them automatically via keyword matching. No config needed. This is enough for most projects — one rule per concern (entities, services, testing, etc.).
+
+**Rule packs** — For organized, reusable, shareable rule sets with a management CLI, see [devloop-rules](https://github.com/minusblindfold/devloop-rules). Packs add layered resolution with precedence ordering. Flat files in `~/.claude/rules/` serve as the lowest-precedence fallback, so you can mix both.
+
+`/bootstrap` is the exception — it requires at least a `stack.md` rule to scaffold a project.
+
 ## Rule packs
 
 For organized, reusable rule sets with management tooling, see [devloop-rules](https://github.com/minusblindfold/devloop-rules). Packs live in their own directories (not in `~/.claude/rules/`) and are discovered by `/resolve-rules` via a layers file (`~/.config/devenv/rule-layers`). This means they're only surfaced to skills when relevant — Claude Code doesn't auto-load them into every session.
