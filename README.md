@@ -61,7 +61,7 @@ keywords: [entity, model, JPA, persistence]
 - Pattern one — what to do and why.
 ```
 
-The `rules/rules.md` file in this plugin documents the full format. For organized packs with a management CLI, see [devenv-rules](https://github.com/minusblindfold/devenv-rules).
+The `rules/rules.md` file in this plugin documents the full format. For organized packs with a management CLI, see [devloop-rules](https://github.com/minusblindfold/devloop-rules).
 
 ## Working directory
 

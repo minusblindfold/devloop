@@ -56,13 +56,13 @@ Under the hood, two things happen:
 
 This means a simple rule file with just `keywords` gets the best of both: always available to Claude Code, and discoverable by skills when the topic matches.
 
-Rule packs (managed by [devenv-rules](https://github.com/minusblindfold/devenv-rules)) live in separate directories outside `~/.claude/rules/` and are only discovered by skills — Claude Code doesn't auto-load them. This keeps context lean.
+Rule packs (managed by [devloop-rules](https://github.com/minusblindfold/devloop-rules)) live in separate directories outside `~/.claude/rules/` and are only discovered by skills — Claude Code doesn't auto-load them. This keeps context lean.
 
 **Note on `paths:` frontmatter.** Claude Code's native rules support a `paths:` field that controls which files trigger the rule to load (e.g., `paths: ["src/**/*.ts"]`). That's file-glob scoping — different from this system's `scope:` field, which controls workflow phase (bootstrap vs feature work). You can use both in the same file if needed.
 
 ## Rule packs
 
-For organized, reusable rule sets with management tooling, see [devenv-rules](https://github.com/minusblindfold/devenv-rules). Packs live in their own directories (not in `~/.claude/rules/`) and are discovered by `/resolve-rules` via a layers file (`~/.config/devenv/rule-layers`). This means they're only surfaced to skills when relevant — Claude Code doesn't auto-load them into every session.
+For organized, reusable rule sets with management tooling, see [devloop-rules](https://github.com/minusblindfold/devloop-rules). Packs live in their own directories (not in `~/.claude/rules/`) and are discovered by `/resolve-rules` via a layers file (`~/.config/devenv/rule-layers`). This means they're only surfaced to skills when relevant — Claude Code doesn't auto-load them into every session.
 
 Packs add two frontmatter fields that don't matter for simple project-level rules:
 - **`scope`** — controls when a rule applies: `bootstrap` (scaffolding only), `feature` (feature work only), or `all` (both — the default). Useful when a pack has rules that only matter during project setup.

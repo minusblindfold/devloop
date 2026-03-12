@@ -17,7 +17,7 @@ Run `/resolve-rules mode:all scope:bootstrap` to resolve every rule that applies
 
 If `/resolve-rules` is unavailable, warn the user: "Rule resolution skill not found — rules will not be applied." Then stop.
 
-If no rules are resolved, stop: "No rules found. Add at least a `stack.md` to your rules directory, or install a rule pack from [devenv-rules](https://github.com/minusblindfold/devenv-rules). See `rules/rules.md` in the devloop plugin for the format."
+If no rules are resolved, stop: "No rules found. Add at least a `stack.md` to your rules directory, or install a rule pack from [devloop-rules](https://github.com/minusblindfold/devloop-rules). See `rules/rules.md` in the devloop plugin for the format."
 
 Look for a **Stack** rule (matched by H1 title or `stack` keyword). If no stack rule is found, stop: "No stack rule found. Bootstrap needs a stack rule to know what kind of project to generate."
 
