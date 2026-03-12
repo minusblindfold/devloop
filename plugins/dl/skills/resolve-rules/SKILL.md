@@ -58,11 +58,19 @@ Scan each term against resolved docs' `keywords` arrays. Return all matches.
 ### explicit
 Match each title against the H1 heading of resolved docs. Return all matches.
 
+### Always-scoped rules
+
+After mode matching, scan the full resolution map for rules with `scope: always` in their frontmatter. Merge these into the matched set if not already present. This ensures cross-cutting rules (e.g., git conventions, code style) are included regardless of mode or keywords.
+
 ### Scope filtering
 
-If a `scope:<value>` modifier is present in $ARGUMENTS, apply it as a post-filter after mode matching. Keep rules where the frontmatter `scope` field matches the requested value OR equals `all`. Rules with no `scope` field default to `all` and are always included.
+If a `scope:<value>` modifier is present in $ARGUMENTS, apply it as a post-filter after mode matching. Keep rules where:
+- the frontmatter `scope` matches the requested value, OR
+- `scope` equals `all`, OR
+- `scope` equals `always`, OR
+- no `scope` field is present (defaults to `all`)
 
-Example: `mode:all scope:bootstrap` returns rules with `scope: bootstrap`, `scope: all`, or no `scope` field. Rules with `scope: feature` are excluded.
+Rules with `scope: feature` are excluded when `scope:bootstrap` is requested, and vice versa. Rules with `scope: always` are never excluded.
 
 If no `scope` modifier is present, skip this filter — return all mode-matched rules regardless of scope. This preserves backward compatibility.
 
