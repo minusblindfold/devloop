@@ -35,7 +35,7 @@ Create a `stack.md` to define your project skeleton (language, framework, build 
 | Field | Required | Values | Description |
 |---|---|---|---|
 | `keywords` | Yes | Array of strings | Terms for keyword-based discovery. Skills match task descriptions against these. |
-| `scope` | No | `bootstrap`, `feature`, `all` | When this rule applies. Default: `all`. |
+| `scope` | No | `bootstrap`, `feature`, `all`, `always` | When this rule applies. `always` bypasses keyword matching — use for cross-cutting conventions. Default: `all`. |
 | `extends` | No | `true`, `false` | If true, appends to a higher-precedence version instead of being overridden. Default: `false`. |
 
 `scope` and `extends` are only relevant when using rule packs with layered resolution. For project-level rules, `keywords` is all you need.
@@ -77,5 +77,5 @@ Rules are additive — start with none and layer in structure as needed.
 For organized, reusable rule sets with management tooling, see [devloop-rules](https://github.com/minusblindfold/devloop-rules). Packs live in their own directories (not in `~/.claude/rules/`) and are discovered by `/resolve-rules` via a layers file (`~/.config/devenv/rule-layers`). This means they're only surfaced to skills when relevant — Claude Code doesn't auto-load them into every session.
 
 Packs add two frontmatter fields that don't matter for simple project-level rules:
-- **`scope`** — controls when a rule applies: `bootstrap` (scaffolding only), `feature` (feature work only), or `all` (both — the default). Useful when a pack has rules that only matter during project setup.
+- **`scope`** — controls when a rule applies: `bootstrap` (scaffolding only), `feature` (feature work only), `all` (both — the default), or `always` (included in every skill invocation regardless of keyword matching — use for cross-cutting conventions like git workflow or code style).
 - **`extends`** — when multiple packs define a rule with the same filename, `extends: true` appends to the higher-precedence version instead of being shadowed. This is how a project-level rule can add to an org-level standard.
