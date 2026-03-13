@@ -7,6 +7,10 @@ allowed-tools: Read Write Bash TaskCreate
 
 Create or refine a feature design.
 
+## Artifact — required output
+
+This skill produces files in `<work.dir>/designs/` (and `<work.dir>/plans/` in bootstrap mode). Every execution — create, bootstrap, or refine — must end with saved artifacts on disk. The review phase below is gated on this: do not present the design to the user or suggest next steps until all artifact files have been written and verified with `ls`.
+
 ## Config
 
 Read `devenv.json` from `${CLAUDE_PLUGIN_ROOT}/devenv.json` (if running as a plugin) or `~/.claude/devenv.json` (fallback). Keys: `work.dir` (default `.work`), `backups.maxPerArtifact` (default 5, applies to refine mode only).
@@ -24,7 +28,7 @@ For simple features where no plan exists yet. Treats $ARGUMENTS as the feature d
 
 1. Ask 1–2 focused clarifying questions (scope and any key constraints). Wait for answers.
 2. Create a minimal plan — typically 1–3 tasks — using the format in the `/plan` skill's `## Plan format` section.
-3. **Save the artifact.** Write it to `<work.dir>/plans/YYYY-MM-DD-<slug>.md`. The create mode step below depends on reading this file from disk. Run `ls` on the file path to verify it exists with the correct naming convention.
+3. Write the plan to `<work.dir>/plans/YYYY-MM-DD-<slug>.md`. **Gate:** run `ls` on the file path — do not proceed to create mode until the file is confirmed on disk.
 4. Confirm the plan with the user ("Here's the plan I'll design from — does this look right?"). Adjust if needed.
 5. Proceed to create mode using the saved plan.
 
@@ -38,8 +42,8 @@ For simple features where no plan exists yet. Treats $ARGUMENTS as the feature d
 4. Write design doc with: Overview, Architecture, Diagrams, Task Specs.
 5. Choose diagrams that best illuminate the plan — see [diagrams.md](diagrams.md). A feature may warrant more than one; omit diagrams for trivial tasks. Save each as a `.mmd` file in `<work.dir>/designs/diagrams/`. List them in the doc; do not embed code inline.
 6. For each plan task write a spec: Goal, Interfaces, Implementation notes, Acceptance criteria, Dependencies. Also note which rules apply by title (e.g., `**Rules:** JPA Entity Rules, Liquibase Migration Rules`). This tells `/implement` which docs to apply via `/resolve-rules` explicit mode.
-7. **Save the artifact.** Write the design to `<work.dir>/designs/YYYY-MM-DD-<slug>-design.md`. This file is the primary output — `/implement` reads the design file and its diagrams to guide code generation. Displaying the design in chat without saving it breaks the implementation workflow.
-8. Verify: run `ls` on the saved file path to confirm it exists, has the correct directory (`designs/`), and follows the `YYYY-MM-DD-<slug>-design.md` naming convention. If wrong, fix it before continuing.
+7. Write the design to `<work.dir>/designs/YYYY-MM-DD-<slug>-design.md`.
+8. **Gate:** run `ls` on the design file and each `.mmd` file. If any are missing, write them now. Do not proceed until all files are confirmed on disk.
 9. Ask the user to review. Once confirmed, suggest running `/implement` to begin.
 
 ## Refine mode
@@ -86,7 +90,6 @@ _(include only the diagrams that apply)_
 
 ## Rules
 
-- **Save `.work` artifact files every time this skill runs.** `/implement` reads the design and `.mmd` diagram files to guide code generation — without saved files, the implementation workflow has no spec to follow. A chat-only response with no saved files is a failed run.
 - Never implement.
 - Only reference skills found in `.claude/skills/`.
 - Stay grounded in the plan — do not invent tasks.

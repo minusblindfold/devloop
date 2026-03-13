@@ -7,6 +7,10 @@ allowed-tools: Read Bash Glob Grep
 
 Scan rules and codebase to produce structured context for the plan/design/implement cycle.
 
+## Artifact — required output
+
+This skill produces a file in `<work.dir>/research/`. Every execution — create, re-entry, or health-check — must end with a saved artifact on disk. The wrap-up phase below is gated on this: do not summarise findings or suggest next steps until the artifact file has been written and verified with `ls`.
+
 ## Config
 
 Read `devenv.json` from `${CLAUDE_PLUGIN_ROOT}/devenv.json` (if running as a plugin) or `~/.claude/devenv.json` (fallback). Keys: `work.dir` (default `.work`).
@@ -42,7 +46,9 @@ For each matched rule, extract:
 
 ## Output
 
-**Save the artifact.** Write to `<work.dir>/research/YYYY-MM-DD-<slug>-research.md` (or `health-check.md` for health-check mode). This file is the primary output — `/plan` reads research artifacts to inform task decomposition and clarifying questions. Displaying findings in chat without saving the file means the research is lost to downstream skills. After saving, run `ls` on the file path to verify it exists in the correct directory with the expected naming convention. If wrong, fix it before continuing.
+Write to `<work.dir>/research/YYYY-MM-DD-<slug>-research.md` (or `health-check.md` for health-check mode).
+
+**Gate:** run `ls` on the saved file path. If the file does not exist, write it now. Do not proceed to the wrap-up phase until the file is confirmed on disk.
 
 ```markdown
 # <Topic> Research
@@ -83,7 +89,6 @@ If appending to an existing file:
 
 ## Rules
 
-- **Save a `.work` artifact file every time this skill runs.** Downstream skills (`/plan`, `/design`) read research files to inform their work — without a saved file, findings are lost between conversations. A chat-only response with no saved file is a failed run.
 - Never implement. This skill produces context, not code.
 - Never overwrite prior research sections on re-entry.
 - Rule discovery must use the resolution algorithm — never hardcode paths.

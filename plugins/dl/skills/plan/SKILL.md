@@ -7,6 +7,10 @@ allowed-tools: Read Write Bash TaskCreate
 
 Create or refine a feature plan.
 
+## Artifact — required output
+
+This skill produces a file in `<work.dir>/plans/`. Every execution — create or refine — must end with a saved artifact on disk. The wrap-up phase below is gated on this: do not present results to the user or suggest next steps until the artifact file has been written and verified with `ls`.
+
 ## Config
 
 Read `devenv.json` from `${CLAUDE_PLUGIN_ROOT}/devenv.json` (if running as a plugin) or `~/.claude/devenv.json` (fallback). Keys: `work.dir` (default `.work`), `backups.maxPerArtifact` (default 5, applies to refine mode only).
@@ -24,8 +28,8 @@ If $ARGUMENTS is empty → list `<work.dir>/plans/`. None: ask what to plan. One
    - If bootstrap context was found: skip questions about tech stack, database, and auth approach (these are already decided). Focus on domain entities, business logic, scope boundaries, and constraints.
    - If no bootstrap context: ask as normal, including stack questions if the project's tech isn't clear from CLAUDE.md.
 3. Create tasks with `TaskCreate`. Make them small, meaningful, and ordered by dependency.
-4. **Save the artifact.** Write the plan to `<work.dir>/plans/YYYY-MM-DD-<slug>.md`. This file is the primary output — `/design` and `/implement` depend on reading it from disk. Displaying the plan in chat without saving the file breaks the downstream workflow.
-5. Verify: run `ls` on the saved file path to confirm it exists, has the correct directory (`plans/`), and follows the `YYYY-MM-DD-<slug>.md` naming convention. If wrong, fix it before continuing.
+4. Write the plan to `<work.dir>/plans/YYYY-MM-DD-<slug>.md`.
+5. **Gate:** run `ls` on the saved file path. If the file does not exist, go back to step 4. Do not proceed until the file is confirmed on disk.
 6. Ask the user to review. Once confirmed, suggest running `/design` to architect the feature.
 
 ## Refine mode
@@ -54,7 +58,6 @@ Tasks should be small and ordered by dependency. Each task includes a one-line "
 
 ## Rules
 
-- **Save a `.work` artifact file every time this skill runs.** Downstream skills (`/design`, `/implement`) read these files to continue the workflow — without a saved file, the pipeline breaks and the user must redo this work. A chat-only response with no saved file is a failed run.
 - Never implement.
 - Only reference skills found in `.claude/skills/`.
 - Right-size tasks — small over large.
