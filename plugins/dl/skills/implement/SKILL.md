@@ -7,6 +7,10 @@ allowed-tools: Read Write Edit Bash(git:*) TaskCreate TaskList TaskUpdate
 
 Implement one task from a plan+design pair.
 
+## Artifact — required output
+
+This skill produces an implementation note in `<work.dir>/implementations/`. Every execution — even if the task is incomplete — must end with a saved artifact on disk. The wrap-up phase below is gated on this: do not summarise changes, suggest commits, or recommend next steps until the implementation note has been written and verified with `ls`.
+
 ## Config
 
 Read `devenv.json` from `${CLAUDE_PLUGIN_ROOT}/devenv.json` (if running as a plugin) or `~/.claude/devenv.json` (fallback). Key: `work.dir` (default `.work`).
@@ -47,16 +51,16 @@ Follow the matched rule docs when creating or modifying files that fall under th
 
 ## Wrap up
 
-- Summarise changes (files created/modified).
-- Note any deviations from the design spec — interfaces, structures, or approaches that changed. If significant, suggest running `/design` refine before the next task.
-- If out-of-scope work was discovered, suggest running `/plan` refine to capture it.
-- Suggest a git commit scoped to this task.
-- Recommend follow-up skills — only skills found in `.claude/skills/`.
-- **Save the artifact.** Write an implementation note — see [implementation-note.md](implementation-note.md). Implementation notes record deviations, discoveries, and decisions that inform subsequent tasks and plan refinements. Without a saved note, context is lost between tasks and conversations. After saving, run `ls` on the file path to verify it exists in the correct directory with the expected naming convention. If wrong, fix it before continuing.
+1. Write an implementation note — see [implementation-note.md](implementation-note.md).
+2. **Gate:** run `ls` on the saved file path. If the file does not exist, go back to step 1. Do not proceed until the file is confirmed on disk.
+3. Summarise changes (files created/modified).
+4. Note any deviations from the design spec — interfaces, structures, or approaches that changed. If significant, suggest running `/design` refine before the next task.
+5. If out-of-scope work was discovered, suggest running `/plan` refine to capture it.
+6. Suggest a git commit scoped to this task.
+7. Recommend follow-up skills — only skills found in `.claude/skills/`.
 
 ## Rules
 
-- **Save a `.work` artifact file (implementation note) every time this skill runs.** Implementation notes capture deviations and discoveries that inform the next task — without them, subsequent `/implement` runs and `/plan` refinements lose critical context. Save the note even if the task is incomplete.
 - Never start without a design file.
 - Never duplicate tasks — match by subject before creating.
 - Implement only the selected task. Note out-of-scope discoveries in the implementation note rather than acting on them.
