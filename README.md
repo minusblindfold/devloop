@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="assets/logo.png" width="600" alt="devloop">
-</p>
-
 # devloop
 
 A Claude Code plugin that structures AI-assisted development into phases. Without structure, coding agents generate inconsistent patterns and one-shot attempts that miss edge cases. devloop fixes this by breaking work into research, planning, design, and implementation — each phase produces an artifact the next one reads. No step touches code until `/dl:implement`.
