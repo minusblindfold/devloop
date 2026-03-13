@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Plan a feature as a task list. Use when the user wants to plan, decompose, or organise work.
+description: Plans features as task lists, decomposes work into ordered steps, and saves plan artifacts. Use when planning, decomposing, or organising work into tasks.
 argument-hint: "[feature description]"
 allowed-tools: Read Write Bash TaskCreate
 ---
@@ -24,7 +24,7 @@ If $ARGUMENTS is empty → list `<work.dir>/plans/`. None: ask what to plan. One
    - If bootstrap context was found: skip questions about tech stack, database, and auth approach (these are already decided). Focus on domain entities, business logic, scope boundaries, and constraints.
    - If no bootstrap context: ask as normal, including stack questions if the project's tech isn't clear from CLAUDE.md.
 3. Create tasks with `TaskCreate`. Make them small, meaningful, and ordered by dependency.
-4. Save plan to `<work.dir>/plans/YYYY-MM-DD-<slug>.md`.
+4. **Save the artifact.** Write the plan to `<work.dir>/plans/YYYY-MM-DD-<slug>.md`. This file is the primary output — `/design` and `/implement` depend on reading it from disk. Displaying the plan in chat without saving the file breaks the downstream workflow.
 5. Verify: run `ls` on the saved file path to confirm it exists, has the correct directory (`plans/`), and follows the `YYYY-MM-DD-<slug>.md` naming convention. If wrong, fix it before continuing.
 6. Ask the user to review. Once confirmed, suggest running `/design` to architect the feature.
 
@@ -54,6 +54,7 @@ Tasks should be small and ordered by dependency. Each task includes a one-line "
 
 ## Rules
 
+- **Save a `.work` artifact file every time this skill runs.** Downstream skills (`/design`, `/implement`) read these files to continue the workflow — without a saved file, the pipeline breaks and the user must redo this work. A chat-only response with no saved file is a failed run.
 - Never implement.
 - Only reference skills found in `.claude/skills/`.
 - Right-size tasks — small over large.

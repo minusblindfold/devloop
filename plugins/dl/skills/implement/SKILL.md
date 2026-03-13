@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Implement a task from a plan and design. Use when the user wants to start coding a planned feature or work through tasks one at a time.
+description: Implements tasks from a plan and design, applying rules and saving implementation notes. Use when coding a planned feature or working through tasks one at a time.
 argument-hint: "[plan-slug] [task-number]"
 allowed-tools: Read Write Edit Bash(git:*) TaskCreate TaskList TaskUpdate
 ---
@@ -52,11 +52,11 @@ Follow the matched rule docs when creating or modifying files that fall under th
 - If out-of-scope work was discovered, suggest running `/plan` refine to capture it.
 - Suggest a git commit scoped to this task.
 - Recommend follow-up skills — only skills found in `.claude/skills/`.
-- Save an implementation note — see [implementation-note.md](implementation-note.md). After saving, run `ls` on the file path to verify it exists in the correct directory with the expected naming convention. If wrong, fix it before continuing.
+- **Save the artifact.** Write an implementation note — see [implementation-note.md](implementation-note.md). Implementation notes record deviations, discoveries, and decisions that inform subsequent tasks and plan refinements. Without a saved note, context is lost between tasks and conversations. After saving, run `ls` on the file path to verify it exists in the correct directory with the expected naming convention. If wrong, fix it before continuing.
 
 ## Rules
 
+- **Save a `.work` artifact file (implementation note) every time this skill runs.** Implementation notes capture deviations and discoveries that inform the next task — without them, subsequent `/implement` runs and `/plan` refinements lose critical context. Save the note even if the task is incomplete.
 - Never start without a design file.
 - Never duplicate tasks — match by subject before creating.
 - Implement only the selected task. Note out-of-scope discoveries in the implementation note rather than acting on them.
-- Save the implementation note even if the task is incomplete.

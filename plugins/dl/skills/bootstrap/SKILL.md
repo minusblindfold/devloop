@@ -1,6 +1,6 @@
 ---
 name: bootstrap
-description: Scaffold a project from rules. Use when the user wants to start a new project.
+description: Scaffolds a new project from resolved rule docs, generating skeleton code, configuration, and a bootstrap context marker. Use when starting a new project or scaffolding from rules.
 argument-hint: "<project-name> [description]"
 allowed-tools: Read Write Bash
 ---
