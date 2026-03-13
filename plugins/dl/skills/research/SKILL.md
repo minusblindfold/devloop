@@ -1,6 +1,6 @@
 ---
 name: research
-description: Scan rules and codebase to inform planning and design. Use when starting a new feature or when discoveries surface during implementation.
+description: Scans rules and codebase to produce structured research artifacts that inform planning and design. Use when starting a new feature, when discoveries surface during implementation, or when a project health check is needed.
 argument-hint: "[feature-slug or topic]"
 allowed-tools: Read Bash Glob Grep
 ---
@@ -42,7 +42,7 @@ For each matched rule, extract:
 
 ## Output
 
-Write to `<work.dir>/research/YYYY-MM-DD-<slug>-research.md` (or `health-check.md` for health-check mode). After saving, run `ls` on the file path to verify it exists in the correct directory with the expected naming convention. If wrong, fix it before continuing.
+**Save the artifact.** Write to `<work.dir>/research/YYYY-MM-DD-<slug>-research.md` (or `health-check.md` for health-check mode). This file is the primary output — `/plan` reads research artifacts to inform task decomposition and clarifying questions. Displaying findings in chat without saving the file means the research is lost to downstream skills. After saving, run `ls` on the file path to verify it exists in the correct directory with the expected naming convention. If wrong, fix it before continuing.
 
 ```markdown
 # <Topic> Research
@@ -83,6 +83,7 @@ If appending to an existing file:
 
 ## Rules
 
+- **Save a `.work` artifact file every time this skill runs.** Downstream skills (`/plan`, `/design`) read research files to inform their work — without a saved file, findings are lost between conversations. A chat-only response with no saved file is a failed run.
 - Never implement. This skill produces context, not code.
 - Never overwrite prior research sections on re-entry.
 - Rule discovery must use the resolution algorithm — never hardcode paths.
