@@ -1,6 +1,7 @@
 ---
 keywords: [ecosystem, integration, devenv, devloop-rules, companion, tooling]
 repos: [~/Documents/personal/devenv, ~/Documents/personal/devloop-rules]
+scope: always
 ---
 # Devloop Ecosystem
 
