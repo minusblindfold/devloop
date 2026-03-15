@@ -5,23 +5,47 @@ argument-hint: "<project-name> [description]"
 allowed-tools: Read Write Bash
 ---
 
-Scaffold a new project driven entirely by resolved rule docs.
+Execute each section below in order. Do not skip sections.
+
+1. Determine your mode.
+2. Copy the **Task Progress** checklist from that mode's section into your response.
+3. Work through each item. Check it off as you complete it.
+4. Do not proceed past a **Gate** until the gate condition is verified.
 
 ## Config
 
 All artifacts are stored under `.work/` in the current project directory.
 
-## Resolve rules
+## Bootstrap mode
+
+Copy this checklist and check off items as you complete them:
+
+```
+Task Progress:
+- [ ] Run /resolve-rules mode:all scope:bootstrap
+- [ ] Verify stack rule exists
+- [ ] Parse arguments for project name and description
+- [ ] Ask for missing inputs
+- [ ] Confirm inputs with user
+- [ ] Generate project skeleton from stack rule
+- [ ] Apply rule contributions in dependency order
+- [ ] Generate CLAUDE.md
+- [ ] Write .work/bootstrap.md context marker
+- [ ] Gate: verify bootstrap.md with ls
+- [ ] Wrap up: summarize generated files, suggest next steps
+```
+
+### Resolve rules
 
 Run `/resolve-rules mode:all scope:bootstrap` to resolve every rule that applies at bootstrap time. Read all resolved docs.
 
-If `/resolve-rules` is unavailable, warn the user: "Rule resolution skill not found — rules will not be applied." Then stop.
+If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — cannot bootstrap without rules." Then stop.
 
 If no rules are resolved, stop: "No rules found. Add at least a `stack.md` to your rules directory, or install a rule pack from [devloop-rules](https://github.com/minusblindfold/devloop-rules). See `rules/rules.md` in the devloop plugin for the format."
 
 Look for a **Stack** rule (matched by H1 title or `stack` keyword). If no stack rule is found, stop: "No stack rule found. Bootstrap needs a stack rule to know what kind of project to generate."
 
-## Gather inputs
+### Gather inputs
 
 1. Parse `$ARGUMENTS` for the project name (first word) and optional description (rest). If no project name, ask.
 2. From the stack rule, identify the technology stack and present a summary to the user.
@@ -31,15 +55,17 @@ Look for a **Stack** rule (matched by H1 title or `stack` keyword). If no stack 
    - If the stack rule uses packages or modules, ask for the **root namespace/group**.
 4. Confirm inputs with the user before generating.
 
-## Generate project
+### Generate project
+
+**Constraint:** Generate only the scaffold. Feature code belongs in /plan → /design → /implement.
 
 Create all files in the **current working directory**. The directory should be empty or near-empty. If not empty, warn the user and ask to confirm.
 
-### Skeleton
+#### Skeleton
 
 Read the stack rule fully. Generate the project skeleton it describes: build file, settings, config files, main entry point, wrapper, gitignore, and test config. Derive names (database name, package name, artifact name) from the project name.
 
-### Rule contributions
+#### Rule contributions
 
 Work through each remaining resolved rule that has a `## Bootstrap` section. Process them in natural dependency order: infrastructure → data layer → security → business logic → UI.
 
@@ -50,14 +76,14 @@ For each rule:
 
 Skip rules that have no `## Bootstrap` section — they apply during feature work, not scaffolding.
 
-### Project documentation
+#### Project documentation
 
 Generate a `CLAUDE.md` tailored to the project. Derive everything from what was actually generated:
 - Project overview (name, description, tech stack from stack rule).
 - Common commands (build, run, test — from stack rule's startup section).
 - Architecture overview (layers, security config, database, frontend — from the rules that were applied).
 
-## Write bootstrap context marker
+### Write bootstrap context marker
 
 Create `.work/bootstrap.md` in the project directory. Assemble it dynamically from what was resolved and generated:
 
@@ -82,7 +108,11 @@ Create `.work/bootstrap.md` in the project directory. Assemble it dynamically fr
 
 This marker is read by `/plan` and `/design` to skip redundant questions about established architecture.
 
-## Wrap up
+### Gate
+
+Run `ls` on `.work/bootstrap.md`. If the file does not exist, write it now. Do not proceed until the file is confirmed on disk.
+
+### Wrap up
 
 1. Print a summary of what was generated (file count by category).
 2. Suggest next steps derived from the stack rule's startup section:
@@ -93,9 +123,9 @@ This marker is read by `/plan` and `/design` to skip redundant questions about e
 
 ## Rules
 
-- Never generate features beyond the minimal scaffold — that's what `/plan` → `/design` → `/implement` is for.
+- Generate only the scaffold. Feature code belongs in /plan → /design → /implement.
 - Follow rule docs exactly. If a pattern isn't covered by a rule doc, keep it simple and consistent with the rules that do exist.
-- No hardcoded version numbers in generated code. Use latest stable versions at generation time.
+- Do not hardcode version numbers in generated code. Use latest stable versions at generation time.
 - The bootstrap context marker goes in the project's `.work/`, not in devenv.
-- Never hardcode technology choices in this skill. Every file generated must trace back to a resolved rule.
+- Do not hardcode technology choices in this skill. Every file generated must trace back to a resolved rule.
 - If no rules are resolved, do not guess a stack. Stop and tell the user.
