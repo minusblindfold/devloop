@@ -38,6 +38,7 @@ Task Progress:
 - [ ] Scan project directory and .claude/skills/
 - [ ] Check for .work/bootstrap.md
 - [ ] Check .work/research/ for matching artifacts
+- [ ] Scan linked repos (if declared)
 - [ ] Check for greenfield project
 - [ ] List gathered context in response
 - [ ] Ask clarifying questions
@@ -51,13 +52,14 @@ Task Progress:
 2. Scan project directory structure (top-level + key subdirectories). Check `.claude/skills/` for available skills.
 3. Check for `.work/bootstrap.md` — if found, read it. Note tech stack, roles, and scaffolded entities as established context.
 4. Check `.work/research/` for a file matching the feature slug (`*<slug>*-research.md`). If found, read it. Use `### Gaps & Recommendations` to inform clarifying questions and task decomposition.
-5. **Greenfield detection:** if no `CLAUDE.md`, no `.work/bootstrap.md`, and directory is empty or near-empty → run `/resolve-rules mode:all scope:bootstrap` to check for a stack rule. If stack rule found, include "Scaffold project following rules" as task 1 in the plan. If no stack rule exists, proceed normally. If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
-6. List what you found in your response before asking questions: bootstrap context (if any), research artifacts (if any), greenfield status, and available skills.
-7. Ask 3–5 clarifying questions. Wait for answers.
+5. **Linked repo context:** If the research artifact from step 4 contains a `### Linked Repo Context` section, note it — print "Linked repo context found in research artifact." and include it in the gathered context listing. If no research artifact was found, run `/resolve-rules mode:keyword <feature description>` to check for linked repos. If linked repos are declared, do an orientation-only scan of each (expand `~`, verify directory exists, read `CLAUDE.md` or `README.md`, scan top-level directory with `ls`). Skip repos that don't exist locally with a warning. Do not do targeted keyword code search — that's research's job.
+6. **Greenfield detection:** if no `CLAUDE.md`, no `.work/bootstrap.md`, and directory is empty or near-empty → run `/resolve-rules mode:all scope:bootstrap` to check for a stack rule. If stack rule found, include "Scaffold project following rules" as task 1 in the plan. If no stack rule exists, proceed normally. If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
+7. List what you found in your response before asking questions: bootstrap context (if any), research artifacts (if any), linked repo context (if any), greenfield status, and available skills.
+8. Ask 3–5 clarifying questions. Wait for answers.
    - If bootstrap context was found: skip questions about tech stack, database, and auth approach (already decided). Focus on domain entities, business logic, scope boundaries, and constraints.
    - If no bootstrap context: ask as normal, including stack questions if the project's tech isn't clear from CLAUDE.md.
-8. Create tasks with `TaskCreate`. Make tasks small. Order by dependency.
-9. Write the plan to `.work/plans/YYYY-MM-DD-<slug>.md`.
+9. Create tasks with `TaskCreate`. Make tasks small. Order by dependency.
+10. Write the plan to `.work/plans/YYYY-MM-DD-<slug>.md`.
 
 ### Gate
 

@@ -37,8 +37,9 @@ Create a `stack.md` to define your project skeleton (language, framework, build 
 | `keywords` | Yes | Array of strings | Terms for keyword-based discovery. Skills match task descriptions against these. |
 | `scope` | No | `bootstrap`, `feature`, `all`, `always` | When this rule applies. `always` bypasses keyword matching — use for cross-cutting conventions. Default: `all`. |
 | `extends` | No | `true`, `false` | If true, appends to a higher-precedence version instead of being overridden. Default: `false`. |
+| `repos` | No | Array of home-relative paths | Linked repositories that skills should scan for cross-repo context. e.g., `[~/code/service-b]`. Default: none. |
 
-`scope` and `extends` are only relevant when using rule packs with layered resolution. For project-level rules, `keywords` is all you need.
+`scope` and `extends` are only relevant when using rule packs with layered resolution. `repos` is useful at any layer but most common in project-level rules. For simple project-level rules, `keywords` is all you need.
 
 ### Sections
 
@@ -84,3 +85,26 @@ For organized, reusable rule sets, place packs in `~/devloop/rules/`. Each subdi
 Packs add two frontmatter fields that don't matter for simple project-level rules:
 - **`scope`** — controls when a rule applies: `bootstrap` (scaffolding only), `feature` (feature work only), `all` (both — the default), or `always` (included in every skill invocation regardless of keyword matching — use for cross-cutting conventions like git workflow or code style).
 - **`extends`** — when multiple layers define a rule with the same filename, `extends: true` appends to the higher-precedence version instead of being shadowed. This is how a project-level rule can add to an org-level standard.
+
+## Linked repositories
+
+Rules can declare linked repositories using the `repos` frontmatter field. When skills like `/research` and `/plan` resolve rules and find `repos` declarations, they scan those repositories for context — reading the linked repo's `CLAUDE.md`, scanning its directory structure, and searching for code relevant to the current topic.
+
+This is useful when your project integrates with other repositories you have cloned locally — for example, a microservice that calls another microservice, or a project that depends on a shared library. Declaring linked repos lets skills find integration points, API contracts, and shared types across repo boundaries.
+
+Add `repos` to any rule file. The most common pattern is a single project-level rule that declares the project's ecosystem:
+
+```markdown
+---
+keywords: [ecosystem, integration]
+repos: [~/code/payments-service, ~/code/shared-types]
+---
+# Project Ecosystem
+
+> Linked repositories for cross-repo context during research and planning.
+
+This project integrates with the payments service for transaction processing
+and uses the shared-types library for common data models.
+```
+
+Paths must be home-relative (`~/...`). Skills expand `~` at scan time and skip repos that don't exist locally.

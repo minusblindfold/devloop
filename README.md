@@ -55,6 +55,7 @@ Use `/reload-plugins` after making changes during development.
 - **Refine mode** — Run `/dl:plan` or `/dl:design` with no args to iterate on existing artifacts.
 - **Greenfield detection** — In a new project with no existing structure, `/dl:plan` suggests scaffolding as the first task.
 - **Rule-driven consistency** — Skills match task descriptions against rule keywords, so the same patterns apply everywhere.
+- **Linked repositories** — Declare related repos in rule frontmatter and `/dl:research` and `/dl:plan` will scan them for cross-repo context.
 
 For a deeper walkthrough, see [docs/workflow.md](docs/workflow.md).
 
@@ -81,6 +82,17 @@ keywords: [entity, model, JPA, persistence]
 
 - Pattern one — what to do and why.
 ```
+
+Rules can also declare linked repositories with `repos` — paths to other local repos that skills should scan for cross-repo context:
+
+```yaml
+---
+keywords: [ecosystem, integration]
+repos: [~/code/payments-service, ~/code/shared-types]
+---
+```
+
+When `/dl:research` or `/dl:plan` resolve a rule with `repos`, they scan those directories for relevant code, API contracts, and shared types. Paths must be home-relative (`~/...`).
 
 Rules are optional. Without them, skills work from codebase context alone. Start by dropping `.md` files with keyword frontmatter into `~/.claude/rules/` — skills discover them automatically. When you want organized, reusable rule sets, see [devloop-rules](https://github.com/minusblindfold/devloop-rules) for packs with a management CLI. The full format spec is in [`plugins/dl/rules/rules.md`](plugins/dl/rules/rules.md).
 
