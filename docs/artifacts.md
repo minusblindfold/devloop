@@ -57,7 +57,7 @@ Slugs are how skills find related artifacts. When you run `/dl:design`, it match
 └── diagrams/
     ├── 2026-03-11-user-auth-arch.mmd        # High-level architecture
     ├── 2026-03-11-user-auth-flow.mmd        # Data flow
-    ├── 2026-03-11-user-auth-component.mmd   # Internal component structure
+    ├── 2026-03-11-user-auth-component.mmd   # Component design
     └── 2026-03-11-user-auth-sequence.mmd    # Step-by-step interactions
 ```
 
