@@ -92,7 +92,7 @@ repos: [~/code/payments-service, ~/code/shared-types]
 ---
 ```
 
-When `/dl:research` or `/dl:plan` resolve a rule with `repos`, they scan those directories for relevant code, API contracts, and shared types. Paths must be home-relative (`~/...`).
+When `/dl:research` or `/dl:plan` resolve a rule with `repos`, they scan those directories for relevant code, API contracts, and shared types. Paths must be home-relative (`~/...`). See [`devloop/rules/ecosystem.md`](devloop/rules/ecosystem.md) for a working example.
 
 Rules are optional. Without them, skills work from codebase context alone. Start by dropping `.md` files with keyword frontmatter into `~/.claude/rules/` — skills discover them automatically. When you want organized, reusable rule sets, see [devloop-rules](https://github.com/minusblindfold/devloop-rules) for packs with a management CLI. The full format spec is in [`plugins/dl/rules/rules.md`](plugins/dl/rules/rules.md).
 
