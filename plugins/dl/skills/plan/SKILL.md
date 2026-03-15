@@ -39,7 +39,7 @@ Task Progress:
 - [ ] Check for .work/bootstrap.md
 - [ ] Check .work/research/ for matching artifacts
 - [ ] Check for greenfield project
-- [ ] Ask 3–5 clarifying questions
+- [ ] Ask clarifying questions
 - [ ] Create tasks with TaskCreate
 - [ ] Write plan to .work/plans/
 - [ ] Gate: verify plan file with ls
@@ -50,7 +50,7 @@ Task Progress:
    1a. Scan project directory structure (top-level + key subdirectories).
    1b. Check `.claude/skills/` for available skills.
    1c. Check for `.work/bootstrap.md` — if found, read it. Note tech stack, roles, and scaffolded entities as established context.
-   1d. Check `.work/research/` for a file matching the feature slug (`*<slug>*-research.md`) and for `health-check.md`. If found, read them. Use `### Gaps & Recommendations` to inform clarifying questions and task decomposition.
+   1d. Check `.work/research/` for a file matching the feature slug (`*<slug>*-research.md`). If found, read it. Use `### Gaps & Recommendations` to inform clarifying questions and task decomposition.
    1e. **Greenfield detection:** if no `CLAUDE.md`, no `.work/bootstrap.md`, and directory is empty or near-empty → run `/resolve-rules mode:all scope:bootstrap` to check for a stack rule. If stack rule found, include "Scaffold project following rules" as task 1 in the plan. If no stack rule exists, proceed normally. If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
 2. Ask 3–5 clarifying questions. Wait for answers.
    - If bootstrap context was found: skip questions about tech stack, database, and auth approach (already decided). Focus on domain entities, business logic, scope boundaries, and constraints.
@@ -72,7 +72,6 @@ Copy this checklist and check off items as you complete them:
 
 ```
 Task Progress:
-- [ ] Back up current file
 - [ ] Check .work/research/ for new artifacts
 - [ ] Show current plan
 - [ ] Ask what to change — iterate until confirmed
@@ -80,11 +79,10 @@ Task Progress:
 - [ ] Gate: verify plan file with ls
 ```
 
-1. Back up the current file — see [backup.md](../backup.md).
-2. Check `.work/research/` for matching research artifacts (new research may exist since the original plan). If found, note relevant findings.
-3. Show the current plan.
-4. Ask "What would you like to change?" Iterate until confirmed.
-5. Write the updated file once.
+1. Check `.work/research/` for matching research artifacts (new research may exist since the original plan). If found, note relevant findings.
+2. Show the current plan.
+3. Ask "What would you like to change?" Iterate until confirmed.
+4. Write the updated file once.
 
 ### Gate
 

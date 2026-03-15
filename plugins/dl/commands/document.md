@@ -3,7 +3,6 @@ Review the changes made in this session and update all documentation to match.
 ## Content mapping
 
 - `plugins/dl/skills/*/SKILL.md` → Skills section in `README.md`
-- `plugins/dl/skills/backup.md` → referenced by plan and design skills
 - `plugins/dl/commands/document.md` → Commands section in `README.md`
 - `plugins/dl/rules/rules.md` → Rules section in `README.md`
 - `.claude-plugin/plugin.json` → version, description in `README.md`

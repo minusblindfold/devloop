@@ -1,6 +1,6 @@
 ---
 name: research
-description: Scans rules and codebase to produce structured research artifacts that inform planning and design. Use when starting a new feature, when discoveries surface during implementation, or when a project health check is needed.
+description: Scans rules and codebase to produce structured research artifacts that inform planning and design. Use when starting a new feature or when discoveries surface during implementation.
 argument-hint: "[feature-slug or topic]"
 allowed-tools: Read Bash Glob Grep
 ---
@@ -26,7 +26,7 @@ Parse `$ARGUMENTS`:
 
 - Matches an existing file in `.work/research/` by slug → **re-entry** (append dated section).
 - Set but no match → **create** new research file.
-- Empty → **health-check** mode. Ask the user: "This will run a full project health check (all rules + full codebase scan). This can take a while. Continue, or would you like to research a specific topic instead?" If they provide a topic, switch to create mode. If they confirm, proceed.
+- Empty → ask the user what they would like to research. Wait for a topic, then proceed in **create** mode.
 
 ## Create mode
 
@@ -34,7 +34,7 @@ Copy this checklist and check off items as you complete them:
 
 ```
 Task Progress:
-- [ ] Determine mode (create / re-entry / health-check)
+- [ ] Determine mode (create / re-entry)
 - [ ] Run rule scan via /resolve-rules
 - [ ] Read CLAUDE.md
 - [ ] Scan project directory structure
@@ -49,7 +49,6 @@ Task Progress:
 
 Run `/resolve-rules`:
 - Topic provided → `mode:keyword <topic>`.
-- Health-check → `mode:all`.
 
 If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
 
@@ -70,7 +69,7 @@ For each matched rule, extract:
 
 ### Output
 
-Write to `.work/research/YYYY-MM-DD-<slug>-research.md` (or `health-check.md` for health-check mode).
+Write to `.work/research/YYYY-MM-DD-<slug>-research.md`.
 
 ```markdown
 # <Topic> Research
@@ -135,10 +134,6 @@ Run `ls` on the saved file path. If the file does not exist, write it now. Do no
 
 1. Summarize new findings: rules matched, patterns observed, recommendations count.
 2. Suggest next steps as in create mode.
-
-## Health-check mode
-
-Follow the create mode checklist and steps, but use `mode:all` for rule scan and write to `.work/research/health-check.md`.
 
 ## Rules
 

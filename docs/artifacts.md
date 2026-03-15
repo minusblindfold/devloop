@@ -6,7 +6,7 @@ Skills communicate through files in `.work/`. Each phase reads the previous phas
 
 ```
 .work/
-├── research/           # Context scans and health checks
+├── research/           # Context scans
 ├── plans/              # Ordered task lists
 ├── designs/            # Architecture docs and specs
 │   └── diagrams/       # Mermaid .mmd files
@@ -65,17 +65,6 @@ Not every design needs all four types. The skill picks diagram types that best i
 
 Diagrams use Mermaid syntax (`graph TD` or `sequenceDiagram`). They're listed in the design doc under a `## Diagrams` section but not embedded inline.
 
-## Backups
-
-When you refine a plan or design (`/dl:plan refine`, `/dl:design refine`), the previous version is backed up to `.backup/` in the project root:
-
-```
-.backup/
-└── 2026-03-11-14-30-00-user-auth.md    # timestamped backup
-```
-
-Backups are named `YYYY-MM-DD-HH-MM-SS-<original-filename>`. A maximum of 5 backups are kept per artifact. Oldest backups are removed when the limit is reached.
-
 ## Gitignore
 
 Add `.work/` to your project's `.gitignore`. These are ephemeral workflow artifacts — they capture the agent's reasoning and decisions during development, but they're not source code. The value is in the code and commits they produce, not in the artifacts themselves.
@@ -83,10 +72,4 @@ Add `.work/` to your project's `.gitignore`. These are ephemeral workflow artifa
 ```
 # devloop workflow artifacts
 .work/
-```
-
-You may also want to ignore `.backup/` if you don't want refine backups tracked:
-
-```
-.backup/
 ```

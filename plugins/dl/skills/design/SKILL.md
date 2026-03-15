@@ -38,7 +38,7 @@ Task Progress:
 - [ ] Read plan: extract name, tasks, dependencies
 - [ ] Read CLAUDE.md and scan directory
 - [ ] Check for .work/bootstrap.md
-- [ ] Ask 2–3 clarifying questions
+- [ ] Ask clarifying questions
 - [ ] Write design doc (Overview, Architecture, Task Specs)
 - [ ] Write Mermaid diagrams to .work/designs/diagrams/
 - [ ] Write design to .work/designs/
@@ -74,7 +74,7 @@ Copy this checklist and check off items as you complete them:
 
 ```
 Task Progress:
-- [ ] Ask 1–2 clarifying questions
+- [ ] Ask clarifying questions
 - [ ] Create minimal plan (1–3 tasks)
 - [ ] Write plan to .work/plans/
 - [ ] Gate: verify plan file with ls
@@ -100,17 +100,15 @@ Copy this checklist and check off items as you complete them:
 
 ```
 Task Progress:
-- [ ] Back up current file
 - [ ] Show current design
 - [ ] Ask what to change — iterate until confirmed
 - [ ] Write updated file and .mmd files
 - [ ] Gate: verify all files with ls
 ```
 
-1. Back up the current file — see [backup.md](../backup.md).
-2. Show the current design.
-3. Ask "What would you like to change?" Iterate until confirmed.
-4. Write the updated file and `.mmd` files once.
+1. Show the current design.
+2. Ask "What would you like to change?" Iterate until confirmed.
+3. Write the updated file and `.mmd` files once.
 
 ### Gate
 
