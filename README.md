@@ -40,7 +40,7 @@ Use `/reload-plugins` after making changes during development.
 
 | Skill | What it does |
 |-------|-------------|
-| `/dl:research` | Scan rules and codebase for context. Run without args for a project health check. |
+| `/dl:research` | Scan rules and codebase for context. Re-enter at any stage to capture new findings. |
 | `/dl:plan` | Ask clarifying questions, create an ordered task list. Detects greenfield projects. |
 | `/dl:design` | Generate architecture, Mermaid diagrams, and per-task specs with acceptance criteria. |
 | `/dl:implement` | Implement one task at a time against the spec. Tracks progress across sessions. |
@@ -55,7 +55,6 @@ Use `/reload-plugins` after making changes during development.
 - **Cross-session tracking** — Task completion persists. Run `/dl:implement` in a new session and pick up where you left off.
 - **Refine mode** — Run `/dl:plan` or `/dl:design` with no args to iterate on existing artifacts. Previous versions are backed up automatically.
 - **Greenfield detection** — In a new project with no existing structure, `/dl:plan` suggests scaffolding as the first task.
-- **Research health checks** — Run `/dl:research` with no topic to scan overall project health against your rules.
 - **Rule-driven consistency** — Skills match task descriptions against rule keywords, so the same patterns apply everywhere.
 
 For a deeper walkthrough, see [docs/workflow.md](docs/workflow.md).

@@ -23,7 +23,7 @@ During any phase, run `/dl:research` to feed discoveries back into plans and des
 
 Scans your rule docs and codebase for context. Produces three sections: **Applicable Rules** (what rules exist), **Codebase Patterns** (what's already built), and **Gaps & Recommendations** (what's missing or inconsistent).
 
-Research is optional but useful before planning. Run it again at any point — it appends new findings without overwriting prior sections. Run with no args for a project health check that scans overall alignment with your rules.
+Research is optional but useful before planning. Run it again at any point — it appends new findings without overwriting prior sections.
 
 Research artifacts are saved to `.work/research/`.
 
