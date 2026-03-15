@@ -18,12 +18,15 @@ All artifacts are stored under `.work/` in the current project directory.
 
 ## Bootstrap mode
 
+**Constraint:** You MUST generate only the scaffold. Feature code belongs in /plan → /design → /implement.
+
 Copy this checklist and check off items as you complete them:
 
 ```
 Task Progress:
 - [ ] Run /resolve-rules mode:all scope:bootstrap
 - [ ] Verify stack rule exists
+- [ ] List resolved rules and stack rule in response
 - [ ] Parse arguments for project name and description
 - [ ] Ask for missing inputs
 - [ ] Confirm inputs with user
@@ -45,6 +48,8 @@ If no rules are resolved, stop: "No rules found. Add at least a `stack.md` to yo
 
 Look for a **Stack** rule (matched by H1 title or `stack` keyword). If no stack rule is found, stop: "No stack rule found. Bootstrap needs a stack rule to know what kind of project to generate."
 
+List all resolved rules in your response and identify which one is the stack rule before proceeding to gather inputs.
+
 ### Gather inputs
 
 1. Parse `$ARGUMENTS` for the project name (first word) and optional description (rest). If no project name, ask.
@@ -56,8 +61,6 @@ Look for a **Stack** rule (matched by H1 title or `stack` keyword). If no stack 
 4. Confirm inputs with the user before generating.
 
 ### Generate project
-
-**Constraint:** Generate only the scaffold. Feature code belongs in /plan → /design → /implement.
 
 Create all files in the **current working directory**. The directory should be empty or near-empty. If not empty, warn the user and ask to confirm.
 

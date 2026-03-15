@@ -39,6 +39,7 @@ Task Progress:
 - [ ] Check for .work/bootstrap.md
 - [ ] Check .work/research/ for matching artifacts
 - [ ] Check for greenfield project
+- [ ] List gathered context in response
 - [ ] Ask clarifying questions
 - [ ] Create tasks with TaskCreate
 - [ ] Write plan to .work/plans/
@@ -47,16 +48,16 @@ Task Progress:
 ```
 
 1. Read `CLAUDE.md` if present.
-   1a. Scan project directory structure (top-level + key subdirectories).
-   1b. Check `.claude/skills/` for available skills.
-   1c. Check for `.work/bootstrap.md` — if found, read it. Note tech stack, roles, and scaffolded entities as established context.
-   1d. Check `.work/research/` for a file matching the feature slug (`*<slug>*-research.md`). If found, read it. Use `### Gaps & Recommendations` to inform clarifying questions and task decomposition.
-   1e. **Greenfield detection:** if no `CLAUDE.md`, no `.work/bootstrap.md`, and directory is empty or near-empty → run `/resolve-rules mode:all scope:bootstrap` to check for a stack rule. If stack rule found, include "Scaffold project following rules" as task 1 in the plan. If no stack rule exists, proceed normally. If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
-2. Ask 3–5 clarifying questions. Wait for answers.
+2. Scan project directory structure (top-level + key subdirectories). Check `.claude/skills/` for available skills.
+3. Check for `.work/bootstrap.md` — if found, read it. Note tech stack, roles, and scaffolded entities as established context.
+4. Check `.work/research/` for a file matching the feature slug (`*<slug>*-research.md`). If found, read it. Use `### Gaps & Recommendations` to inform clarifying questions and task decomposition.
+5. **Greenfield detection:** if no `CLAUDE.md`, no `.work/bootstrap.md`, and directory is empty or near-empty → run `/resolve-rules mode:all scope:bootstrap` to check for a stack rule. If stack rule found, include "Scaffold project following rules" as task 1 in the plan. If no stack rule exists, proceed normally. If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
+6. List what you found in your response before asking questions: bootstrap context (if any), research artifacts (if any), greenfield status, and available skills.
+7. Ask 3–5 clarifying questions. Wait for answers.
    - If bootstrap context was found: skip questions about tech stack, database, and auth approach (already decided). Focus on domain entities, business logic, scope boundaries, and constraints.
    - If no bootstrap context: ask as normal, including stack questions if the project's tech isn't clear from CLAUDE.md.
-3. Create tasks with `TaskCreate`. Make tasks small. Order by dependency.
-4. Write the plan to `.work/plans/YYYY-MM-DD-<slug>.md`.
+8. Create tasks with `TaskCreate`. Make tasks small. Order by dependency.
+9. Write the plan to `.work/plans/YYYY-MM-DD-<slug>.md`.
 
 ### Gate
 
@@ -73,16 +74,18 @@ Copy this checklist and check off items as you complete them:
 ```
 Task Progress:
 - [ ] Check .work/research/ for new artifacts
+- [ ] List new research findings in response
 - [ ] Show current plan
 - [ ] Ask what to change — iterate until confirmed
 - [ ] Write updated plan file
 - [ ] Gate: verify plan file with ls
 ```
 
-1. Check `.work/research/` for matching research artifacts (new research may exist since the original plan). If found, note relevant findings.
-2. Show the current plan.
-3. Ask "What would you like to change?" Iterate until confirmed.
-4. Write the updated file once.
+1. Check `.work/research/` for matching research artifacts. If found, note relevant findings.
+2. List any new research findings in your response before showing the plan.
+3. Show the current plan.
+4. Ask "What would you like to change?" Iterate until confirmed.
+5. Write the updated file once.
 
 ### Gate
 

@@ -27,6 +27,8 @@ If no argument: list plans and designs, match by slug. No pairs → print "Run /
 
 ## Implement mode
 
+**Constraint:** You MUST implement only the selected task. Note out-of-scope discoveries in the implementation note rather than acting on them.
+
 Copy this checklist and check off items as you complete them:
 
 ```
@@ -37,6 +39,7 @@ Task Progress:
 - [ ] Sync tasks to Claude Code task list
 - [ ] Pick task and mark in_progress
 - [ ] Run /resolve-rules for applicable rules
+- [ ] List applied rules in response
 - [ ] Read relevant files
 - [ ] Run baseline tests
 - [ ] Implement against task spec
@@ -67,9 +70,9 @@ If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — cont
 
 Follow the matched rule docs when creating or modifying files that fall under their scope.
 
-### Execute
+List applied rules in your response before proceeding to read files. If no rules matched, state that explicitly.
 
-**Constraint:** Implement only the selected task. Note out-of-scope discoveries in the implementation note rather than acting on them.
+### Execute
 
 1. Read all relevant files before editing.
 2. Run relevant tests if available to establish a baseline.

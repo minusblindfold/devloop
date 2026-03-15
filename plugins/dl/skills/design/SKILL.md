@@ -36,10 +36,13 @@ Copy this checklist and check off items as you complete them:
 ```
 Task Progress:
 - [ ] Read plan: extract name, tasks, dependencies
-- [ ] Read CLAUDE.md and scan directory
+- [ ] List extracted tasks and dependencies in response
+- [ ] Read CLAUDE.md
+- [ ] Scan project directory and .claude/skills/
 - [ ] Check for .work/bootstrap.md
 - [ ] Ask clarifying questions
-- [ ] Write design doc (Overview, Architecture, Task Specs)
+- [ ] Write Overview and Architecture
+- [ ] Write Task Specs
 - [ ] Write Mermaid diagrams to .work/designs/diagrams/
 - [ ] Write design to .work/designs/
 - [ ] Gate: verify design file and .mmd files with ls
@@ -47,16 +50,17 @@ Task Progress:
 ```
 
 1. Read the plan. Extract name, tasks, and dependencies.
-2. Read `CLAUDE.md` if present. Scan the project directory.
-   2a. Check `.claude/skills/` for available skills.
-   2b. Check for `.work/bootstrap.md` — if found, read it. Reference the bootstrapped stack as established, not proposed.
-3. Ask 2–3 clarifying questions. Wait for answers.
+2. List the extracted tasks and dependencies in your response before proceeding.
+3. Read `CLAUDE.md` if present.
+4. Scan the project directory. Check `.claude/skills/` for available skills.
+5. Check for `.work/bootstrap.md` — if found, read it. Reference the bootstrapped stack as established, not proposed.
+6. Ask 2–3 clarifying questions. Wait for answers.
    - If bootstrap context was found: skip architecture-style questions (already decided). Focus on data relationships, UI flow, edge cases.
    - If no bootstrap context: ask as normal, including architecture style if unclear.
-4. Write the Overview and Architecture sections.
-5. Choose diagrams that best illuminate the plan — see [diagrams.md](diagrams.md). A feature may warrant more than one; omit diagrams for trivial tasks. Save each as a `.mmd` file in `.work/designs/diagrams/`. List them in the doc; do not embed diagram code inline.
-6. Write a spec for each plan task: Goal, Interfaces, Implementation notes, Acceptance criteria, Tests, Dependencies. Note which rules apply by title (e.g., `**Rules:** JPA Entity Rules, Liquibase Migration Rules`). This tells `/implement` which docs to apply via `/resolve-rules` explicit mode.
-7. Write the complete design to `.work/designs/YYYY-MM-DD-<slug>-design.md`.
+7. Write the Overview and Architecture sections.
+8. Choose diagrams that best illuminate the plan — see [diagrams.md](diagrams.md). A feature may warrant more than one; omit diagrams for trivial tasks. Save each as a `.mmd` file in `.work/designs/diagrams/`. List them in the doc; do not embed diagram code inline.
+9. Write a spec for each plan task: Goal, Interfaces, Implementation notes, Acceptance criteria, Tests, Dependencies. Note which rules apply by title (e.g., `**Rules:** JPA Entity Rules, Liquibase Migration Rules`). This tells `/implement` which docs to apply via `/resolve-rules` explicit mode.
+10. Write the complete design to `.work/designs/YYYY-MM-DD-<slug>-design.md`.
 
 ### Gate
 
