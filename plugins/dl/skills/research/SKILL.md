@@ -43,6 +43,7 @@ Task Progress:
 - [ ] Read CLAUDE.md
 - [ ] Scan project directory structure
 - [ ] Check for .work/bootstrap.md
+- [ ] Scan linked repos (if declared)
 - [ ] Search code for topic-relevant patterns
 - [ ] List discovered patterns in response
 - [ ] Review and synthesize findings
@@ -64,6 +65,21 @@ For each matched rule, extract:
 - First 3–5 key patterns
 
 List matched rules in your response before proceeding to the next step. If no rules matched, state that explicitly.
+
+### Linked repo scan
+
+If `/resolve-rules` output included "Linked repos", scan each declared repo. If no linked repos were declared, skip this section.
+
+For each linked repo path:
+1. Expand `~` and verify the directory exists. If not, print a warning and skip that repo.
+2. **Orientation:** Read `CLAUDE.md` (or `README.md` if no CLAUDE.md) to understand what the repo does. Scan the top-level directory structure with `ls`.
+3. **Targeted search:** Use the topic keywords from the research topic to `Grep` the linked repo for relevant code (controllers, services, API definitions, shared types, config). Limit to the top 10–15 matches to avoid flooding context.
+
+List findings in your response before proceeding:
+- **Repo:** `<path>`
+- **Description:** (from CLAUDE.md first paragraph or repo name if no CLAUDE.md)
+- **Structure:** (top-level directories)
+- **Relevant code:** (grep matches — file, line, snippet)
 
 ### Code search
 
@@ -89,6 +105,16 @@ Write to `.work/research/YYYY-MM-DD-<slug>-research.md`.
 | Rule | Source | Key Patterns |
 |---|---|---|
 | Title from H1 | file path | first 3-5 patterns |
+
+### Linked Repo Context
+
+_(omit this section if no linked repos were declared)_
+
+- **Repo:** `<path>`
+- **Description:** <what this repo does>
+- **Structure:** <top-level layout>
+- **Relevant code:**
+  - `<file>:<line>` — <snippet/description>
 
 ### Codebase Patterns
 
@@ -125,6 +151,7 @@ Task Progress:
 - [ ] Run /resolve-rules
 - [ ] Extract rule title, source, and key patterns for each match
 - [ ] List matched rules in response
+- [ ] Scan linked repos for new patterns (if declared)
 - [ ] Search code for new patterns relevant to the topic
 - [ ] List discovered patterns in response
 - [ ] Review and synthesize new findings against prior research
@@ -135,9 +162,10 @@ Task Progress:
 
 1. Read the existing research file in full.
 2. Run `/resolve-rules` as described in the create mode rule scan section. List matched rules in your response before proceeding. If no rules matched, state that explicitly.
-3. Search code for new patterns relevant to the topic. List each discovered pattern in your response using the artifact template format (Pattern, Location, Notes).
-4. Compare new findings against the existing research sections. Focus on what changed, what's new, and what prior recommendations are now resolved.
-5. Append a new `## YYYY-MM-DD — <description>` section at the end. Do not overwrite or modify prior sections.
+3. If linked repos were declared, scan them as described in the create mode "Linked repo scan" section. Include linked repo findings in the new dated section.
+4. Search code for new patterns relevant to the topic. List each discovered pattern in your response using the artifact template format (Pattern, Location, Notes).
+5. Compare new findings against the existing research sections. Focus on what changed, what's new, and what prior recommendations are now resolved.
+6. Append a new `## YYYY-MM-DD — <description>` section at the end. Do not overwrite or modify prior sections.
 
 ### Gate
 

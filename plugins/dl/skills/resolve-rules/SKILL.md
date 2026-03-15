@@ -19,6 +19,7 @@ Task Progress:
 - [ ] Merge always-scoped rules
 - [ ] Apply scope filter if present
 - [ ] Print matched rules or "No rules apply"
+- [ ] Print linked repos or skip if none
 ```
 
 ## Input
@@ -59,7 +60,7 @@ Walk layers in order (highest precedence first). In flat mode, there is only one
 1. In each layer directory, find all `.md` files (exclude `rules.md` — that is documentation, not a rule).
 2. Read YAML frontmatter (between `---` delimiters) from each file.
 3. Build a resolution map keyed by filename:
-   - First occurrence of a filename → add it (path, keywords, title).
+   - First occurrence of a filename → add it (path, keywords, title, repos).
    - Subsequent occurrence → check the new doc's `extends` frontmatter:
      - `extends: true` → mark as extension. Read both: higher-precedence doc first, then this one appends.
      - `extends: false` or omitted → skip. Higher-precedence version already won.
@@ -99,3 +100,11 @@ If no `scope` modifier is present, skip this filter — return all mode-matched 
 ## Output
 
 Print: "Applying rules: \<list of matched titles\> (from \<layer path\>)". If no rules match, print: "No rules apply to this task."
+
+### Linked repos
+
+After printing matched rules, scan all matched rules for `repos` frontmatter fields. Collect all paths and deduplicate — if the same path appears in multiple rules, list it once and note all source rules.
+
+If any repos are found, print: "Linked repos: `<path>` (from `<rule title>`), `<path>` (from `<rule title>`)"
+
+If no repos are declared in any matched rule, skip silently — do not print anything about linked repos.
