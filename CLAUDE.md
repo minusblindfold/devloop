@@ -17,3 +17,19 @@ Bump rules:
 ## Git
 
 Always work on a feature branch off `main`. Never commit directly to `main`.
+
+## Doc sync
+
+When changing skills or plugin config, update documentation to match.
+
+### Content mapping
+
+- `plugins/dl/skills/*/SKILL.md` → Skills table in `README.md`
+- `plugins/dl/rules/rules.md` → Rules section in `README.md`
+- `plugins/dl/.claude-plugin/plugin.json` → version, description in `README.md`
+
+### Structural sync
+
+- New skill → add to skills table in `README.md`, update plugin.json keywords if relevant
+- Skill renamed or removed → update `README.md` skills table
+- Version bump → update in `plugin.json` and `marketplace.json`
