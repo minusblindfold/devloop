@@ -30,16 +30,22 @@ Parse `$ARGUMENTS`:
 
 ## Create mode
 
+**Constraint:** You MUST NOT modify project files. This skill produces context, not code.
+
 Copy this checklist and check off items as you complete them:
 
 ```
 Task Progress:
 - [ ] Determine mode (create / re-entry)
-- [ ] Run rule scan via /resolve-rules
+- [ ] Run /resolve-rules
+- [ ] Extract rule title, source, and key patterns for each match
+- [ ] List matched rules in response
 - [ ] Read CLAUDE.md
 - [ ] Scan project directory structure
 - [ ] Check for .work/bootstrap.md
-- [ ] Search codebase for topic-relevant patterns
+- [ ] Search code for topic-relevant patterns
+- [ ] List discovered patterns in response
+- [ ] Review and synthesize findings
 - [ ] Write artifact to .work/research/
 - [ ] Gate: verify artifact with ls
 - [ ] Wrap up: summarize and suggest next steps
@@ -57,15 +63,17 @@ For each matched rule, extract:
 - Source layer path
 - First 3–5 key patterns
 
-### Codebase scan
+List matched rules in your response before proceeding to the next step. If no rules matched, state that explicitly.
 
-**Constraint:** Do not modify project files. This skill produces context, not code.
+### Code search
 
-1. Read `CLAUDE.md` if present.
-2. Scan project directory structure (top-level + key subdirectories).
-3. Check for `.work/bootstrap.md` — read if found.
-4. Search code for patterns relevant to the topic. Look for existing implementations, inconsistencies, multiple approaches, tech choices.
-5. Note anything that might affect planning or design.
+Search code for patterns relevant to the topic. Look for existing implementations, inconsistencies, multiple approaches, tech choices. Note anything that might affect planning or design.
+
+List each discovered pattern in your response before proceeding. Use the artifact template format (Pattern, Location, Notes) so findings transfer directly to the artifact.
+
+### Synthesis
+
+Review your matched rules and discovered patterns. Identify gaps between what the rules prescribe and what the codebase does. These gaps become the Gaps & Recommendations in the artifact.
 
 ### Output
 
@@ -107,24 +115,29 @@ Run `ls` on the saved file path. If the file does not exist, write it now. Do no
 
 ## Re-entry mode
 
+**Constraint:** You MUST NOT modify project files. This skill produces context, not code.
+
 Copy this checklist and check off items as you complete them:
 
 ```
 Task Progress:
 - [ ] Read existing research file in full
-- [ ] Run rule scan via /resolve-rules
-- [ ] Scan codebase for new patterns
+- [ ] Run /resolve-rules
+- [ ] Extract rule title, source, and key patterns for each match
+- [ ] List matched rules in response
+- [ ] Search code for new patterns relevant to the topic
+- [ ] List discovered patterns in response
+- [ ] Review and synthesize new findings against prior research
 - [ ] Append new dated section to artifact
 - [ ] Gate: verify artifact with ls
 - [ ] Wrap up: summarize and suggest next steps
 ```
 
-**Constraint:** Do not modify project files. This skill produces context, not code.
-
 1. Read the existing research file in full.
-2. Run `/resolve-rules` as described in the create mode rule scan section.
-3. Scan the codebase for new patterns relevant to the topic.
-4. Append a new `## YYYY-MM-DD — <description>` section at the end. Do not overwrite or modify prior sections.
+2. Run `/resolve-rules` as described in the create mode rule scan section. List matched rules in your response before proceeding. If no rules matched, state that explicitly.
+3. Search code for new patterns relevant to the topic. List each discovered pattern in your response using the artifact template format (Pattern, Location, Notes).
+4. Compare new findings against the existing research sections. Focus on what changed, what's new, and what prior recommendations are now resolved.
+5. Append a new `## YYYY-MM-DD — <description>` section at the end. Do not overwrite or modify prior sections.
 
 ### Gate
 
