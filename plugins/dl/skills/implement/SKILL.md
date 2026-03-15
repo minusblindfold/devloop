@@ -9,21 +9,21 @@ Implement one task from a plan+design pair.
 
 ## Artifact — required output
 
-This skill produces an implementation note in `<work.dir>/implementations/`. Every execution — even if the task is incomplete — must end with a saved artifact on disk. The wrap-up phase below is gated on this: do not summarise changes, suggest commits, or recommend next steps until the implementation note has been written and verified with `ls`.
+This skill produces an implementation note in `.work/implementations/`. Every execution — even if the task is incomplete — must end with a saved artifact on disk. The wrap-up phase below is gated on this: do not summarise changes, suggest commits, or recommend next steps until the implementation note has been written and verified with `ls`.
 
 ## Config
 
-Read `devenv.json` from `${CLAUDE_PLUGIN_ROOT}/devenv.json` (if running as a plugin) or `~/.claude/devenv.json` (fallback). Key: `work.dir` (default `.work`).
+All artifacts are stored under `.work/` in the current project directory.
 
 ## Find the feature
 
-If $ARGUMENTS: treat as `<slug>` or `<slug> <task-N>`. Find plan in `<work.dir>/plans/`, then matching design in `<work.dir>/designs/`. Missing design → "No design found for '<slug>'. Run /design first." and stop.
+If $ARGUMENTS: treat as `<slug>` or `<slug> <task-N>`. Find plan in `.work/plans/`, then matching design in `.work/designs/`. Missing design → "No design found for '<slug>'. Run /design first." and stop.
 If no argument: list plans and designs, match by slug. No pairs → "Run /plan then /design first." and stop. One pair → show it and ask to confirm or describe a new feature. Many → numbered list, ask to pick.
 
 ## Load and sync
 
 1. Read both files in full.
-2. Read any `.mmd` diagrams referenced in the design from `<work.dir>/designs/diagrams/`. Use them to understand the proposed architecture and flow before implementing.
+2. Read any `.mmd` diagrams referenced in the design from `.work/designs/diagrams/`. Use them to understand the proposed architecture and flow before implementing.
 3. Check `.claude/skills/` for available skills. Print what's found.
 4. Sync plan tasks to Claude Code task list: call `TaskList`, then `TaskCreate` for any task not already present.
 5. Print task list with completion status.

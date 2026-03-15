@@ -74,7 +74,7 @@ When you refine a plan or design (`/dl:plan refine`, `/dl:design refine`), the p
 └── 2026-03-11-14-30-00-user-auth.md    # timestamped backup
 ```
 
-Backups are named `YYYY-MM-DD-HH-MM-SS-<original-filename>`. A maximum of 5 backups are kept per artifact (configurable via `devenv.json`). Oldest backups are removed when the limit is reached.
+Backups are named `YYYY-MM-DD-HH-MM-SS-<original-filename>`. A maximum of 5 backups are kept per artifact. Oldest backups are removed when the limit is reached.
 
 ## Gitignore
 
