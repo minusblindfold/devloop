@@ -5,7 +5,21 @@ user-invocable: false
 allowed-tools: Read, Glob, Grep
 ---
 
-Discover and read rule docs from the base rules directory and any configured layers.
+Execute each section below in order. Do not skip sections.
+
+1. Copy the **Task Progress** checklist below into your response.
+2. Work through each item. Check it off as you complete it.
+
+```
+Task Progress:
+- [ ] Parse mode and scope from $ARGUMENTS
+- [ ] Build layer list (user → project → shared → plugin)
+- [ ] Walk layers, build resolution map
+- [ ] Apply mode matching (all / keyword / explicit)
+- [ ] Merge always-scoped rules
+- [ ] Apply scope filter if present
+- [ ] Print matched rules or "No rules apply"
+```
 
 ## Input
 
@@ -20,7 +34,7 @@ If $ARGUMENTS is empty, default to `mode:all`.
 
 ## Resolution
 
-### Determine mode
+### Build the layer list
 
 Build the layer list using four tiers (highest precedence first):
 
@@ -31,10 +45,10 @@ Build the layer list using four tiers (highest precedence first):
 | 3 | Shared/org | `~/devloop/rules/` | Rule packs managed by devloop CLI |
 | 4 (lowest) | Plugin-bundled | `${CLAUDE_PLUGIN_ROOT}/rules/` | Defaults shipped with devloop |
 
-1. Check if `~/.claude/rules/` exists (user rules). If so, add it as the highest-precedence layer.
-2. Check if `{cwd}/devloop/rules/` exists (project rules). If so, add it as the next layer. Skip silently if it doesn't exist.
-3. Check if `~/devloop/rules/` exists (shared/org rule packs). If so, scan this directory and all its subdirectories — each subdirectory is an enabled pack. Add all discovered rule directories as layers. Skip silently if it doesn't exist.
-4. Check if `${CLAUDE_PLUGIN_ROOT}/rules/` exists (plugin-bundled rules). If so, add it as the lowest-precedence layer.
+1. Check if `~/.claude/rules/` exists. If so, add it as the highest-precedence layer.
+2. Check if `{cwd}/devloop/rules/` exists. If so, add it as the next layer. Skip silently if missing.
+3. Check if `~/devloop/rules/` exists. If so, scan this directory and all subdirectories — each subdirectory is an enabled pack. Add all discovered rule directories as layers. Skip silently if missing.
+4. Check if `${CLAUDE_PLUGIN_ROOT}/rules/` exists. If so, add it as the lowest-precedence layer.
 
 If only one source exists, use flat mode (single layer). If multiple sources exist, use layered mode with precedence as described.
 
@@ -42,7 +56,7 @@ If only one source exists, use flat mode (single layer). If multiple sources exi
 
 Walk layers in order (highest precedence first). In flat mode, there is only one layer.
 
-1. In each layer directory, find all `.md` files (excluding `rules.md`, which is documentation, not a rule).
+1. In each layer directory, find all `.md` files (exclude `rules.md` — that is documentation, not a rule).
 2. Read YAML frontmatter (between `---` delimiters) from each file.
 3. Build a resolution map keyed by filename:
    - First occurrence of a filename → add it (path, keywords, title).
@@ -78,9 +92,9 @@ If a `scope:<value>` modifier is present in $ARGUMENTS, apply it as a post-filte
 - `scope` equals `always`, OR
 - no `scope` field is present (defaults to `all`)
 
-Rules with `scope: feature` are excluded when `scope:bootstrap` is requested, and vice versa. Rules with `scope: always` are never excluded.
+Exclude rules with `scope: feature` when `scope:bootstrap` is requested, and vice versa. Do not exclude rules with `scope: always`.
 
-If no `scope` modifier is present, skip this filter — return all mode-matched rules regardless of scope. This preserves backward compatibility.
+If no `scope` modifier is present, skip this filter — return all mode-matched rules regardless of scope.
 
 ## Output
 
