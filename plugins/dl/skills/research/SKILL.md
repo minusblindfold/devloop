@@ -9,19 +9,19 @@ Scan rules and codebase to produce structured context for the plan/design/implem
 
 ## Artifact — required output
 
-This skill produces a file in `<work.dir>/research/`. Every execution — create, re-entry, or health-check — must end with a saved artifact on disk. The wrap-up phase below is gated on this: do not summarise findings or suggest next steps until the artifact file has been written and verified with `ls`.
+This skill produces a file in `.work/research/`. Every execution — create, re-entry, or health-check — must end with a saved artifact on disk. The wrap-up phase below is gated on this: do not summarise findings or suggest next steps until the artifact file has been written and verified with `ls`.
 
 ## Config
 
-Read `devenv.json` from `${CLAUDE_PLUGIN_ROOT}/devenv.json` (if running as a plugin) or `~/.claude/devenv.json` (fallback). Keys: `work.dir` (default `.work`).
+All artifacts are stored under `.work/` in the current project directory.
 
 ## Mode
 
 Parse `$ARGUMENTS`:
 
-- Matches an existing file in `<work.dir>/research/` by slug → **re-entry** (append dated section).
+- Matches an existing file in `.work/research/` by slug → **re-entry** (append dated section).
 - Set but no match → **create** new research file.
-- Empty → **health-check** mode. Before starting, confirm with the user: "This will run a full project health check (all rules + full codebase scan). This can take a while. Continue, or would you like to research a specific topic instead?" If they provide a topic, switch to create mode. If they confirm, proceed — writes to `<work.dir>/research/health-check.md`.
+- Empty → **health-check** mode. Before starting, confirm with the user: "This will run a full project health check (all rules + full codebase scan). This can take a while. Continue, or would you like to research a specific topic instead?" If they provide a topic, switch to create mode. If they confirm, proceed — writes to `.work/research/health-check.md`.
 
 ## Rule scan
 
@@ -40,13 +40,13 @@ For each matched rule, extract:
 
 1. Read `CLAUDE.md` if present.
 2. Scan project directory structure (top-level + key subdirectories).
-3. Check for `<work.dir>/bootstrap.md` — read if found.
+3. Check for `.work/bootstrap.md` — read if found.
 4. Search code for patterns relevant to the topic — look for existing implementations, inconsistencies, multiple approaches, tech choices.
 5. Note anything that might affect planning or design.
 
 ## Output
 
-Write to `<work.dir>/research/YYYY-MM-DD-<slug>-research.md` (or `health-check.md` for health-check mode).
+Write to `.work/research/YYYY-MM-DD-<slug>-research.md` (or `health-check.md` for health-check mode).
 
 **Gate:** run `ls` on the saved file path. If the file does not exist, write it now. Do not proceed to the wrap-up phase until the file is confirmed on disk.
 

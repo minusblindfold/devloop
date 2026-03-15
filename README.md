@@ -102,17 +102,6 @@ Artifacts follow the naming convention `YYYY-MM-DD-<slug>-<type>.md` (e.g., `202
 
 Add `.work/` to your `.gitignore`.
 
-## Config
-
-`devenv.json` in the plugin root controls skill behavior:
-
-```json
-{
-  "backups": { "maxPerArtifact": 5 },
-  "work": { "dir": ".work" }
-}
-```
-
 ## Terminal companion tools
 
 For terminal-based artifact browsing (`view-plan`, `view-design`, `view-research`, `view-implement`, `open-diagrams`, `claude-context`), see [devenv](https://github.com/minusblindfold/devenv). These are optional CLI tools that complement the plugin.

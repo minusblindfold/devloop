@@ -9,7 +9,7 @@ Scaffold a new project driven entirely by resolved rule docs.
 
 ## Config
 
-Read `devenv.json` from `${CLAUDE_PLUGIN_ROOT}/devenv.json` (if running as a plugin) or `~/.claude/devenv.json` (fallback). Key: `work.dir` (default `.work`).
+All artifacts are stored under `.work/` in the current project directory.
 
 ## Resolve rules
 
@@ -59,7 +59,7 @@ Generate a `CLAUDE.md` tailored to the project. Derive everything from what was 
 
 ## Write bootstrap context marker
 
-Create `<work.dir>/bootstrap.md` in the project directory. Assemble it dynamically from what was resolved and generated:
+Create `.work/bootstrap.md` in the project directory. Assemble it dynamically from what was resolved and generated:
 
 ```markdown
 # Bootstrap Context
@@ -96,6 +96,6 @@ This marker is read by `/plan` and `/design` to skip redundant questions about e
 - Never generate features beyond the minimal scaffold — that's what `/plan` → `/design` → `/implement` is for.
 - Follow rule docs exactly. If a pattern isn't covered by a rule doc, keep it simple and consistent with the rules that do exist.
 - No hardcoded version numbers in generated code. Use latest stable versions at generation time.
-- The bootstrap context marker goes in the project's `<work.dir>/`, not in devenv.
+- The bootstrap context marker goes in the project's `.work/`, not in devenv.
 - Never hardcode technology choices in this skill. Every file generated must trace back to a resolved rule.
 - If no rules are resolved, do not guess a stack. Stop and tell the user.

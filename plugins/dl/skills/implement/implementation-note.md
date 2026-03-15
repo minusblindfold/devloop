@@ -1,6 +1,6 @@
 # Implementation note format
 
-Saved to `<work.dir>/implementations/YYYY-MM-DD-<slug>-task-N.md` after each task, even if incomplete.
+Saved to `.work/implementations/YYYY-MM-DD-<slug>-task-N.md` after each task, even if incomplete.
 
 ```markdown
 # Implementation note: <task subject>
