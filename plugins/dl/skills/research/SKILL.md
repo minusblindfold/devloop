@@ -42,7 +42,6 @@ Task Progress:
 - [ ] List matched rules in response
 - [ ] Read CLAUDE.md
 - [ ] Scan project directory structure
-- [ ] Check for .work/bootstrap.md
 - [ ] Scan linked repos (if declared)
 - [ ] Search code for topic-relevant patterns
 - [ ] List discovered patterns in response
