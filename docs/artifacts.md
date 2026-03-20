@@ -6,6 +6,7 @@ Skills communicate through files in `.work/`. Each phase reads the previous phas
 
 ```
 .work/
+├── brainstorms/        # Feature brainstorm decision logs
 ├── research/           # Context scans
 ├── plans/              # Ordered task lists
 ├── designs/            # Architecture docs and specs
@@ -19,6 +20,7 @@ Skills communicate through files in `.work/`. Each phase reads the previous phas
 Artifacts follow the pattern `YYYY-MM-DD-<slug>-<type>.md`:
 
 ```
+2026-03-11-user-auth-brainstorm.md
 2026-03-11-user-auth-research.md
 2026-03-11-user-auth.md              (plan — no type suffix)
 2026-03-11-user-auth-design.md
@@ -27,23 +29,26 @@ Artifacts follow the pattern `YYYY-MM-DD-<slug>-<type>.md`:
 
 - **Date prefix** — keeps artifacts sortable by when they were created
 - **Slug** — a short identifier for the feature, consistent across all phases
-- **Type suffix** — identifies the phase (`research`, `design`, `task-N`); plans omit the suffix
+- **Type suffix** — identifies the phase (`brainstorm`, `research`, `design`, `task-N`); plans omit the suffix
 
 Slugs are how skills find related artifacts. When you run `/dl:design`, it matches the slug from your plan to locate the right file.
 
 ## How artifacts chain
 
 ```
-/dl:research → .work/research/<slug>-research.md
-                    ↓ (optional — feeds context)
-/dl:plan     → .work/plans/<slug>.md
-                    ↓ (required — feeds task list)
-/dl:design   → .work/designs/<slug>-design.md + diagrams/<slug>-*.mmd
-                    ↓ (required — feeds specs)
-/dl:implement → .work/implementations/<slug>-task-N.md + code changes
+/dl:brainstorm → .work/brainstorms/<slug>-brainstorm.md
+                      ↓ (optional — feeds context)
+/dl:research   → .work/research/<slug>-research.md
+                      ↓ (optional — feeds context)
+/dl:plan       → .work/plans/<slug>.md
+                      ↓ (required — feeds task list)
+/dl:design     → .work/designs/<slug>-design.md + diagrams/<slug>-*.mmd
+                      ↓ (required — feeds specs)
+/dl:implement  → .work/implementations/<slug>-task-N.md + code changes
 ```
 
-- `/dl:plan` reads research artifacts if they exist for the feature. The gaps and recommendations inform the clarifying questions and task ordering.
+- If brainstorm artifacts exist for the topic, `/dl:research` reads them to avoid repeating codebase scans already captured in the brainstorm.
+- `/dl:plan` reads brainstorm and research artifacts if they exist for the feature. Decisions from brainstorming and gaps from research inform the clarifying questions and task ordering.
 - `/dl:design` requires a plan. It reads the task list and produces a spec for each task, including goal, interfaces, acceptance criteria, and applicable rules.
 - `/dl:implement` requires a plan and design. It loads both, displays task completion status, and implements one task at a time against the spec.
 

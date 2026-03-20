@@ -1,16 +1,17 @@
 # devloop
 
-A Claude Code plugin that structures AI-assisted development into phases. Without structure, coding agents generate inconsistent patterns and one-shot attempts that miss edge cases. devloop fixes this by breaking work into research, planning, design, and implementation — each phase produces an artifact the next one reads. No step touches code until `/dl:implement`.
+A Claude Code plugin that structures AI-assisted development into phases. Without structure, coding agents generate inconsistent patterns and one-shot attempts that miss edge cases. devloop fixes this by breaking work into brainstorming, research, planning, design, and implementation — each phase produces an artifact the next one reads. No step touches code until `/dl:implement`.
 
 ## The loop
 
 ```
-    /dl:research  →  /dl:plan  →  /dl:design  →  /dl:implement
-         ↑               ↑             ↑               │
-         └───────────────┴─────────────┴───────────────┘
-              re-enter research when discoveries surface
+    /dl:brainstorm  →  /dl:research  →  /dl:plan  →  /dl:design  →  /dl:implement
+                            ↑               ↑             ↑               │
+                            └───────────────┴─────────────┴───────────────┘
+                                 re-enter research when discoveries surface
 ```
 
+- **brainstorm** — iterative questioning to refine a feature idea, producing a decision log
 - **research** — scan rules and codebase for context, surface gaps and recommendations
 - **plan** — ask clarifying questions, produce an ordered task list
 - **design** — generate architecture, Mermaid diagrams, and a detailed spec for each task
@@ -40,6 +41,7 @@ Use `/reload-plugins` after making changes during development.
 
 | Skill | What it does |
 |-------|-------------|
+| `/dl:brainstorm` | Iterative questioning to refine a feature idea. Produces a decision log for research and planning. |
 | `/dl:research` | Scan rules and codebase for context. Re-enter at any stage to capture new findings. |
 | `/dl:plan` | Ask clarifying questions, create an ordered task list. Detects greenfield projects. |
 | `/dl:design` | Generate architecture, Mermaid diagrams, and per-task specs with acceptance criteria. |
@@ -102,6 +104,7 @@ Skills read and write artifacts to `.work/` in the current project directory:
 
 ```
 .work/
+├── brainstorms/     # Feature brainstorm decision logs
 ├── research/        # Research artifacts
 ├── plans/           # Task lists
 ├── designs/         # Design docs + diagrams/
@@ -114,7 +117,7 @@ Add `.work/` to your `.gitignore`.
 
 ## Terminal companion tools
 
-For terminal-based artifact browsing (`view-plan`, `view-design`, `view-research`, `view-implement`, `open-diagrams`, `claude-context`), see [devenv](https://github.com/minusblindfold/devenv). These are optional CLI tools that complement the plugin.
+For terminal-based artifact browsing (`view-brainstorm`, `view-plan`, `view-design`, `view-research`, `view-implement`, `open-diagrams`, `claude-context`), see [devenv](https://github.com/minusblindfold/devenv). These are optional CLI tools that complement the plugin.
 
 ## License
 
