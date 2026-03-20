@@ -1,11 +1,11 @@
 # devloop
 
-A Claude Code plugin that structures AI-assisted development into phases. Without structure, coding agents generate inconsistent patterns and one-shot attempts that miss edge cases. devloop fixes this by breaking work into brainstorming, research, planning, design, and implementation — each phase produces an artifact the next one reads. No step touches code until `/dl:implement`.
+A Claude Code plugin that structures AI-assisted development into phases. Without structure, coding agents generate inconsistent patterns and one-shot attempts that miss edge cases. devloop fixes this by breaking work into brainstorming, research, planning, design, implementation, and review — each phase produces an artifact the next one reads. No step touches code until `/dl:implement`.
 
 ## The loop
 
 ```
-    /dl:brainstorm  →  /dl:research  →  /dl:plan  →  /dl:design  →  /dl:implement
+    /dl:brainstorm  →  /dl:research  →  /dl:plan  →  /dl:design  →  /dl:implement  →  /dl:review
                             ↑               ↑             ↑               │
                             └───────────────┴─────────────┴───────────────┘
                                  re-enter research when discoveries surface
@@ -16,6 +16,7 @@ A Claude Code plugin that structures AI-assisted development into phases. Withou
 - **plan** — ask clarifying questions, produce an ordered task list
 - **design** — generate architecture, Mermaid diagrams, and a detailed spec for each task
 - **implement** — implement one task at a time against the spec, track completion
+- **review** — load rules and design context, review code for rule violations and security issues
 
 `/dl:bootstrap` scaffolds a new project from rule docs. `/dl:research` can re-enter at any stage — run it before planning, after design, or when discoveries surface during implementation.
 
@@ -46,6 +47,7 @@ Use `/reload-plugins` after making changes during development.
 | `/dl:plan` | Ask clarifying questions, create an ordered task list. Detects greenfield projects. |
 | `/dl:design` | Generate architecture, Mermaid diagrams, and per-task specs with acceptance criteria. |
 | `/dl:implement` | Implement one task at a time against the spec. Tracks progress across sessions. |
+| `/dl:review` | Load rules and design context, review code for rule violations and security issues. Works standalone or after `/dl:implement`. |
 | `/dl:bootstrap` | Scaffold a new project entirely from rule docs. |
 
 `/dl:plan` and `/dl:design` support refine mode — invoke with no args when existing artifacts are found.
@@ -108,7 +110,8 @@ Skills read and write artifacts to `.work/` in the current project directory:
 ├── research/        # Research artifacts
 ├── plans/           # Task lists
 ├── designs/         # Design docs + diagrams/
-└── implementations/ # Implementation notes
+├── implementations/ # Implementation notes
+└── reviews/         # Code review findings
 ```
 
 Artifacts follow the naming convention `YYYY-MM-DD-<slug>-<type>.md` (e.g., `2026-03-11-auth-design.md`). This keeps them sortable and identifiable across features. See [docs/artifacts.md](docs/artifacts.md) for details on how artifacts chain together.
