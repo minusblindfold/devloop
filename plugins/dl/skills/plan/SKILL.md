@@ -37,6 +37,7 @@ Task Progress:
 - [ ] Read CLAUDE.md
 - [ ] Scan project directory and .claude/skills/
 - [ ] Check for .work/bootstrap.md
+- [ ] Check .work/brainstorms/ for matching artifacts
 - [ ] Check .work/research/ for matching artifacts
 - [ ] Scan linked repos (if declared)
 - [ ] Check for greenfield project
@@ -51,15 +52,17 @@ Task Progress:
 1. Read `CLAUDE.md` if present.
 2. Scan project directory structure (top-level + key subdirectories). Check `.claude/skills/` for available skills.
 3. Check for `.work/bootstrap.md` — if found, read it. Note tech stack, roles, and scaffolded entities as established context.
-4. Check `.work/research/` for a file matching the feature slug (`*<slug>*-research.md`). If found, read it. Use `### Gaps & Recommendations` to inform clarifying questions and task decomposition.
-5. **Linked repo context:** If the research artifact from step 4 contains a `### Linked Repo Context` section, note it — print "Linked repo context found in research artifact." and include it in the gathered context listing. If no research artifact was found, run `/resolve-rules mode:keyword <feature description>` to check for linked repos. If linked repos are declared, do an orientation-only scan of each (expand `~`, verify directory exists, read `CLAUDE.md` or `README.md`, scan top-level directory with `ls`). Skip repos that don't exist locally with a warning. Do not do targeted keyword code search — that's research's job.
-6. **Greenfield detection:** if no `CLAUDE.md`, no `.work/bootstrap.md`, and directory is empty or near-empty → run `/resolve-rules mode:all scope:bootstrap` to check for a stack rule. If stack rule found, include "Scaffold project following rules" as task 1 in the plan. If no stack rule exists, proceed normally. If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
-7. List what you found in your response before asking questions: bootstrap context (if any), research artifacts (if any), linked repo context (if any), greenfield status, and available skills.
-8. Ask 3–5 clarifying questions. Wait for answers.
+4. Check `.work/brainstorms/` for a file matching the feature slug (`*<slug>*-brainstorm.md`). If found, read it. Use `## Decisions` and `## Constraints Discovered` to inform clarifying questions — skip questions already answered in the brainstorm.
+5. Check `.work/research/` for a file matching the feature slug (`*<slug>*-research.md`). If found, read it. Use `### Gaps & Recommendations` to inform clarifying questions and task decomposition.
+6. **Linked repo context:** If the research artifact from step 5 contains a `### Linked Repo Context` section, note it — print "Linked repo context found in research artifact." and include it in the gathered context listing. If no research artifact was found, run `/resolve-rules mode:keyword <feature description>` to check for linked repos. If linked repos are declared, do an orientation-only scan of each (expand `~`, verify directory exists, read `CLAUDE.md` or `README.md`, scan top-level directory with `ls`). Skip repos that don't exist locally with a warning. Do not do targeted keyword code search — that's research's job.
+7. **Greenfield detection:** if no `CLAUDE.md`, no `.work/bootstrap.md`, and directory is empty or near-empty → run `/resolve-rules mode:all scope:bootstrap` to check for a stack rule. If stack rule found, include "Scaffold project following rules" as task 1 in the plan. If no stack rule exists, proceed normally. If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
+8. List what you found in your response before asking questions: bootstrap context (if any), brainstorm artifacts (if any), research artifacts (if any), linked repo context (if any), greenfield status, and available skills.
+9. Ask 3–5 clarifying questions. Wait for answers.
+   - If brainstorm context was found: skip questions already decided in the brainstorm. Focus on implementation-specific questions not covered by the brainstorm.
    - If bootstrap context was found: skip questions about tech stack, database, and auth approach (already decided). Focus on domain entities, business logic, scope boundaries, and constraints.
    - If no bootstrap context: ask as normal, including stack questions if the project's tech isn't clear from CLAUDE.md.
-9. Create tasks with `TaskCreate`. Make tasks small. Order by dependency.
-10. Write the plan to `.work/plans/YYYY-MM-DD-<slug>.md`.
+10. Create tasks with `TaskCreate`. Make tasks small. Order by dependency.
+11. Write the plan to `.work/plans/YYYY-MM-DD-<slug>.md`.
 
 ### Gate
 
@@ -75,16 +78,16 @@ Copy this checklist and check off items as you complete them:
 
 ```
 Task Progress:
-- [ ] Check .work/research/ for new artifacts
-- [ ] List new research findings in response
+- [ ] Check .work/brainstorms/ and .work/research/ for new artifacts
+- [ ] List new findings in response
 - [ ] Show current plan
 - [ ] Ask what to change — iterate until confirmed
 - [ ] Write updated plan file
 - [ ] Gate: verify plan file with ls
 ```
 
-1. Check `.work/research/` for matching research artifacts. If found, note relevant findings.
-2. List any new research findings in your response before showing the plan.
+1. Check `.work/brainstorms/` and `.work/research/` for matching artifacts. If found, note relevant findings.
+2. List any new findings in your response before showing the plan.
 3. Show the current plan.
 4. Ask "What would you like to change?" Iterate until confirmed.
 5. Write the updated file once.

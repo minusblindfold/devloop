@@ -7,13 +7,30 @@ Each step produces an artifact that the next step reads. No step touches code un
 ## The loop
 
 ```
-    /dl:research  →  /dl:plan  →  /dl:design  →  /dl:implement
-         ↑               ↑             ↑               │
-         └───────────────┴─────────────┴───────────────┘
-              re-enter research when discoveries surface
+    /dl:brainstorm  →  /dl:research  →  /dl:plan  →  /dl:design  →  /dl:implement
+                            ↑               ↑             ↑               │
+                            └───────────────┴─────────────┴───────────────┘
+                                 re-enter research when discoveries surface
 ```
 
 During any phase, run `/dl:research` to feed discoveries back into plans and designs.
+
+## /dl:brainstorm
+
+```
+/dl:brainstorm "topic"
+```
+
+Iterative questioning session that probes a feature idea. Claude resolves rules, scans the codebase, and asks rounds of questions — each with a recommended answer you can accept, reject, or refine. The conversation continues until you signal you're done or the decision space converges.
+
+The output is a decision log (not a transcript) saved to `.work/brainstorms/`. Run `/dl:research` afterward to do a deep codebase scan informed by your decisions.
+
+Brainstorm is optional — skip it if you already know what you want to build. After brainstorming, your context may be full of conversation. Use `/rewind` to reset, then run `/dl:research` — the brainstorm artifact carries your decisions forward.
+
+```
+/dl:brainstorm                  # ask what to brainstorm
+/dl:brainstorm <slug>           # reopen an existing brainstorm
+```
 
 ## /dl:research
 
@@ -35,7 +52,7 @@ Research artifacts are saved to `.work/research/`.
 
 Claude asks clarifying questions (scope, constraints, entities), then produces a task list ordered by dependency. The plan is saved to `.work/plans/`.
 
-If research artifacts exist for the feature, `/dl:plan` reads them automatically — the gaps and recommendations inform the questions and tasks. In a greenfield project (no existing structure), `/dl:plan` detects this and suggests scaffolding as the first task.
+If brainstorm or research artifacts exist for the feature, `/dl:plan` reads them automatically — decisions from brainstorming and gaps from research inform the questions and tasks. In a greenfield project (no existing structure), `/dl:plan` detects this and suggests scaffolding as the first task.
 
 Push back. Reorder tasks, split or merge them, add constraints. Claude won't touch code.
 
@@ -95,7 +112,7 @@ If you've corrected Claude multiple times on the same issue, the context can bec
 
 - **Start small.** Don't plan 15 tasks. Start with 3-5. You can always `/dl:plan refine` to add more.
 - **Let Claude interview you.** Give a short description and let Claude ask the clarifying questions. They often surface constraints you hadn't considered.
-- **Review artifacts, not just code.** Check `.work/plans/`, `.work/designs/`, and `.work/implementations/` between sessions. The artifacts capture decisions and rationale that git commits don't.
+- **Review artifacts, not just code.** Check `.work/brainstorms/`, `.work/plans/`, `.work/designs/`, and `.work/implementations/` between sessions. The artifacts capture decisions and rationale that git commits don't.
 - **One task at a time.** `/dl:implement` works on a single task per invocation. This keeps context focused and changes reviewable.
 - **Commit after each task.** Small, well-described commits make review and rollback easy.
 - **Use /dl:research as a re-entry point.** Discovered something unexpected? Run `/dl:research` to capture it, then refine the plan or design. The workflow is a loop, not a line.
