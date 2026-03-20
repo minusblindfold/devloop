@@ -64,13 +64,13 @@ If $ARGUMENTS includes a task number, use it. Otherwise ask. Warn if dependencie
 
 ### Apply rules
 
-If the design's task spec includes a `**Rules:**` line, run `/resolve-rules mode:explicit <titles>`. Otherwise, run `/resolve-rules mode:keyword <task description terms>`.
+If the design's task spec includes a `**Rules:**` line, run `/resolve-rules mode:explicit <titles>` as a subtask (invoke it, then return here and continue). Otherwise, run `/resolve-rules mode:keyword <task description terms>` as a subtask.
 
 If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
 
-Follow the matched rule docs when creating or modifying files that fall under their scope.
+After resolve-rules completes, follow the matched rule docs when creating or modifying files that fall under their scope.
 
-List applied rules in your response before proceeding to read files. If no rules matched, state that explicitly.
+List applied rules in your response, then continue with the next step below. If no rules matched, state that explicitly.
 
 ### Execute
 

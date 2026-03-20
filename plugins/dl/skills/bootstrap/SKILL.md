@@ -40,7 +40,7 @@ Task Progress:
 
 ### Resolve rules
 
-Run `/resolve-rules mode:all scope:bootstrap` to resolve every rule that applies at bootstrap time. Read all resolved docs.
+Run `/resolve-rules mode:all scope:bootstrap` as a subtask (invoke it, then return here and continue) to resolve every rule that applies at bootstrap time. Read all resolved docs.
 
 If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — cannot bootstrap without rules." Then stop.
 

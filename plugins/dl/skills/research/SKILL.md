@@ -53,17 +53,17 @@ Task Progress:
 
 ### Rule scan
 
-Run `/resolve-rules`:
+Run `/resolve-rules` as a subtask (invoke it, then return here and continue):
 - Topic provided → `mode:keyword <topic>`.
 
 If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
 
-For each matched rule, extract:
+After resolve-rules completes, extract from each matched rule:
 - Title (H1 heading)
 - Source layer path
 - First 3–5 key patterns
 
-List matched rules in your response before proceeding to the next step. If no rules matched, state that explicitly.
+List matched rules in your response, then continue with the next step below. If no rules matched, state that explicitly.
 
 ### Linked repo scan
 
@@ -160,7 +160,7 @@ Task Progress:
 ```
 
 1. Read the existing research file in full.
-2. Run `/resolve-rules` as described in the create mode rule scan section. List matched rules in your response before proceeding. If no rules matched, state that explicitly.
+2. Run `/resolve-rules` as a subtask (invoke it, then return here and continue), following the create mode rule scan section. List matched rules in your response, then continue with the next step. If no rules matched, state that explicitly.
 3. If linked repos were declared, scan them as described in the create mode "Linked repo scan" section. Include linked repo findings in the new dated section.
 4. Search code for new patterns relevant to the topic. List each discovered pattern in your response using the artifact template format (Pattern, Location, Notes).
 5. Compare new findings against the existing research sections. Focus on what changed, what's new, and what prior recommendations are now resolved.
