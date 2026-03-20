@@ -5,10 +5,11 @@ A Claude Code plugin that structures AI-assisted development into phases. Withou
 ## The loop
 
 ```
-    /dl:brainstorm  →  /dl:research  →  /dl:plan  →  /dl:design  →  /dl:implement  →  /dl:review
-                            ↑               ↑             ↑               │
-                            └───────────────┴─────────────┴───────────────┘
-                                 re-enter research when discoveries surface
+  brainstorm → research → plan → design → implement → review
+                  ↑          ↑       ↑         │
+                  └──────────┴───────┴─────────┘
+                   re-enter research when
+                   discoveries surface
 ```
 
 - **brainstorm** — iterative questioning to refine a feature idea, producing a decision log
