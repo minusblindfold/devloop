@@ -77,7 +77,7 @@ Task Progress:
 Ask questions in rounds. Each round builds on prior answers.
 
 **Per round:**
-- Ask 2–4 questions about the feature.
+- Ask 1 question about the feature.
 - Each question MUST include a **recommended answer** based on what you found in the codebase, rules, and prior answers. The user refines your recommendation rather than starting from zero.
 - Questions should probe: scope boundaries, trade-offs, edge cases, interactions with existing systems, user expectations, alternative approaches.
 - Wait for the user to respond.
@@ -85,7 +85,7 @@ Ask questions in rounds. Each round builds on prior answers.
 **Between rounds:**
 - Assess whether there are more branches to explore.
 - If the user signals they are done (e.g., "done", "that's enough", "let's move on") → wrap up.
-- If 3 or more rounds have passed and the decision space feels resolved, propose wrapping up: "I think we've covered the key decisions. Ready to wrap up, or is there more to explore?"
+- If 5 or more rounds have passed and the decision space feels resolved, propose wrapping up: "I think we've covered the key decisions. Ready to wrap up, or is there more to explore?"
 - If more to explore → ask the next round.
 
 ### Output
