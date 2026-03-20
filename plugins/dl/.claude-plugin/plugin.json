@@ -1,14 +1,14 @@
 {
   "name": "dl",
-  "description": "Structured development workflow for Claude Code — brainstorm, research, plan, design, implement",
-  "version": "2.8.0",
+  "description": "Structured development workflow for Claude Code — brainstorm, research, plan, design, implement, review",
+  "version": "2.9.0",
   "author": {
     "name": "minusblindfold"
   },
   "homepage": "https://github.com/minusblindfold/devloop",
   "repository": "https://github.com/minusblindfold/devloop",
   "license": "MIT",
-  "keywords": ["workflow", "brainstorm", "planning", "design", "implementation", "skills"],
+  "keywords": ["workflow", "brainstorm", "planning", "design", "implementation", "review", "security", "skills"],
   "hooks": {
     "PreToolUse": [
       {
