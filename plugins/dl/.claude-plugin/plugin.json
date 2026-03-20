@@ -8,7 +8,7 @@
   "homepage": "https://github.com/minusblindfold/devloop",
   "repository": "https://github.com/minusblindfold/devloop",
   "license": "MIT",
-  "keywords": ["workflow", "brainstorm", "planning", "design", "implementation", "review", "security", "skills"],
+  "keywords": ["workflow", "brainstorm", "planning", "design", "implementation", "review", "skills"],
   "hooks": {
     "PreToolUse": [
       {
