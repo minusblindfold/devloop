@@ -5,6 +5,8 @@ user-invocable: false
 allowed-tools: Read, Glob, Grep
 ---
 
+**IMPORTANT: This skill is a subtask invoked by a parent skill. After completing this checklist, you MUST return to the parent skill's checklist and continue with the next unchecked item. Do not stop after printing results.**
+
 Execute each section below in order. Do not skip sections.
 
 1. Copy the **Task Progress** checklist below into your response.
@@ -108,3 +110,7 @@ After printing matched rules, scan all matched rules for `repos` frontmatter fie
 If any repos are found, print: "Linked repos: `<path>` (from `<rule title>`), `<path>` (from `<rule title>`)"
 
 If no repos are declared in any matched rule, skip silently — do not print anything about linked repos.
+
+## Return to caller
+
+This skill is complete. **You MUST now continue with the parent skill's checklist.** Do not stop, summarize, or ask the user what to do next. Return to the calling skill and pick up at the next unchecked checklist item.

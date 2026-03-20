@@ -52,11 +52,11 @@ Task Progress:
 
 ### Context gathering
 
-1. Run `/resolve-rules`:
+1. Run `/resolve-rules` as a subtask (invoke it, then return here and continue):
    - Topic provided → `mode:keyword <topic>`.
    - If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
-   - For each matched rule, extract title (H1 heading), source layer path, and first 3–5 key patterns.
-   - List matched rules in your response before proceeding.
+   - After resolve-rules completes, extract title (H1 heading), source layer path, and first 3–5 key patterns from each matched rule.
+   - List matched rules in your response, then continue with step 2 below.
 
 2. Read `CLAUDE.md` if present.
 
@@ -154,7 +154,7 @@ Task Progress:
 ```
 
 1. Read the existing brainstorm artifact in full.
-2. Run `/resolve-rules` as in create mode. Rules may have changed since the last session.
+2. Run `/resolve-rules` as a subtask (invoke it, then return here and continue). Rules may have changed since the last session.
 3. Search the codebase for any new patterns relevant to the topic.
 4. Present a summary of prior decisions to the user: "Here's where we left off:" followed by the key decisions and any open questions. Ask: "What would you like to explore further?"
 5. Resume iterative questioning, building on prior decisions. Same round structure as create mode.
