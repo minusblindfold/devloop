@@ -59,29 +59,31 @@ If the marker already exists (re-entry), update `stage` and `updated`.
 
 ### Context gathering
 
-1. Run `/resolve-rules mode:keyword <topic>` as a subtask. If unavailable, continue without rules. Extract title, source, and key patterns from each match. List matched rules in your response.
+Gather context to ground the conversation. Summarize what you found briefly — don't dump raw results. Surface specific findings naturally during the collaborative exploration when they're relevant.
+
+1. Run `/resolve-rules mode:keyword <topic>` as a subtask. If unavailable, continue without rules. Note matched rules.
 2. Read `CLAUDE.md` if present.
 3. Scan the project directory structure (top-level + key subdirectories).
 4. If resolve-rules output included "Linked repos", scan each declared repo: verify it exists, read `CLAUDE.md` (or `README.md`), scan with `ls`, grep for topic patterns (limit 10–15 matches). Skip missing repos with a warning.
 5. Search the project codebase for patterns relevant to the topic. Look for existing implementations, naming patterns, tech choices.
-6. List what you found: matched rules, codebase patterns, linked repo context.
+6. Summarize what you found briefly, then move into collaborative exploration. Hold details back to surface when they're relevant to the discussion.
 
-### Iterative questioning
+### Collaborative exploration
 
-Ask questions in rounds. Each round builds on prior answers.
+Work back and forth with the user to shape the feature — think together, react to what they say, and build on their ideas. Surface what you found in the codebase naturally as it becomes relevant, not as a dump.
 
-**Goal:** Gather enough context to identify what the feature does, its scope boundaries, and what to search for in the codebase. Propose wrapping up once you have enough to drive research — don't exhaust every possible question.
+**Goal:** Together, arrive at enough clarity on what the feature does, its scope boundaries, and what to search for in the codebase. Propose wrapping up once you have enough to drive research.
 
-**Per round:**
-- Ask about the feature. Each question MUST include a **recommended answer** based on codebase findings, rules, and prior answers.
-- Questions should probe: scope boundaries, trade-offs, edge cases, interactions with existing systems, alternative approaches.
-- Wait for the user to respond.
+**How to engage:**
+- Lead with a recommendation or observation grounded in what you found, then ask for the user's take. Each question MUST include a **recommended answer** — the user refines your thinking rather than starting from zero.
+- React to the user's response: push back if you see a concern, agree and build on it if it clicks, surface a related codebase pattern if relevant. Don't just acknowledge and move to an unrelated topic.
+- Probe naturally: scope boundaries, trade-offs, edge cases, interactions with existing systems, alternative approaches.
+- Wait for the user to respond each round.
 
-**Between rounds:**
-- If the user signals done → wrap up.
-- If you can already recommend strong answers to your own questions, you likely have enough context — propose wrapping up.
-- If 5 or more rounds have passed, propose wrapping up.
-- Otherwise → next round.
+**When to wrap up:**
+- The user signals done.
+- You can recommend strong answers to your own questions — you likely have enough context.
+- 5 or more rounds have passed and the decision space feels resolved.
 
 ### Output
 
@@ -152,7 +154,7 @@ Task Progress:
 2. Run `/resolve-rules mode:keyword <topic>` as a subtask. Rules may have changed since last session.
 3. Search the codebase for any new patterns relevant to the topic.
 4. Present prior decisions: "Here's where we left off:" followed by key decisions and open questions. Ask: "What would you like to explore further?"
-5. Resume iterative questioning. Same round structure as create mode.
+5. Resume collaborative exploration. Same conversational approach as create mode.
 6. On wrap-up: rewrite the artifact with updated decisions. Mark changed decisions with rationale. Preserve unchanged decisions. Rewrite rather than append — decisions evolve as a whole; appending would create contradictions.
 
 ### Gate
