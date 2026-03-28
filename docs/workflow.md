@@ -23,9 +23,9 @@ During any phase, run `/dl:research` to feed discoveries back into plans and des
 
 Iterative questioning session that probes a feature idea. Claude resolves rules, scans the codebase, and asks rounds of questions — each with a recommended answer you can accept, reject, or refine. The conversation continues until you signal you're done or the decision space converges.
 
-The output is a decision log (not a transcript) saved to `.work/brainstorms/`. Run `/dl:research` afterward to do a deep codebase scan informed by your decisions.
+The output is a decision log with research queries (not a transcript) saved to `.work/brainstorms/`. The Research Queries section drives what `/dl:research` investigates. After brainstorming, your context may be full of conversation. Use `/rewind` to reset, then run `/dl:research` — the brainstorm artifact carries your decisions and queries forward.
 
-Brainstorm is optional — skip it if you already know what you want to build. After brainstorming, your context may be full of conversation. Use `/rewind` to reset, then run `/dl:research` — the brainstorm artifact carries your decisions forward.
+Brainstorm is the required entry point for the devloop workflow.
 
 ```
 /dl:brainstorm                  # ask what to brainstorm
@@ -38,9 +38,9 @@ Brainstorm is optional — skip it if you already know what you want to build. A
 /dl:research "topic"
 ```
 
-Scans your rule docs and codebase for context. Produces three sections: **Applicable Rules** (what rules exist), **Codebase Patterns** (what's already built), and **Gaps & Recommendations** (what's missing or inconsistent).
+Executes the Research Queries from your brainstorm artifact as targeted codebase searches. Requires a brainstorm artifact. Produces per-query findings and a **Gaps & Recommendations** section.
 
-Research is optional but useful before planning. Run it again at any point — it appends new findings without overwriting prior sections.
+Run it again at any point — it appends new findings without overwriting prior sections.
 
 Research artifacts are saved to `.work/research/`.
 
@@ -69,9 +69,7 @@ Push back. Reorder tasks, split or merge them, add constraints. Claude won't tou
 
 Claude reads the plan, explores the codebase, and produces a high-level design: architecture decisions, Mermaid diagrams (saved as `.mmd` files in `.work/designs/diagrams/`), and a detailed spec for each task — goal, interfaces, implementation notes, acceptance criteria, and which rule docs apply.
 
-The design is the contract for implementation. Diagram types include architecture, data flow, component structure, and sequence interactions.
-
-For simple features where no plan exists, `/dl:design <description>` bootstraps a minimal plan inline and proceeds to design.
+The design is the primary review checkpoint — review it thoroughly before implementation. Diagram types include architecture, data flow, component structure, and sequence interactions.
 
 ## /dl:implement
 
@@ -82,14 +80,6 @@ For simple features where no plan exists, `/dl:design <description>` bootstraps 
 Claude loads the plan and design, displays the task list with completion status, and implements one task at a time. It reads relevant files first, checks which rules apply, runs existing tests to establish a baseline, implements against the spec, and re-runs tests. An implementation note is saved to `.work/implementations/`.
 
 Completed tasks are tracked — pick up exactly where you left off across sessions.
-
-## /dl:bootstrap
-
-```
-/dl:bootstrap <project-name>
-```
-
-Scaffolds a new project entirely from rule docs. Requires at least a `stack.md` rule that defines the project skeleton (language, framework, build tool, folder structure). Additional rules contribute their `## Bootstrap` sections to the scaffold.
 
 ## Working effectively
 

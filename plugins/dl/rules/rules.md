@@ -1,6 +1,6 @@
 # Rules
 
-Rules are markdown files that guide Claude Code skills (`/research`, `/plan`, `/design`, `/implement`, `/bootstrap`). Drop `.md` files into this directory and skills will discover them automatically.
+Rules are markdown files that guide Claude Code skills (`/brainstorm`, `/research`, `/plan`, `/design`, `/implement`). Drop `.md` files into this directory and skills will discover them automatically.
 
 ## Getting started
 
@@ -26,7 +26,7 @@ A concrete code example showing the pattern in practice.
 
 The `keywords` field is the only required frontmatter. Skills match task descriptions against these terms to find relevant rules.
 
-Create a `stack.md` to define your project skeleton (language, framework, build tool). This is the anchor rule — `/bootstrap` requires it to scaffold a project. Add more rules as needed: one per concern (e.g., `entity.md`, `service.md`, `controller.md`, `testing.md`).
+Add more rules as needed: one per concern (e.g., `entity.md`, `service.md`, `controller.md`, `testing.md`). A `stack.md` defining your project skeleton (language, framework, build tool) is useful for greenfield detection in `/plan`.
 
 ## Format
 
@@ -44,7 +44,7 @@ Create a `stack.md` to define your project skeleton (language, framework, build 
 ### Sections
 
 - **`## Patterns`** — The core patterns and constraints. This is what skills follow during implementation.
-- **`## Bootstrap`** — What this rule contributes when scaffolding a new project. `/bootstrap` reads these sections. Omit if the rule only applies during feature work.
+- **`## Bootstrap`** — What this rule contributes when scaffolding a new project. Omit if the rule only applies during feature work.
 - **`## Example`** — A concrete code sample. Helps the model understand the pattern in practice.
 
 ## Precedence

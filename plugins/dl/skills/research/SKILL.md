@@ -1,73 +1,53 @@
 ---
 name: research
-description: Scans rules and codebase to produce structured research artifacts that inform planning and design. Use when starting a new feature or when discoveries surface during implementation.
-argument-hint: "[feature-slug or topic]"
+description: Executes research queries from a brainstorm artifact as targeted codebase searches. Requires a brainstorm with Research Queries. Use after /dl:brainstorm or when discoveries surface during implementation.
+argument-hint: "[feature-slug]"
 allowed-tools: Read Write Bash Glob Grep
 ---
 
-Execute each section in order. Copy the checklist from your mode's section and check off items as you complete them. Do not proceed past a **Gate** until verified.
+Execute each section in order. Copy the checklist and check off items as you complete them. Do not proceed past a **Gate** until verified.
 
 **Artifact:** Write to `.work/research/`. Verify with `ls` before wrapping up.
 
-## Mode
-
-**Active feature detection:** Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug — print "Auto-selected feature: <slug>". If multiple markers exist, list them and ask. Arguments always override the marker.
-
-Parse `$ARGUMENTS` (or auto-selected slug):
-
-- Matches an existing file in `.work/research/` by slug → **re-entry** (append dated section).
-- Set but no match → **create** new research file.
-- Empty → ask the user what they would like to research. Wait for a topic, then proceed in **create** mode.
-
-## Create mode
-
 **Constraint:** You MUST NOT modify project files. This skill produces context, not code.
 
-Copy this checklist and check off items as you complete them:
+## Mode
+
+Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them and ask. Arguments always override.
+
+Parse `$ARGUMENTS` (or auto-selected slug): matches existing file in `.work/research/` by slug → **re-entry**. Set but no match → **create**. Empty → ask what to research, then proceed in create mode.
+
+**Brainstorm required:** Find matching brainstorm artifact in `.work/brainstorms/`. If missing, print "Run /dl:brainstorm first." and stop. Read the brainstorm artifact and extract the `## Research Queries` section.
 
 ```
 Task Progress:
-- [ ] Determine mode (create / re-entry)
-- [ ] Run /resolve-rules
-- [ ] Extract rule title, source, and key patterns for each match
-- [ ] List matched rules in response
-- [ ] Read CLAUDE.md
-- [ ] Scan project directory structure
-- [ ] Scan linked repos (if declared)
-- [ ] Search code for topic-relevant patterns
-- [ ] List discovered patterns in response
-- [ ] Review and synthesize findings
-- [ ] Write artifact to .work/research/
-- [ ] Gate: verify artifact with ls
-- [ ] Wrap up: summarize and suggest next steps
+- [ ] Determine mode; find and read brainstorm artifact
+- [ ] If brainstorm missing: stop with message
+- [ ] If re-entry: read existing research artifact
+- [ ] Run /resolve-rules mode:keyword <topic>
+- [ ] Execute each research query as targeted search
+- [ ] List findings per query in response
+- [ ] Synthesize: identify gaps across queries
+- [ ] Write artifact (create: new file; re-entry: append dated section)
+- [ ] Gate: verify artifact with ls; update active marker
+- [ ] Wrap up: summarize, suggest /dl:plan
 ```
 
-### Rule scan
+## Query execution
 
-Run `/resolve-rules mode:keyword <topic>` as a subtask. If unavailable, continue without rules. Extract title, source, and key patterns from each match. List matched rules in your response. If none matched, state that explicitly.
+Run `/resolve-rules mode:keyword <topic>` as a subtask. For each query from the brainstorm artifact, search the codebase with targeted reads and greps. For linked repos from resolve-rules, include them in the search. Record findings per query — keep findings factual, not opinionated.
 
-### Linked repo scan
+## Synthesis
 
-If resolve-rules output included "Linked repos", scan each declared repo. Skip if none declared.
+Compare findings across queries. Identify gaps — things the brainstorm assumed that don't match reality, missing implementations, inconsistencies. These become the Gaps & Recommendations.
 
-For each linked repo:
-1. Verify the directory exists. Skip missing repos with a warning.
-2. **Orientation:** Read `CLAUDE.md` (or `README.md`). Scan top-level with `ls`.
-3. **Targeted search:** Grep for topic-relevant code (limit 10–15 matches).
+## Re-entry
 
-List findings (repo, description, structure, relevant code) before proceeding.
+Read the existing research artifact in full. Execute brainstorm queries again (codebase may have changed since last session). Append a new `## YYYY-MM-DD` dated section — do not overwrite prior sections.
 
-### Code search
+## Output
 
-Search code for patterns relevant to the topic: existing implementations, inconsistencies, tech choices. List each pattern using the artifact format (Pattern, Location, Notes).
-
-### Synthesis
-
-Compare matched rules against discovered patterns. Identify gaps — these become the Gaps & Recommendations.
-
-### Output
-
-Write to `.work/research/YYYY-MM-DD-<slug>-research.md`.
+Write to `.work/research/YYYY-MM-DD-<slug>-research.md`:
 
 ```markdown
 # <Topic> Research
@@ -75,79 +55,30 @@ Write to `.work/research/YYYY-MM-DD-<slug>-research.md`.
 ## YYYY-MM-DD — <description>
 
 ### Applicable Rules
-
 | Rule | Source | Key Patterns |
-|---|---|---|
-| Title from H1 | file path | first 3-5 patterns |
 
-### Linked Repo Context
-
-_(omit this section if no linked repos were declared)_
-
-- **Repo:** `<path>`
-- **Description:** <what this repo does>
-- **Structure:** <top-level layout>
-- **Relevant code:**
-  - `<file>:<line>` — <snippet/description>
-
-### Codebase Patterns
-
-- **Pattern:** <what was found>
+### Query: <research question>
+- **Finding:** <what was discovered>
 - **Location:** <where>
-- **Notes:** <consistency, alternatives, concerns>
+- **Implications:** <what this means>
 
 ### Gaps & Recommendations
-
 - [ ] <actionable item>
 ```
 
-### Gate
+Repeat `### Query:` for each research query. Omit `### Applicable Rules` on re-entry if rules haven't changed.
 
-Run `ls` on the file. If missing, write it now. Update the active feature marker: set `stage: research` and `updated` date.
+## Gate
 
-### Wrap up
+Verify artifact with `ls`; write if missing. Update `.work/active/<slug>.md` with `stage: research` and today's date.
 
-1. Summarize: rules matched, patterns observed, recommendations count.
-2. Suggest next steps: `/plan <slug>`, `/plan refine`, or `/design` as appropriate.
+## Wrap up
 
-## Re-entry mode
-
-**Constraint:** You MUST NOT modify project files. This skill produces context, not code.
-
-Copy this checklist and check off items as you complete them:
-
-```
-Task Progress:
-- [ ] Read existing research file in full
-- [ ] Run /resolve-rules
-- [ ] List matched rules in response
-- [ ] Scan linked repos for new patterns (if declared)
-- [ ] Search code for new patterns
-- [ ] List discovered patterns in response
-- [ ] Synthesize new findings against prior research
-- [ ] Append new dated section to artifact
-- [ ] Gate: verify artifact with ls
-- [ ] Wrap up: summarize and suggest next steps
-```
-
-1. Read the existing research file in full.
-2. Follow the create mode rule scan and linked repo scan sections.
-3. Search code for new patterns. List discoveries using the artifact format (Pattern, Location, Notes).
-4. Compare against existing research: what changed, what's new, what prior recommendations are resolved.
-5. Append a new `## YYYY-MM-DD — <description>` section. Do not overwrite prior sections — findings accumulate over time, and prior findings remain valid context.
-
-### Gate
-
-Run `ls` on the file. If missing, write it now. Update the active feature marker: set `stage: research` and `updated` date.
-
-### Wrap up
-
-1. Summarize new findings: rules matched, patterns observed, recommendations count.
-2. Suggest next steps as in create mode.
+Summarize: rules matched, findings per query, gaps count. Suggest next step: `/dl:plan <slug>`.
 
 ## Rules
 
 - Do not modify project files. This skill produces context, not code.
 - Do not overwrite prior research sections on re-entry (findings accumulate).
-- Keep recommendations actionable and scoped.
-- If no rules match and no relevant patterns found, say so clearly.
+- Keep findings factual — opinions belong in brainstorm decisions.
+- If no brainstorm artifact exists, stop and tell the user.
