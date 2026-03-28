@@ -12,14 +12,14 @@ A Claude Code plugin that structures AI-assisted development into phases. Withou
                    discoveries surface
 ```
 
-- **brainstorm** — iterative questioning to refine a feature idea, producing a decision log
-- **research** — scan rules and codebase for context, surface gaps and recommendations
+- **brainstorm** — required entry point; iterative questioning to refine a feature idea, producing decisions and research queries
+- **research** — execute research queries from brainstorm as targeted codebase searches
 - **plan** — ask clarifying questions, produce an ordered task list
 - **design** — generate architecture, Mermaid diagrams, and a detailed spec for each task
 - **implement** — implement one task at a time against the spec, track completion
 - **review** — load rules and design context, review code for rule violations and security issues
 
-`/dl:bootstrap` scaffolds a new project from rule docs. `/dl:research` can re-enter at any stage — run it before planning, after design, or when discoveries surface during implementation.
+Start with `/dl:brainstorm` — it's the required entry point. `/dl:research` can re-enter at any stage when discoveries surface during implementation.
 
 ## Install
 
@@ -43,14 +43,12 @@ Use `/reload-plugins` after making changes during development.
 
 | Skill | What it does |
 |-------|-------------|
-| `/dl:brainstorm` | Iterative questioning to refine a feature idea. Produces a decision log for research and planning. |
-| `/dl:research` | Scan rules and codebase for context. Re-enter at any stage to capture new findings. |
-| `/dl:plan` | Ask clarifying questions, create an ordered task list. Detects greenfield projects. |
-| `/dl:design` | Generate architecture, Mermaid diagrams, and per-task specs with acceptance criteria. |
+| `/dl:brainstorm` | Required entry point. Iterative questioning to refine a feature idea. Produces decisions and research queries. |
+| `/dl:research` | Execute research queries from brainstorm as targeted codebase searches. Requires brainstorm artifact. |
+| `/dl:plan` | Ask clarifying questions, create a vertically-sliced task list. Detects greenfield projects. |
+| `/dl:design` | Primary review checkpoint. Generate architecture, Mermaid diagrams, and per-task specs. |
 | `/dl:implement` | Implement one task at a time against the spec. Tracks progress across sessions. |
 | `/dl:review` | Load rules and design context, review code for rule violations and security issues. Works standalone or after `/dl:implement`. |
-| `/dl:bootstrap` | Scaffold a new project entirely from rule docs. |
-
 `/dl:plan` and `/dl:design` support refine mode — invoke with no args when existing artifacts are found.
 
 ## What you get
