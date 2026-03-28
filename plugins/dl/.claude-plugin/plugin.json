@@ -9,17 +9,5 @@
   "repository": "https://github.com/minusblindfold/devloop",
   "license": "MIT",
   "keywords": ["workflow", "brainstorm", "planning", "design", "implementation", "review", "skills"],
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/check-branch.sh"
-          }
-        ]
-      }
-    ]
-  }
+  "hooks": {}
 }

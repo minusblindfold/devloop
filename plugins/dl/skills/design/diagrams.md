@@ -58,6 +58,20 @@ sequenceDiagram
     API-->>Client: response
 ```
 
+## Node label rules
+
+Node IDs must be simple identifiers (`[A-Za-z0-9_]+`). Always wrap display labels in double quotes inside shape delimiters to prevent special characters from breaking the parser:
+
+```
+graph TD
+    A["Auth Service (v2)"] --> B["Token Store"]
+    B --> C["Validate & Refresh"]
+```
+
+Characters that break unquoted labels: `()`, `[]`, `{}`, `<>`, `/ \`, `|`, `;`, `:`, `-`. Double-quoting handles all of these.
+
+For mermaid entity codes, use `#<code>;` (not HTML entities): `#35;` for `#`, `#amp;` for `&`, `#59;` for `;`.
+
 ## Choosing diagrams
 
 Pick the types that best illuminate the tasks in the plan. A feature can warrant more than one — for example, an architecture diagram plus a sequence diagram if both the structure and the interaction flow are non-obvious. Don't create a diagram just to have one.
