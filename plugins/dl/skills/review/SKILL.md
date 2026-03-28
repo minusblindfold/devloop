@@ -5,24 +5,15 @@ argument-hint: "[feature-slug]"
 allowed-tools: Read Bash Glob Grep
 ---
 
-Execute each section below in order. Do not skip sections.
+Execute each section in order. Copy the checklist from your mode's section and check off items as you complete them. Do not proceed past a **Gate** until verified.
 
-1. Determine your mode.
-2. Copy the **Task Progress** checklist from that mode's section into your response.
-3. Work through each item. Check it off as you complete it.
-4. Do not proceed past a **Gate** until the gate condition is verified.
-
-## Artifact — required output
-
-Write the artifact to `.work/reviews/`. Save the artifact before proceeding to wrap up. Do not summarize findings or suggest next steps until the artifact file has been written and verified with `ls`.
-
-## Config
-
-All artifacts are stored under `.work/` in the current project directory.
+**Artifact:** Write to `.work/reviews/`. Verify with `ls` before wrapping up.
 
 ## Mode
 
-Parse `$ARGUMENTS`:
+**Active feature detection:** Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug — print "Auto-selected feature: <slug>". If multiple markers exist, list them and ask. Arguments always override the marker.
+
+Parse `$ARGUMENTS` (or auto-selected slug):
 
 - Matches an existing file in `.work/reviews/` by slug → **re-entry** (append dated section with new findings).
 - Matches a plan in `.work/plans/` and a design in `.work/designs/` → **create** (workflow mode).
@@ -51,37 +42,19 @@ Task Progress:
 - [ ] Wrap up: summarize findings
 ```
 
-### Determine context source
+### Determine context and load diff
 
-**Workflow mode** (plan + design found for slug):
+**Resolve rules:**
+- If plan + design exist for the slug (**workflow mode**): read them. Extract rule titles from design task specs. Run `/resolve-rules mode:explicit <titles>` as a subtask. Read implementation notes matching the slug — note intentional deviations (do not flag these as violations).
+- If no plan/design (**standalone mode**): derive keywords from branch name or slug. Run `/resolve-rules mode:keyword <terms>`. No design or implementation notes loaded.
 
-1. Read the plan and design files in full.
-2. Extract `**Rules:**` lines from the design's task specs. Collect all rule titles.
-3. Run `/resolve-rules mode:explicit <titles>` as a subtask (invoke it, then return here and continue).
-4. If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
-5. Read implementation notes from `.work/implementations/` matching the feature slug. Note any intentional deviations from the design — do not flag these as violations during review.
+If `/resolve-rules` is unavailable, continue without rules. List matched rules in your response.
 
-**Standalone mode** (no matching plan/design):
+**Load diff:**
+- Feature branch: `git diff main...HEAD` + `git diff` (committed + uncommitted).
+- Main branch: `git diff` only. If no changes, stop.
 
-1. Detect the current branch: `git branch --show-current`.
-2. Derive keywords from the branch name by splitting on `/` and `-` (e.g., `feature/add-user-auth` → "add user auth"). If a slug was provided as an argument, use it as keyword source instead.
-3. Run `/resolve-rules mode:keyword <derived terms>` as a subtask (invoke it, then return here and continue).
-4. If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
-5. No design spec or implementation notes are loaded.
-
-List matched rules in your response, then continue with the next step.
-
-### Load diff
-
-1. Run `git branch --show-current` to confirm the current branch.
-2. If on a feature branch (not `main`):
-   - Run `git diff main...HEAD` to get all commits since the branch diverged.
-   - Run `git diff` to get any uncommitted changes.
-   - Combine both as the review scope.
-3. If on `main`:
-   - Run `git diff` to get uncommitted working tree changes only.
-   - If no changes, print: "No changes to review." and stop.
-4. Run `git diff main...HEAD --stat` (or `git diff --stat` on main) to get a file summary for the Review Scope section.
+Run `git diff --stat` for the file summary.
 
 ### Review
 
@@ -158,14 +131,13 @@ _(if none: "No security issues found.")_
 
 ### Gate
 
-Run `ls` on the saved file path. If the file does not exist, write it now. Do not proceed to wrap up until the file is confirmed on disk.
+Run `ls` on the file. If missing, write it now. Update the active feature marker: set `stage: reviewed` and `updated` date.
 
 ### Wrap up
 
-1. Present findings summary: rule violation count, general finding count, security finding count.
-2. If findings exist, suggest addressing them before committing.
-3. If no findings, confirm the code looks good.
-4. Suggest running `/dl:review <slug>` again after fixes for a re-review.
+1. Present findings summary: rule violations, general findings, security findings.
+2. If findings exist, suggest addressing them. If none, confirm the code looks good.
+3. Suggest `/dl:review <slug>` again after fixes.
 
 ## Re-entry mode
 
@@ -176,9 +148,7 @@ Copy this checklist and check off items as you complete them:
 ```
 Task Progress:
 - [ ] Read existing review artifact
-- [ ] Run /resolve-rules
-- [ ] List matched rules in response
-- [ ] Load new git diff
+- [ ] Run /resolve-rules and load diff (follow create mode steps)
 - [ ] Compare against prior findings
 - [ ] Review new/changed code
 - [ ] Append dated section to artifact
@@ -187,64 +157,23 @@ Task Progress:
 ```
 
 1. Read the existing review artifact in full. Note prior findings.
-2. Run `/resolve-rules` following the create mode context source logic (workflow or standalone, depending on what the prior review used).
-3. Load the current git diff following the create mode diff loading steps.
-4. Compare the current diff against prior findings:
-   - **Resolved:** findings from the prior review that no longer appear in the diff (code was fixed).
-   - **Persisting:** findings that still exist.
-   - **New:** issues in code that changed since the last review.
-5. Review any new or changed code in both passes (rule-mapped + general/security).
-6. Append a new dated section to the artifact:
-
-```markdown
-## YYYY-MM-DD — Re-review
-
-### Resolved from prior review
-
-- **`<file>:<line>`** — <what was fixed> (was: <original finding>)
-
-_(if none: "No prior findings were resolved.")_
-
-### Persisting Findings
-
-- **`<file>:<line>`** — <description> _(from YYYY-MM-DD review)_
-
-### New Findings
-
-#### Rule-Mapped
-
-- **<Rule Title>** — **`<file>:<line>`** — <description>
-
-#### General
-
-- **`<file>:<line>`** — <description>
-
-#### Security
-
-- **`<file>:<line>`** — <description>
-
-### Summary
-
-- **Resolved:** <count>
-- **Persisting:** <count>
-- **New:** <count>
-- **Overall:** <brief assessment>
-```
+2. Run rule resolution and load diff following the create mode steps.
+3. Compare current diff against prior findings: **Resolved** (fixed), **Persisting** (still exist), **New** (in changed code since last review).
+4. Review new/changed code in both passes (rule-mapped + general/security).
+5. Append a new `## YYYY-MM-DD — Re-review` section with: Resolved from prior review, Persisting Findings, New Findings (Rule-Mapped / General / Security), Summary (resolved/persisting/new counts).
 
 ### Gate
 
-Run `ls` on the saved file path. If the file does not exist, write it now. Do not proceed to wrap up until the file is confirmed on disk.
+Run `ls` on the file. If missing, write it now. Update the active feature marker: set `stage: reviewed` and `updated` date.
 
 ### Wrap up
 
-1. Summarize what changed since the last review: resolved count, persisting count, new count.
-2. If all prior findings are resolved and no new issues, confirm the code is ready.
-3. If findings persist or new issues appeared, suggest addressing them.
+1. Summarize: resolved count, persisting count, new count.
+2. If all resolved and no new issues, confirm code is ready. Otherwise suggest addressing findings.
 
 ## Rules
 
 - Do not modify project files. This skill produces a review artifact, not code changes.
 - Do not flag intentional deviations documented in implementation notes as violations.
-- Use the resolution algorithm for rule discovery — do not hardcode paths.
-- Map findings to specific rules where applicable — do not lump everything into general findings.
-- If no rules match and no issues are found, say so clearly.
+- Map findings to specific rules where applicable — do not lump into general findings.
+- If no rules match and no issues found, say so clearly.

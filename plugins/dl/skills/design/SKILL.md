@@ -5,27 +5,16 @@ argument-hint: "[plan slug]"
 allowed-tools: Read Write Bash TaskCreate
 ---
 
-Execute each section below in order. Do not skip sections.
+Execute each section in order. Copy the checklist from your mode's section and check off items as you complete them. Do not proceed past a **Gate** until verified.
 
-1. Determine your mode.
-2. Copy the **Task Progress** checklist from that mode's section into your response.
-3. Work through each item. Check it off as you complete it.
-4. Do not proceed past a **Gate** until the gate condition is verified.
-
-## Artifact — required output
-
-Write design files to `.work/designs/` (and `.work/plans/` in bootstrap mode). Save all artifacts before proceeding to wrap up. Do not present the design to the user or suggest next steps until all artifact files have been written and verified with `ls`.
-
-## Config
-
-All artifacts are stored under `.work/` in the current project directory.
+**Artifact:** Write to `.work/designs/` (and `.work/plans/` in bootstrap mode). Verify with `ls` before wrapping up.
 
 ## Mode
 
-If $ARGUMENTS is set → check `.work/designs/` for `*<arg>*-design.md` (refine) or `.work/plans/` by exact filename or unambiguous prefix (create). If ambiguous in either case, list matches and ask. No match → bootstrap mode.
-If $ARGUMENTS is empty → list designs. None: fall through to plan picker. One: offer refine or new. Many: numbered list.
+**Active feature detection:** Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug — print "Auto-selected feature: <slug>". If multiple markers exist, list them and ask. Arguments always override the marker.
 
-Plan picker: list `.work/plans/`. None → ask "What would you like to design?" and enter bootstrap mode. One → auto-select. Many → ask.
+If $ARGUMENTS (or auto-selected slug) is set → check designs for match (refine), then plans for match (create). No match → bootstrap mode. Ambiguous → list and ask.
+If $ARGUMENTS is empty → list designs. None: fall through to plan picker. One: offer refine or new. Many: numbered list. Plan picker: list plans. None → bootstrap mode. One → auto-select. Many → ask.
 
 ## Create mode
 
@@ -54,9 +43,7 @@ Task Progress:
 3. Read `CLAUDE.md` if present.
 4. Scan the project directory. Check `.claude/skills/` for available skills.
 5. Check for `.work/bootstrap.md` — if found, read it. Reference the bootstrapped stack as established, not proposed.
-6. Ask 2–3 clarifying questions. Wait for answers.
-   - If bootstrap context was found: skip architecture-style questions (already decided). Focus on data relationships, UI flow, edge cases.
-   - If no bootstrap context: ask as normal, including architecture style if unclear.
+6. Ask 2–3 clarifying questions. Wait for answers. Read prior artifact decisions — only ask about genuinely unresolved items.
 7. Write the Overview and Architecture sections.
 8. Choose diagrams that best illuminate the plan — see [diagrams.md](diagrams.md). A feature may warrant more than one; omit diagrams for trivial tasks. Save each as a `.mmd` file in `.work/designs/diagrams/`. List them in the doc; do not embed diagram code inline.
 9. Write a spec for each plan task: Goal, Interfaces, Implementation notes, Acceptance criteria, Tests, Dependencies. Note which rules apply by title (e.g., `**Rules:** JPA Entity Rules, Liquibase Migration Rules`). This tells `/implement` which docs to apply via `/resolve-rules` explicit mode.
@@ -64,11 +51,11 @@ Task Progress:
 
 ### Gate
 
-Run `ls` on the design file and each `.mmd` file. If any are missing, write them now. Do not proceed until all files are confirmed on disk.
+Run `ls` on the design file and each `.mmd` file. If any missing, write them now. Update the active feature marker: set `stage: design` and `updated` date.
 
 ### Wrap up
 
-Ask the user to review. Once confirmed, suggest running `/implement` to begin.
+Ask the user to review. Once confirmed, suggest `/implement`.
 
 ## Bootstrap mode
 
@@ -92,11 +79,11 @@ Task Progress:
 
 ### Gate
 
-Run `ls` on the file path. Do not proceed to create mode until the file is confirmed on disk.
+Run `ls` on the file. If missing, write it now.
 
 ### Next
 
-Confirm the plan with the user ("Here's the plan I'll design from — does this look right?"). Adjust if needed. Then proceed to create mode using the saved plan.
+Confirm the plan with the user. Adjust if needed. Then proceed to create mode.
 
 ## Refine mode
 
@@ -116,7 +103,7 @@ Task Progress:
 
 ### Gate
 
-Run `ls` on the design file and each `.mmd` file. If any are missing, write them now. Do not proceed until all files are confirmed on disk.
+Run `ls` on the design file and each `.mmd` file. If any missing, write them now.
 
 ## Design format
 

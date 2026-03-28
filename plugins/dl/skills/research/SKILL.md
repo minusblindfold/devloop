@@ -2,27 +2,18 @@
 name: research
 description: Scans rules and codebase to produce structured research artifacts that inform planning and design. Use when starting a new feature or when discoveries surface during implementation.
 argument-hint: "[feature-slug or topic]"
-allowed-tools: Read Bash Glob Grep
+allowed-tools: Read Write Bash Glob Grep
 ---
 
-Execute each section below in order. Do not skip sections.
+Execute each section in order. Copy the checklist from your mode's section and check off items as you complete them. Do not proceed past a **Gate** until verified.
 
-1. Determine your mode.
-2. Copy the **Task Progress** checklist from that mode's section into your response.
-3. Work through each item. Check it off as you complete it.
-4. Do not proceed past a **Gate** until the gate condition is verified.
-
-## Artifact — required output
-
-Write the artifact to `.work/research/`. Save the artifact before proceeding to wrap up. Do not summarize findings or suggest next steps until the artifact file has been written and verified with `ls`.
-
-## Config
-
-All artifacts are stored under `.work/` in the current project directory.
+**Artifact:** Write to `.work/research/`. Verify with `ls` before wrapping up.
 
 ## Mode
 
-Parse `$ARGUMENTS`:
+**Active feature detection:** Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug — print "Auto-selected feature: <slug>". If multiple markers exist, list them and ask. Arguments always override the marker.
+
+Parse `$ARGUMENTS` (or auto-selected slug):
 
 - Matches an existing file in `.work/research/` by slug → **re-entry** (append dated section).
 - Set but no match → **create** new research file.
@@ -53,42 +44,26 @@ Task Progress:
 
 ### Rule scan
 
-Run `/resolve-rules` as a subtask (invoke it, then return here and continue):
-- Topic provided → `mode:keyword <topic>`.
-
-If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
-
-After resolve-rules completes, extract from each matched rule:
-- Title (H1 heading)
-- Source layer path
-- First 3–5 key patterns
-
-List matched rules in your response, then continue with the next step below. If no rules matched, state that explicitly.
+Run `/resolve-rules mode:keyword <topic>` as a subtask. If unavailable, continue without rules. Extract title, source, and key patterns from each match. List matched rules in your response. If none matched, state that explicitly.
 
 ### Linked repo scan
 
-If `/resolve-rules` output included "Linked repos", scan each declared repo. If no linked repos were declared, skip this section.
+If resolve-rules output included "Linked repos", scan each declared repo. Skip if none declared.
 
-For each linked repo path:
-1. Expand `~` and verify the directory exists. If not, print a warning and skip that repo.
-2. **Orientation:** Read `CLAUDE.md` (or `README.md` if no CLAUDE.md) to understand what the repo does. Scan the top-level directory structure with `ls`.
-3. **Targeted search:** Use the topic keywords from the research topic to `Grep` the linked repo for relevant code (controllers, services, API definitions, shared types, config). Limit to the top 10–15 matches to avoid flooding context.
+For each linked repo:
+1. Verify the directory exists. Skip missing repos with a warning.
+2. **Orientation:** Read `CLAUDE.md` (or `README.md`). Scan top-level with `ls`.
+3. **Targeted search:** Grep for topic-relevant code (limit 10–15 matches).
 
-List findings in your response before proceeding:
-- **Repo:** `<path>`
-- **Description:** (from CLAUDE.md first paragraph or repo name if no CLAUDE.md)
-- **Structure:** (top-level directories)
-- **Relevant code:** (grep matches — file, line, snippet)
+List findings (repo, description, structure, relevant code) before proceeding.
 
 ### Code search
 
-Search code for patterns relevant to the topic. Look for existing implementations, inconsistencies, multiple approaches, tech choices. Note anything that might affect planning or design.
-
-List each discovered pattern in your response before proceeding. Use the artifact template format (Pattern, Location, Notes) so findings transfer directly to the artifact.
+Search code for patterns relevant to the topic: existing implementations, inconsistencies, tech choices. List each pattern using the artifact format (Pattern, Location, Notes).
 
 ### Synthesis
 
-Review your matched rules and discovered patterns. Identify gaps between what the rules prescribe and what the codebase does. These gaps become the Gaps & Recommendations in the artifact.
+Compare matched rules against discovered patterns. Identify gaps — these become the Gaps & Recommendations.
 
 ### Output
 
@@ -128,15 +103,12 @@ _(omit this section if no linked repos were declared)_
 
 ### Gate
 
-Run `ls` on the saved file path. If the file does not exist, write it now. Do not proceed to wrap up until the file is confirmed on disk.
+Run `ls` on the file. If missing, write it now. Update the active feature marker: set `stage: research` and `updated` date.
 
 ### Wrap up
 
-1. Summarize what was found: rules matched, patterns observed, recommendations count.
-2. Suggest next steps:
-   - `/plan` or `/plan <slug>` to start planning from findings.
-   - `/plan refine` if recommendations affect an existing plan.
-   - `/design` if a plan already exists and findings inform architecture.
+1. Summarize: rules matched, patterns observed, recommendations count.
+2. Suggest next steps: `/plan <slug>`, `/plan refine`, or `/design` as appropriate.
 
 ## Re-entry mode
 
@@ -148,27 +120,25 @@ Copy this checklist and check off items as you complete them:
 Task Progress:
 - [ ] Read existing research file in full
 - [ ] Run /resolve-rules
-- [ ] Extract rule title, source, and key patterns for each match
 - [ ] List matched rules in response
 - [ ] Scan linked repos for new patterns (if declared)
-- [ ] Search code for new patterns relevant to the topic
+- [ ] Search code for new patterns
 - [ ] List discovered patterns in response
-- [ ] Review and synthesize new findings against prior research
+- [ ] Synthesize new findings against prior research
 - [ ] Append new dated section to artifact
 - [ ] Gate: verify artifact with ls
 - [ ] Wrap up: summarize and suggest next steps
 ```
 
 1. Read the existing research file in full.
-2. Run `/resolve-rules` as a subtask (invoke it, then return here and continue), following the create mode rule scan section. List matched rules in your response, then continue with the next step. If no rules matched, state that explicitly.
-3. If linked repos were declared, scan them as described in the create mode "Linked repo scan" section. Include linked repo findings in the new dated section.
-4. Search code for new patterns relevant to the topic. List each discovered pattern in your response using the artifact template format (Pattern, Location, Notes).
-5. Compare new findings against the existing research sections. Focus on what changed, what's new, and what prior recommendations are now resolved.
-6. Append a new `## YYYY-MM-DD — <description>` section at the end. Do not overwrite or modify prior sections.
+2. Follow the create mode rule scan and linked repo scan sections.
+3. Search code for new patterns. List discoveries using the artifact format (Pattern, Location, Notes).
+4. Compare against existing research: what changed, what's new, what prior recommendations are resolved.
+5. Append a new `## YYYY-MM-DD — <description>` section. Do not overwrite prior sections — findings accumulate over time, and prior findings remain valid context.
 
 ### Gate
 
-Run `ls` on the saved file path. If the file does not exist, write it now. Do not proceed to wrap up until the file is confirmed on disk.
+Run `ls` on the file. If missing, write it now. Update the active feature marker: set `stage: research` and `updated` date.
 
 ### Wrap up
 
@@ -178,7 +148,6 @@ Run `ls` on the saved file path. If the file does not exist, write it now. Do no
 ## Rules
 
 - Do not modify project files. This skill produces context, not code.
-- Do not overwrite prior research sections on re-entry.
-- Use the resolution algorithm for rule discovery — do not hardcode paths.
-- Keep recommendations actionable and scoped — do not pad with vague suggestions.
-- If no rules match and no relevant codebase patterns are found, say so clearly.
+- Do not overwrite prior research sections on re-entry (findings accumulate).
+- Keep recommendations actionable and scoped.
+- If no rules match and no relevant patterns found, say so clearly.

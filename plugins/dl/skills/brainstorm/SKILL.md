@@ -2,27 +2,18 @@
 name: brainstorm
 description: Iterative questioning to refine a feature idea before research and planning. Use when the user wants to brainstorm, explore an idea, or probe a feature concept.
 argument-hint: "[feature or topic]"
-allowed-tools: Read Bash Glob Grep
+allowed-tools: Read Write Bash Glob Grep
 ---
 
-Execute each section below in order. Do not skip sections.
+Execute each section in order. Copy the checklist from your mode's section and check off items as you complete them. Do not proceed past a **Gate** until verified.
 
-1. Determine your mode.
-2. Copy the **Task Progress** checklist from that mode's section into your response.
-3. Work through each item. Check it off as you complete it.
-4. Do not proceed past a **Gate** until the gate condition is verified.
-
-## Artifact — required output
-
-Write the artifact to `.work/brainstorms/`. Save the artifact before proceeding to wrap up. Do not summarize or suggest next steps until the artifact file has been written and verified with `ls`.
-
-## Config
-
-All artifacts are stored under `.work/` in the current project directory.
+**Artifact:** Write to `.work/brainstorms/`. Verify with `ls` before wrapping up.
 
 ## Mode
 
-Parse `$ARGUMENTS`:
+**Active feature detection:** Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug — print "Auto-selected feature: <slug>". If multiple markers exist, list them and ask which to continue. Arguments always override the marker.
+
+Parse `$ARGUMENTS` (or auto-selected slug):
 
 - Matches an existing file in `.work/brainstorms/` by slug → **re-entry** (reopen conversation from prior decisions).
 - Set but no match → **create** new brainstorm.
@@ -37,6 +28,7 @@ Copy this checklist and check off items as you complete them:
 ```
 Task Progress:
 - [ ] Determine mode (create / re-entry)
+- [ ] Create or update active feature marker
 - [ ] Run /resolve-rules
 - [ ] List matched rules in response
 - [ ] Read CLAUDE.md
@@ -50,43 +42,48 @@ Task Progress:
 - [ ] Wrap up: suggest /dl:research
 ```
 
+### Active feature marker
+
+Derive the slug from the topic: lowercase, replace spaces with hyphens, strip non-alphanumeric characters except hyphens. Create `.work/active/<slug>.md` if it doesn't exist:
+
+```markdown
+---
+slug: <slug>
+stage: brainstorm
+started: YYYY-MM-DD
+updated: YYYY-MM-DD
+---
+```
+
+If the marker already exists (re-entry), update `stage` and `updated`.
+
 ### Context gathering
 
-1. Run `/resolve-rules` as a subtask (invoke it, then return here and continue):
-   - Topic provided → `mode:keyword <topic>`.
-   - If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
-   - After resolve-rules completes, extract title (H1 heading), source layer path, and first 3–5 key patterns from each matched rule.
-   - List matched rules in your response, then continue with step 2 below.
+Gather context to ground the conversation. Summarize what you found briefly — don't dump raw results. Surface specific findings naturally during the collaborative exploration when they're relevant.
 
+1. Run `/resolve-rules mode:keyword <topic>` as a subtask. If unavailable, continue without rules. Note matched rules.
 2. Read `CLAUDE.md` if present.
-
 3. Scan the project directory structure (top-level + key subdirectories).
+4. If resolve-rules output included "Linked repos", scan each declared repo: verify it exists, read `CLAUDE.md` (or `README.md`), scan with `ls`, grep for topic patterns (limit 10–15 matches). Skip missing repos with a warning.
+5. Search the project codebase for patterns relevant to the topic. Look for existing implementations, naming patterns, tech choices.
+6. Summarize what you found briefly, then move into collaborative exploration. Hold details back to surface when they're relevant to the discussion.
 
-4. If `/resolve-rules` output included "Linked repos", scan each declared repo:
-   - Expand `~` and verify the directory exists. If not, print a warning and skip.
-   - Read `CLAUDE.md` (or `README.md` if no CLAUDE.md).
-   - Scan the top-level directory structure with `ls`.
-   - Grep for topic-relevant patterns. Limit to the top 10–15 matches.
+### Collaborative exploration
 
-5. Search the project codebase for patterns relevant to the topic. Look for existing implementations, naming patterns, tech choices, and anything that might shape the feature. This is the same depth as `/research`.
+Work back and forth with the user to shape the feature — think together, react to what they say, and build on their ideas. Surface what you found in the codebase naturally as it becomes relevant, not as a dump.
 
-6. List what you found: matched rules, codebase patterns, linked repo context. This grounds the conversation in project reality.
+**Goal:** Together, arrive at enough clarity on what the feature does, its scope boundaries, and what to search for in the codebase. Propose wrapping up once you have enough to drive research.
 
-### Iterative questioning
+**How to engage:**
+- Lead with a recommendation or observation grounded in what you found, then ask for the user's take. Each question MUST include a **recommended answer** — the user refines your thinking rather than starting from zero.
+- React to the user's response: push back if you see a concern, agree and build on it if it clicks, surface a related codebase pattern if relevant. Don't just acknowledge and move to an unrelated topic.
+- Probe naturally: scope boundaries, trade-offs, edge cases, interactions with existing systems, alternative approaches.
+- Wait for the user to respond each round.
 
-Ask questions in rounds. Each round builds on prior answers.
-
-**Per round:**
-- Ask 1 question about the feature.
-- Each question MUST include a **recommended answer** based on what you found in the codebase, rules, and prior answers. The user refines your recommendation rather than starting from zero.
-- Questions should probe: scope boundaries, trade-offs, edge cases, interactions with existing systems, user expectations, alternative approaches.
-- Wait for the user to respond.
-
-**Between rounds:**
-- Assess whether there are more branches to explore.
-- If the user signals they are done (e.g., "done", "that's enough", "let's move on") → wrap up.
-- If 5 or more rounds have passed and the decision space feels resolved, propose wrapping up: "I think we've covered the key decisions. Ready to wrap up, or is there more to explore?"
-- If more to explore → ask the next round.
+**When to wrap up:**
+- The user signals done.
+- You can recommend strong answers to your own questions — you likely have enough context.
+- 5 or more rounds have passed and the decision space feels resolved.
 
 ### Output
 
@@ -128,12 +125,12 @@ Capture decisions and rationale, not a transcript of the conversation.
 
 ### Gate
 
-Run `ls` on the saved file path. If the file does not exist, write it now. Do not proceed to wrap up until the file is confirmed on disk.
+Run `ls` on the file. If missing, write it now. Update the active feature marker: set `stage: brainstorm` and `updated` date.
 
 ### Wrap up
 
 1. Summarize: decisions made, open questions remaining, constraints discovered.
-2. Suggest next step: `/dl:research <slug>` to do a deep codebase scan informed by these decisions.
+2. Suggest next step: `/dl:research <slug>`.
 
 ## Re-entry mode
 
@@ -154,26 +151,24 @@ Task Progress:
 ```
 
 1. Read the existing brainstorm artifact in full.
-2. Run `/resolve-rules` as a subtask (invoke it, then return here and continue). Rules may have changed since the last session.
+2. Run `/resolve-rules mode:keyword <topic>` as a subtask. Rules may have changed since last session.
 3. Search the codebase for any new patterns relevant to the topic.
-4. Present a summary of prior decisions to the user: "Here's where we left off:" followed by the key decisions and any open questions. Ask: "What would you like to explore further?"
-5. Resume iterative questioning, building on prior decisions. Same round structure as create mode.
-6. On wrap-up: rewrite the artifact with updated decisions. Mark changed decisions with rationale for the change. Preserve any decisions that haven't changed.
-7. Gate: verify file with `ls`.
+4. Present prior decisions: "Here's where we left off:" followed by key decisions and open questions. Ask: "What would you like to explore further?"
+5. Resume collaborative exploration. Same conversational approach as create mode.
+6. On wrap-up: rewrite the artifact with updated decisions. Mark changed decisions with rationale. Preserve unchanged decisions. Rewrite rather than append — decisions evolve as a whole; appending would create contradictions.
 
 ### Gate
 
-Run `ls` on the saved file path. If the file does not exist, write it now. Do not proceed to wrap up until the file is confirmed on disk.
+Run `ls` on the file. If missing, write it now. Update the active feature marker: set `stage: brainstorm` and `updated` date.
 
 ### Wrap up
 
-1. Summarize what changed: new decisions, changed decisions, newly resolved open questions.
-2. Suggest next step: `/dl:research <slug>` to do a deep codebase scan informed by these decisions.
+1. Summarize what changed: new decisions, changed decisions, resolved open questions.
+2. Suggest next step: `/dl:research <slug>`.
 
 ## Rules
 
 - Do not modify project files. This skill produces context, not code.
 - Always include recommended answers with questions — do not ask bare questions.
-- Use the resolution algorithm for rule discovery — do not hardcode paths.
 - Capture decisions and rationale in the artifact, not a conversation transcript.
-- On re-entry, reopen the conversation from prior decisions — do not append a new dated section.
+- On re-entry, rewrite the artifact (decisions evolve as a whole) — do not append a new dated section.

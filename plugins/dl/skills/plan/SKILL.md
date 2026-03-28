@@ -5,24 +5,15 @@ argument-hint: "[feature description]"
 allowed-tools: Read Write Bash TaskCreate
 ---
 
-Execute each section below in order. Do not skip sections.
+Execute each section in order. Copy the checklist from your mode's section and check off items as you complete them. Do not proceed past a **Gate** until verified.
 
-1. Determine your mode.
-2. Copy the **Task Progress** checklist from that mode's section into your response.
-3. Work through each item. Check it off as you complete it.
-4. Do not proceed past a **Gate** until the gate condition is verified.
-
-## Artifact — required output
-
-Write the artifact to `.work/plans/`. Save the artifact before proceeding to wrap up. Do not present results to the user or suggest next steps until the artifact file has been written and verified with `ls`.
-
-## Config
-
-All artifacts are stored under `.work/` in the current project directory.
+**Artifact:** Write to `.work/plans/`. Verify with `ls` before wrapping up.
 
 ## Mode
 
-If $ARGUMENTS matches a file in `.work/plans/` by exact filename or unambiguous prefix → **refine** mode. If ambiguous, list matches and ask.
+**Active feature detection:** Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug — print "Auto-selected feature: <slug>". If multiple markers exist, list them and ask. Arguments always override the marker.
+
+If $ARGUMENTS (or auto-selected slug) matches a file in `.work/plans/` by exact filename or unambiguous prefix → **refine** mode. If ambiguous, list matches and ask.
 If $ARGUMENTS is set → **create** mode using it as the feature description.
 If $ARGUMENTS is empty → list `.work/plans/`. None: ask what to plan. One: offer refine or new. Many: numbered list, ask to pick or describe a new feature.
 
@@ -39,7 +30,6 @@ Task Progress:
 - [ ] Check for .work/bootstrap.md
 - [ ] Check .work/brainstorms/ for matching artifacts
 - [ ] Check .work/research/ for matching artifacts
-- [ ] Scan linked repos (if declared)
 - [ ] Check for greenfield project
 - [ ] List gathered context in response
 - [ ] Ask clarifying questions
@@ -52,25 +42,21 @@ Task Progress:
 1. Read `CLAUDE.md` if present.
 2. Scan project directory structure (top-level + key subdirectories). Check `.claude/skills/` for available skills.
 3. Check for `.work/bootstrap.md` — if found, read it. Note tech stack, roles, and scaffolded entities as established context.
-4. Check `.work/brainstorms/` for a file matching the feature slug (`*<slug>*-brainstorm.md`). If found, read it. Use `## Decisions` and `## Constraints Discovered` to inform clarifying questions — skip questions already answered in the brainstorm.
-5. Check `.work/research/` for a file matching the feature slug (`*<slug>*-research.md`). If found, read it. Use `### Gaps & Recommendations` to inform clarifying questions and task decomposition.
-6. **Linked repo context:** If the research artifact from step 5 contains a `### Linked Repo Context` section, note it — print "Linked repo context found in research artifact." and include it in the gathered context listing. If no research artifact was found, run `/resolve-rules mode:keyword <feature description>` as a subtask (invoke it, then return here and continue) to check for linked repos. If linked repos are declared, do an orientation-only scan of each (expand `~`, verify directory exists, read `CLAUDE.md` or `README.md`, scan top-level directory with `ls`). Skip repos that don't exist locally with a warning. Do not do targeted keyword code search — that's research's job.
-7. **Greenfield detection:** if no `CLAUDE.md`, no `.work/bootstrap.md`, and directory is empty or near-empty → run `/resolve-rules mode:all scope:bootstrap` as a subtask (invoke it, then return here and continue) to check for a stack rule. If stack rule found, include "Scaffold project following rules" as task 1 in the plan. If no stack rule exists, proceed normally. If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
-8. List what you found in your response before asking questions: bootstrap context (if any), brainstorm artifacts (if any), research artifacts (if any), linked repo context (if any), greenfield status, and available skills.
-9. Ask 3–5 clarifying questions. Wait for answers.
-   - If brainstorm context was found: skip questions already decided in the brainstorm. Focus on implementation-specific questions not covered by the brainstorm.
-   - If bootstrap context was found: skip questions about tech stack, database, and auth approach (already decided). Focus on domain entities, business logic, scope boundaries, and constraints.
-   - If no bootstrap context: ask as normal, including stack questions if the project's tech isn't clear from CLAUDE.md.
-10. Create tasks with `TaskCreate`. Make tasks small. Order by dependency.
-11. Write the plan to `.work/plans/YYYY-MM-DD-<slug>.md`.
+4. Check `.work/brainstorms/` for a matching file (`*<slug>*-brainstorm.md`). If found, read it.
+5. Check `.work/research/` for a matching file (`*<slug>*-research.md`). If found, read it. If it contains `### Linked Repo Context`, note it in gathered context.
+6. **Greenfield detection:** if no `CLAUDE.md`, no `.work/bootstrap.md`, and near-empty directory → run `/resolve-rules mode:all scope:bootstrap` as a subtask. If stack rule found, add "Scaffold project following rules" as task 1.
+7. List what you found before asking questions: bootstrap, brainstorm, research, linked repo context, greenfield status, available skills.
+8. Ask 3–5 clarifying questions. Wait for answers. Read decisions from brainstorm and recommendations from research — only ask about genuinely unresolved items.
+9. Create tasks with `TaskCreate`. Make tasks small. Order by dependency.
+10. Write the plan to `.work/plans/YYYY-MM-DD-<slug>.md`.
 
 ### Gate
 
-Run `ls` on the saved file path. If the file does not exist, go back to step 4. Do not proceed until the file is confirmed on disk.
+Run `ls` on the file. If missing, write it now. Create or update the active feature marker at `.work/active/<slug>.md` with `stage: plan` and today's date. If no marker exists, create one (slug from feature description: lowercase, hyphens, strip non-alphanumeric).
 
 ### Wrap up
 
-Ask the user to review. Once confirmed, suggest running `/design` to architect the feature.
+Ask the user to review. Once confirmed, suggest `/design`.
 
 ## Refine mode
 
@@ -94,7 +80,7 @@ Task Progress:
 
 ### Gate
 
-Run `ls` on the saved file path. If the file does not exist, go back to step 5. Do not proceed until the file is confirmed on disk.
+Run `ls` on the file. If missing, write it now.
 
 ## Plan format
 
