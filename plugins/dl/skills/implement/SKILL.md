@@ -5,25 +5,16 @@ argument-hint: "[plan-slug] [task-number]"
 allowed-tools: Read Write Edit Bash(git:*) TaskCreate TaskList TaskUpdate
 ---
 
-Execute each section below in order. Do not skip sections.
+Execute each section in order. Copy the checklist and check off items as you complete them. Do not proceed past a **Gate** until verified.
 
-1. Determine your mode.
-2. Copy the **Task Progress** checklist from that mode's section into your response.
-3. Work through each item. Check it off as you complete it.
-4. Do not proceed past a **Gate** until the gate condition is verified.
-
-## Artifact — required output
-
-Write an implementation note to `.work/implementations/`. Save the artifact before proceeding to wrap up — even if the task is incomplete. Do not summarize changes, suggest commits, or recommend next steps until the implementation note has been written and verified with `ls`.
-
-## Config
-
-All artifacts are stored under `.work/` in the current project directory.
+**Artifact:** Write an implementation note to `.work/implementations/`. Verify with `ls` before wrapping up — even if the task is incomplete.
 
 ## Find the feature
 
-If $ARGUMENTS: treat as `<slug>` or `<slug> <task-N>`. Find the plan in `.work/plans/`, then the matching design in `.work/designs/`. Missing design → print "No design found for '<slug>'. Run /design first." and stop.
-If no argument: list plans and designs, match by slug. No pairs → print "Run /plan then /design first." and stop. One pair → show it and ask to confirm or describe a new feature. Many → numbered list, ask to pick.
+**Active feature detection:** Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug — print "Auto-selected feature: <slug>". If multiple markers exist, list them and ask. Arguments always override the marker.
+
+If $ARGUMENTS (or auto-selected slug): treat as `<slug>` or `<slug> <task-N>`. Find the plan in `.work/plans/`, then the matching design in `.work/designs/`. Missing design → print "No design found for '<slug>'. Run /design first." and stop.
+If no argument: list plans and designs, match by slug. No pairs → print "Run /plan then /design first." and stop. One pair → show it and ask to confirm. Many → numbered list, ask to pick.
 
 ## Implement mode
 
@@ -64,13 +55,9 @@ If $ARGUMENTS includes a task number, use it. Otherwise ask. Warn if dependencie
 
 ### Apply rules
 
-If the design's task spec includes a `**Rules:**` line, run `/resolve-rules mode:explicit <titles>` as a subtask (invoke it, then return here and continue). Otherwise, run `/resolve-rules mode:keyword <task description terms>` as a subtask.
+If the task spec has a `**Rules:**` line, run `/resolve-rules mode:explicit <titles>` as a subtask. Otherwise, run `/resolve-rules mode:keyword <task terms>`. If unavailable, continue without rules.
 
-If `/resolve-rules` is unavailable, print: "Rule resolution unavailable — continuing without rules." Then continue.
-
-After resolve-rules completes, follow the matched rule docs when creating or modifying files that fall under their scope.
-
-List applied rules in your response, then continue with the next step below. If no rules matched, state that explicitly.
+Follow matched rule docs when modifying files under their scope. List applied rules in your response.
 
 ### Execute
 
@@ -83,11 +70,11 @@ List applied rules in your response, then continue with the next step below. If 
 
 ### Write implementation note
 
-Write the note — see [implementation-note.md](implementation-note.md). Save to `.work/implementations/YYYY-MM-DD-<slug>-task-N.md`.
+Write the note — see [implementation-note.md](implementation-note.md). Save to `.work/implementations/YYYY-MM-DD-<slug>-task-N.md`. In the **Deviations from design** section, list each deviation as: what the design specified, what was done instead, and why. This is read by `/review` to distinguish intentional deviations from violations.
 
 ### Gate
 
-Run `ls` on the saved file path. If the file does not exist, go back and write it. Do not proceed until the file is confirmed on disk.
+Run `ls` on the file. If missing, write it now. Update the active feature marker: set `stage: implement` and `updated` date.
 
 ### Wrap up
 

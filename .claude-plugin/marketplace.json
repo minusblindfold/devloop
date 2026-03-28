@@ -7,7 +7,7 @@
     {
       "name": "dl",
       "description": "Structured development workflow for Claude Code — brainstorm, research, plan, design, implement, review",
-      "version": "2.9.0",
+      "version": "2.10.0",
       "source": "./plugins/dl"
     }
   ]

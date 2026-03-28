@@ -58,8 +58,9 @@ Use `/reload-plugins` after making changes during development.
 - **Cross-session tracking** — Task completion persists. Run `/dl:implement` in a new session and pick up where you left off.
 - **Refine mode** — Run `/dl:plan` or `/dl:design` with no args to iterate on existing artifacts.
 - **Greenfield detection** — In a new project with no existing structure, `/dl:plan` suggests scaffolding as the first task.
+- **Active feature tracking** — Skills auto-detect the active feature via `.work/active/<slug>.md` markers. Start a brainstorm or plan, and every downstream skill auto-selects it — no re-specifying slugs. Supports multiple concurrent features for multi-agent workflows.
 - **Rule-driven consistency** — Skills match task descriptions against rule keywords, so the same patterns apply everywhere.
-- **Linked repositories** — Declare related repos in rule frontmatter and `/dl:research` and `/dl:plan` will scan them for cross-repo context.
+- **Linked repositories** — Declare related repos in rule frontmatter and `/dl:brainstorm` and `/dl:research` will scan them for cross-repo context.
 
 For a deeper walkthrough, see [docs/workflow.md](docs/workflow.md).
 
@@ -96,7 +97,7 @@ repos: [~/code/payments-service, ~/code/shared-types]
 ---
 ```
 
-When `/dl:research` or `/dl:plan` resolve a rule with `repos`, they scan those directories for relevant code, API contracts, and shared types. Paths must be home-relative (`~/...`). See [`devloop/rules/ecosystem.md`](devloop/rules/ecosystem.md) for a working example.
+When `/dl:brainstorm` or `/dl:research` resolve a rule with `repos`, they scan those directories for relevant code, API contracts, and shared types. Paths must be home-relative (`~/...`). See [`devloop/rules/ecosystem.md`](devloop/rules/ecosystem.md) for a working example.
 
 Rules are optional. Without them, skills work from codebase context alone. Start by dropping `.md` files with keyword frontmatter into `~/.claude/rules/` — skills discover them automatically. When you want organized, reusable rule sets, see [devloop-rules](https://github.com/minusblindfold/devloop-rules) for packs with a management CLI. The full format spec is in [`plugins/dl/rules/rules.md`](plugins/dl/rules/rules.md).
 
@@ -106,6 +107,7 @@ Skills read and write artifacts to `.work/` in the current project directory:
 
 ```
 .work/
+├── active/          # Active feature markers for workflow continuity
 ├── brainstorms/     # Feature brainstorm decision logs
 ├── research/        # Research artifacts
 ├── plans/           # Task lists
