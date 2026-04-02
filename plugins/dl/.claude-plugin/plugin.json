@@ -1,7 +1,7 @@
 {
   "name": "dl",
   "description": "Structured development workflow for Claude Code — brainstorm, research, plan, design, implement, review",
-  "version": "2.11.0",
+  "version": "2.12.0",
   "author": {
     "name": "minusblindfold"
   },

@@ -40,7 +40,7 @@ List what you found before asking. Ask 3-5 clarifying questions. Read decisions 
 
 ## Task creation
 
-Create tasks with `TaskCreate`. Make tasks small and vertically-sliced — each task delivers a testable end-to-end slice. Order by dependency, then by what unblocks the most follow-up work.
+Create tasks with `TaskCreate`. Decompose by user-visible behavior or capability, not by architectural layer. Do not create tasks like "set up all database models," "build the service layer," or "add tests for everything" — each task should touch all relevant layers for its slice. Order by dependency, then by what unblocks the most follow-up work.
 
 ## Refine mode
 
@@ -57,6 +57,7 @@ Check for new brainstorm/research artifacts. Show the current plan. Ask "What wo
 
 - [ ] **Task title** — what it does; key constraints or dependencies if any.
   - **Done when:** one-line acceptance criterion.
+  - **Verified by:** how to prove this slice works (test, command, or observable behavior).
 ```
 
 ## Gate
@@ -70,5 +71,5 @@ Present the plan. Suggest the user spot-check task ordering, then run `/dl:desig
 ## Rules
 
 - Do not write code. This skill produces a plan, not an implementation.
-- Right-size tasks — small and vertically-sliced over large and horizontal.
+- Do not group tasks by architectural layer — each task delivers a testable end-to-end slice.
 - In refine mode, write once at the end.

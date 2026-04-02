@@ -43,7 +43,7 @@ Ask 2-3 clarifying questions. Read prior artifact decisions — only ask about g
 
 ## Task specs
 
-Write a spec for each plan task: Goal, Interfaces, Implementation notes, Acceptance criteria, Tests, Dependencies. Note applicable rules by title (e.g., `**Rules:** JPA Entity Rules`) — this tells `/implement` which docs to apply via `/resolve-rules` explicit mode.
+Write a spec for each plan task: Goal, Interfaces, Implementation notes, Acceptance criteria, Tests, Dependencies. In the Tests field, write concrete verification steps that implement can run immediately after completing the slice — not a deferred test plan. Note applicable rules by title (e.g., `**Rules:** JPA Entity Rules`) — this tells `/implement` which docs to apply via `/resolve-rules` explicit mode.
 
 ## Diagrams
 
