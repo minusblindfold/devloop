@@ -35,7 +35,7 @@ Task Progress:
 
 ## Query execution
 
-Run `/resolve-rules mode:keyword <topic>` as a subtask. For each query from the brainstorm artifact, search the codebase with targeted reads and greps. For linked repos from resolve-rules, include them in the search. Record findings per query — keep findings factual, not opinionated.
+Run `/resolve-rules mode:keyword <topic>` as a subtask. For each query from the brainstorm artifact, search the codebase with targeted reads and greps. For linked repos from resolve-rules, include them in the search. Record findings per query — keep findings factual, not opinionated. When a query touches an existing feature, note how it's structured through the stack (e.g., route → service → model → test) — this gives plan concrete examples for vertical slicing.
 
 ## Synthesis
 
