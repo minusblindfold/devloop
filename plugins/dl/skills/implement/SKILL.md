@@ -27,7 +27,7 @@ Task Progress:
 - [ ] Verify: note exists, STATUS complete, tests pass
 - [ ] Check off the task in the plan (all mode: commit, then next task or halt)
 - [ ] Gate: verify note with ls; update active marker
-- [ ] Wrap up: summarize worker return(s), note deviations, suggest commit
+- [ ] Wrap up: summarize worker return(s), note deviations, suggest commit (all mode: end with forked review's findings)
 ```
 
 ## Load
@@ -54,7 +54,7 @@ Loop over the unchecked tasks in order, halting the line when a trigger fires:
 
 **Halt report:** give the task number, title, and reason, ending with "Re-run `/dl:implement <slug> all` to resume." Checkboxes are the resume state — a re-run starts at the first unchecked box.
 
-When no unchecked tasks remain, do Gate once and wrap up the whole line: per-task results, commits, any recorded deviations.
+**End of line:** When no unchecked tasks remain, do Gate once — updating the marker to `stage: implement` + today's date is your last write to `.work/` — then invoke forked `/dl:review <slug>`, whose own gate archives the marker: make no marker or `.work/` writes after invoking review. End the line with a single final response — per-task results, commits, recorded deviations, and the review's findings presented without acting on them (fixes are the user's call); halted lines and single-task runs stop at their normal wrap-ups and never auto-run review.
 
 ## Build payload and spawn worker
 
@@ -85,4 +85,3 @@ Summarize the worker's return: files created/modified, test results, deviations.
 - Do not start without a design file (mini-spec features excepted).
 - You are the foreman: the worker implements and writes the note — never do either yourself (stub-on-missing-note excepted).
 - The plan file's checkboxes are the authoritative progress state — check off only verified completions.
-- Spawn workers with fresh context (general-purpose), never fork-type.
