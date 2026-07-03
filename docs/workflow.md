@@ -15,6 +15,14 @@ Each step produces an artifact that the next step reads. No step touches code un
 
 During any phase, run `/dl:research` to feed discoveries back into plans and designs.
 
+Ceremony scales with the work. Brainstorm opens by sizing it:
+
+| Size | Meaning | Path |
+|---|---|---|
+| small | Single-session change, few files, no open design decisions | brainstorm (1-2 rounds) → mini-spec → implement |
+| medium | Multi-file, but the architecture is clear | brainstorm → plan → implement |
+| large | New architecture or cross-cutting change | full pipeline; design review is the mandatory checkpoint |
+
 ## /dl:brainstorm
 
 ```
@@ -25,7 +33,7 @@ Iterative questioning session that probes a feature idea. Claude resolves rules,
 
 The output is a decision log with research queries (not a transcript) saved to `.work/brainstorms/`. The Research Queries section drives what `/dl:research` investigates. After brainstorming, your context may be full of conversation. Use `/rewind` to reset, then run `/dl:research` — the brainstorm artifact carries your decisions and queries forward.
 
-Brainstorm is the required entry point for the devloop workflow.
+Brainstorm is the recommended entry point for the devloop workflow. For small work it collapses to 1-2 rounds and writes a `## Mini-Spec` (goal, approach, done-when) that `/dl:implement` consumes directly — no plan or design needed.
 
 ```
 /dl:brainstorm                  # ask what to brainstorm
@@ -38,7 +46,7 @@ Brainstorm is the required entry point for the devloop workflow.
 /dl:research "topic"
 ```
 
-Executes the Research Queries from your brainstorm artifact as targeted codebase searches. Requires a brainstorm artifact. Produces per-query findings and a **Gaps & Recommendations** section.
+Executes the Research Queries from your brainstorm artifact as targeted codebase searches. Without a brainstorm artifact it derives queries from the topic directly. Produces per-query findings and a **Gaps & Recommendations** section.
 
 Run it again at any point — it appends new findings without overwriting prior sections.
 

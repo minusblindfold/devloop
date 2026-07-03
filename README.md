@@ -12,14 +12,14 @@ A Claude Code plugin that structures AI-assisted development into phases. Withou
                    discoveries surface
 ```
 
-- **brainstorm** — required entry point; iterative questioning to refine a feature idea, producing decisions and research queries
+- **brainstorm** — recommended entry point; sizes the work, then iterative questioning to refine a feature idea, producing decisions and research queries
 - **research** — execute research queries from brainstorm as targeted codebase searches
 - **plan** — ask clarifying questions, produce an ordered task list
 - **design** — generate architecture, Mermaid diagrams, and a detailed spec for each task
 - **implement** — implement one task at a time against the spec, track completion
 - **review** — load rules and design context, review code for rule violations and security issues
 
-Start with `/dl:brainstorm` — it's the required entry point. `/dl:research` can re-enter at any stage when discoveries surface during implementation.
+Start with `/dl:brainstorm` — it sizes the work and routes it: **small** changes get a mini-spec and go straight to `/dl:implement`; **medium** work skips research and goes to `/dl:plan`; **large** features run the full pipeline with design review as the mandatory checkpoint. `/dl:research` can re-enter at any stage when discoveries surface during implementation.
 
 ## Install
 
@@ -43,8 +43,8 @@ Use `/reload-plugins` after making changes during development.
 
 | Skill | What it does |
 |-------|-------------|
-| `/dl:brainstorm` | Required entry point. Iterative questioning to refine a feature idea. Produces decisions and research queries. |
-| `/dl:research` | Execute research queries from brainstorm as targeted codebase searches. Requires brainstorm artifact. |
+| `/dl:brainstorm` | Recommended entry point. Sizes the work (small/medium/large), then iterative questioning to refine the idea. Small work produces a mini-spec for direct implementation. |
+| `/dl:research` | Execute research queries from brainstorm as targeted codebase searches, or research a topic directly. |
 | `/dl:plan` | Ask clarifying questions, create a vertically-sliced task list. Detects greenfield projects. |
 | `/dl:design` | Primary review checkpoint. Generate architecture, Mermaid diagrams, and per-task specs. |
 | `/dl:implement` | Implement one task at a time against the spec. Tracks progress across sessions. |

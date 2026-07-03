@@ -28,8 +28,8 @@ When reducing instruction count, apply these in order of ROI:
 ## Artifact chaining
 
 - Each skill produces a markdown artifact that becomes the next skill's input. This is the core reliability mechanism — static artifacts survive context compaction.
-- Never break the chain: brainstorm -> research -> plan -> design -> implement -> review.
-- Hard dependencies must be enforced with gate checks (e.g., implement refuses to start without a design file).
+- The chain scales with work size: small work runs brainstorm -> implement via Mini-Spec; medium runs brainstorm -> plan -> implement; large features use the full chain (brainstorm -> research -> plan -> design -> implement -> review).
+- Missing upstream artifacts produce a warning and a degraded path, not a hard stop. The one hard gate: large features must have their design reviewed before implementation.
 
 ## Vertical slicing
 

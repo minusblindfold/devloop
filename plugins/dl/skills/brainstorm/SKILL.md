@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Iterative questioning to refine a feature idea before research and planning. Required entry point for the devloop workflow. Use when the user wants to brainstorm, explore an idea, or probe a feature concept.
+description: Sizes the work, then refines a feature idea through iterative questioning. Recommended entry point for the devloop workflow. Use when the user wants to brainstorm, explore an idea, or probe a feature concept.
 argument-hint: "[feature or topic]"
 allowed-tools: Read Write Bash Glob Grep
 ---
@@ -20,18 +20,23 @@ Parse `$ARGUMENTS` (or auto-selected slug): matches existing file in `.work/brai
 ```
 Task Progress:
 - [ ] Determine mode and update active marker
+- [ ] Size the work: small / medium / large
 - [ ] If re-entry: read existing artifact, present prior decisions and open questions
 - [ ] Gather context: project rules, CLAUDE.md, project scan, linked repos, codebase search
 - [ ] Summarize context; surface findings during conversation
-- [ ] Collaborative exploration with user
-- [ ] Write artifact (create: new file; re-entry: rewrite)
+- [ ] Collaborative exploration with user (small: 1-2 rounds)
+- [ ] Write artifact (small: Mini-Spec; medium: no Research Queries; large: full)
 - [ ] Gate: verify artifact with ls; update active marker
-- [ ] Wrap up: summarize decisions, suggest /dl:research
+- [ ] Wrap up: summarize decisions, suggest next step by size
 ```
 
 ## Active marker
 
 Derive slug from topic (lowercase, hyphens, strip non-alphanumeric). Create or update `.work/active/<slug>.md` with `stage: brainstorm` and today's date.
+
+## Size triage
+
+Open by sizing the work — ask with a recommended answer. **Small**: single-session change, few files, no open design decisions — collapse exploration to 1-2 rounds and write a `## Mini-Spec` instead of Research Queries. **Medium**: multi-file but the architecture is clear — normal exploration, omit Research Queries. **Large**: new architecture or cross-cutting change — full brainstorm with Research Queries.
 
 ## Context gathering
 
@@ -66,15 +71,15 @@ Write to `.work/brainstorms/YYYY-MM-DD-<slug>-brainstorm.md`:
 ## Constraints Discovered
 ```
 
-Capture decisions and rationale, not a conversation transcript. Research Queries are specific questions about codebase facts for `/dl:research` to execute — not implementation tasks.
+Capture decisions and rationale, not a conversation transcript. Research Queries are specific questions about codebase facts for `/dl:research` to execute — not implementation tasks. Small work replaces Research Queries with `## Mini-Spec`: Goal, Approach, Done when — about 10 lines. Medium omits Research Queries.
 
 ## Gate
 
-Verify artifact with `ls`; write if missing. Update `.work/active/<slug>.md` with `stage: brainstorm` and today's date.
+Verify artifact with `ls`; write if missing. Update `.work/active/<slug>.md` with `stage: brainstorm` (small: `stage: mini-spec`) and today's date.
 
 ## Wrap up
 
-Summarize: decisions made, research queries generated, open questions remaining. Suggest next step: `/dl:research <slug>`.
+Summarize: decisions made, open questions remaining. Suggest next step by size — small: `/dl:implement <slug>`; medium: `/dl:plan <slug>`; large: `/dl:research <slug>`.
 
 ## Rules
 

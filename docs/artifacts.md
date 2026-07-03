@@ -50,11 +50,11 @@ Slugs are how skills find related artifacts. When you run `/dl:design`, it match
 /dl:review     → .work/reviews/<slug>-review.md
 ```
 
-- `/dl:brainstorm` is the required entry point. It produces decisions, research queries, and codebase context through iterative conversation.
-- `/dl:research` requires a brainstorm artifact. It executes the Research Queries section as targeted codebase searches rather than broad scans.
+- `/dl:brainstorm` is the recommended entry point. It sizes the work (small work gets a `## Mini-Spec` consumed directly by `/dl:implement`) and produces decisions, research queries, and codebase context through iterative conversation.
+- `/dl:research` executes the brainstorm's Research Queries section as targeted codebase searches rather than broad scans; without a brainstorm artifact it derives queries from the topic.
 - `/dl:plan` reads brainstorm and research artifacts. Decisions from brainstorming and gaps from research inform clarifying questions and task ordering. Tasks are vertically-sliced.
 - `/dl:design` requires a plan. It produces a spec for each task and is the primary review checkpoint — reviewed thoroughly before implementation.
-- `/dl:implement` requires a plan and design. It implements one task at a time against the spec.
+- `/dl:implement` requires a plan and design (or a mini-spec for small work). It implements one task at a time against the spec.
 - `/dl:review` is optional. It reviews changes for rule violations and security issues. Works standalone or after `/dl:implement`.
 
 ## Diagrams

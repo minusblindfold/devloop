@@ -15,7 +15,7 @@ Execute each section in order. Copy the checklist and check off items as you com
 
 Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them and ask. Arguments always override.
 
-Parse $ARGUMENTS as `<slug>` or `<slug> <task-N>`. Find the plan in `.work/plans/` and matching design in `.work/designs/`. Missing design → print "No design found. Run /design first." and stop. No argument → list plan/design pairs; none: stop; one: confirm; many: ask to pick.
+Parse $ARGUMENTS as `<slug>` or `<slug> <task-N>`. If the marker has `stage: mini-spec`, read the brainstorm artifact's `## Mini-Spec` section as the spec — a single task, no plan or design required; skip task sync and picking. Otherwise find the plan in `.work/plans/` and matching design in `.work/designs/`. Missing design → print "No design found. Run /design first." and stop. No argument → list plan/design pairs; none: stop; one: confirm; many: ask to pick.
 
 ```
 Task Progress:
@@ -62,6 +62,6 @@ Summarize changes (files created/modified). Note deviations — suggest `/design
 
 ## Rules
 
-- Do not start without a design file.
+- Do not start without a design file (mini-spec features excepted).
 - Do not duplicate tasks — match by subject before creating.
 - Implement only the selected task; note out-of-scope discoveries in the implementation note.
