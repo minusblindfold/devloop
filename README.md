@@ -44,17 +44,17 @@ Use `/reload-plugins` after making changes during development.
 | Skill | What it does |
 |-------|-------------|
 | `/dl:brainstorm` | Recommended entry point. Sizes the work (small/medium/large), then iterative questioning to refine the idea. Small work produces a mini-spec for direct implementation. |
-| `/dl:research` | Execute research queries from brainstorm as targeted codebase searches, or research a topic directly. |
+| `/dl:research` | Execute research queries from brainstorm as targeted codebase searches, or research a topic directly. Runs in a forked subagent — scan noise stays out of your session. |
 | `/dl:plan` | Ask clarifying questions, create a vertically-sliced task list. Detects greenfield projects. |
 | `/dl:design` | Primary review checkpoint. Generate architecture, Mermaid diagrams, and per-task specs. |
 | `/dl:implement` | Implement one task at a time against the spec. Tracks progress across sessions. |
-| `/dl:review` | Load rules and design context, review code for rule violations and security issues. Works standalone or after `/dl:implement`. Archives the feature marker on completion. |
+| `/dl:review` | Load rules and design context, review code for rule violations and security issues. Works standalone or after `/dl:implement`. Runs in a forked subagent; archives the feature marker on completion. |
 `/dl:plan` and `/dl:design` support refine mode — invoke with no args when existing artifacts are found.
 
 ## What you get
 
 - **Architecture diagrams** — `/dl:design` generates Mermaid diagrams (architecture, data flow, component, sequence) saved as `.mmd` files in `.work/designs/diagrams/`.
-- **Cross-session tracking** — Task completion persists. Run `/dl:implement` in a new session and pick up where you left off.
+- **Cross-session tracking** — Task completion lives as checkboxes in the plan artifact itself. Run `/dl:implement` in a new session and pick up where you left off.
 - **Refine mode** — Run `/dl:plan` or `/dl:design` with no args to iterate on existing artifacts.
 - **Greenfield detection** — In a new project with no existing structure, `/dl:plan` suggests scaffolding as the first task.
 - **Active feature tracking** — Skills auto-detect the active feature via `.work/active/<slug>.md` markers. Start a brainstorm or plan, and every downstream skill auto-selects it — no re-specifying slugs. Supports multiple concurrent features for multi-agent workflows.

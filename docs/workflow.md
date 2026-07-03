@@ -50,6 +50,8 @@ Executes the Research Queries from your brainstorm artifact as targeted codebase
 
 Run it again at any point — it appends new findings without overwriting prior sections.
 
+Research runs in a forked subagent: the codebase scanning happens in a fresh context and only the findings return to your session (the artifact is the interface).
+
 Research artifacts are saved to `.work/research/`.
 
 ## /dl:plan
@@ -87,7 +89,7 @@ The design is the primary review checkpoint — review it thoroughly before impl
 
 Claude loads the plan and design, displays the task list with completion status, and implements one task at a time. It reads relevant files first, checks which rules apply, runs existing tests to establish a baseline, implements against the spec, and re-runs tests. An implementation note is saved to `.work/implementations/`.
 
-Completed tasks are tracked — pick up exactly where you left off across sessions.
+Completed tasks are checked off in the plan file itself — the artifact is the authoritative progress state, so you pick up exactly where you left off across sessions.
 
 ## Working effectively
 

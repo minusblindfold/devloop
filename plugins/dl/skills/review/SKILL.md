@@ -2,7 +2,8 @@
 name: review
 description: Load rules and design context, then review code changes for rule violations and security issues. Works standalone or after /dl:implement.
 argument-hint: "[feature-slug]"
-allowed-tools: Read Bash Glob Grep
+allowed-tools: Read Write Bash Glob Grep
+context: fork
 ---
 
 Execute each section in order. Copy the checklist and check off items as you complete them. Do not proceed past a **Gate** until verified.
@@ -16,6 +17,8 @@ Execute each section in order. Copy the checklist and check off items as you com
 Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them, offer to archive any with `date` older than 30 days to `.work/archive/`, then ask. Arguments always override.
 
 Parse `$ARGUMENTS` (or auto-selected slug): matches existing file in `.work/reviews/` → **re-entry**. Matches plan + design → **create** (workflow mode). Set but no plan/design → **create** (standalone, using slug as context). Empty → detect branch; main: uncommitted only; otherwise: standalone using branch name.
+
+You run in a forked context and cannot converse — when a choice is genuinely required (multiple current markers, ambiguous slug), stop and return the options to the caller instead of asking.
 
 ```
 Task Progress:

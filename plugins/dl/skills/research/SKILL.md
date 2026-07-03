@@ -3,6 +3,7 @@ name: research
 description: Executes research queries from a brainstorm artifact as targeted codebase searches, or researches a topic directly. Use after /dl:brainstorm or when discoveries surface during implementation.
 argument-hint: "[feature-slug]"
 allowed-tools: Read Write Bash Glob Grep
+context: fork
 ---
 
 Execute each section in order. Copy the checklist and check off items as you complete them. Do not proceed past a **Gate** until verified.
@@ -15,7 +16,9 @@ Execute each section in order. Copy the checklist and check off items as you com
 
 Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them, offer to archive any with `date` older than 30 days to `.work/archive/`, then ask. Arguments always override.
 
-Parse `$ARGUMENTS` (or auto-selected slug): matches existing file in `.work/research/` by slug → **re-entry**. Set but no match → **create**. Empty → ask what to research, then proceed in create mode.
+Parse `$ARGUMENTS` (or auto-selected slug): matches existing file in `.work/research/` by slug → **re-entry**. Set but no match → **create**. Empty → stop and return, asking the caller for a topic.
+
+You run in a forked context and cannot converse — when a choice is genuinely required (multiple current markers, no topic), stop and return the options to the caller instead of asking.
 
 Find matching brainstorm artifact in `.work/brainstorms/` and extract its `## Research Queries` section. If missing, note it and derive queries from the given topic directly.
 

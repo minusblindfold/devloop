@@ -2,7 +2,7 @@
 name: implement
 description: Implements tasks from a plan and design, applying rules and saving implementation notes. Use when coding a planned feature or working through tasks one at a time.
 argument-hint: "[plan-slug] [task-number]"
-allowed-tools: Read Write Edit Bash(git:*) TaskCreate TaskList TaskUpdate
+allowed-tools: Read Write Edit Bash(git:*)
 ---
 
 Execute each section in order. Copy the checklist and check off items as you complete them. Do not proceed past a **Gate** until verified.
@@ -21,24 +21,24 @@ Parse $ARGUMENTS as `<slug>` or `<slug> <task-N>`. If the marker has `stage: min
 Task Progress:
 - [ ] Find plan and design by slug
 - [ ] Read plan, design, and .mmd diagrams
-- [ ] Sync plan tasks to Claude Code task list (match by subject, don't duplicate)
-- [ ] Pick task (from args or ask) and mark in_progress
+- [ ] Read completion state from the plan's checkboxes
+- [ ] Pick task (from args or ask)
 - [ ] Apply project rules from devloop/rules/
 - [ ] Read relevant files and run baseline tests
 - [ ] Implement against task spec
-- [ ] Re-run tests; mark completed
+- [ ] Re-run tests; check off the task in the plan
 - [ ] Write implementation note (see implementation-note.md)
 - [ ] Gate: verify note with ls; update active marker
 - [ ] Wrap up: summarize, note deviations, suggest commit
 ```
 
-## Load and sync
+## Load
 
-Read plan and design in full. Read `.mmd` diagrams from `.work/designs/diagrams/` to understand proposed architecture. Sync plan tasks to Claude Code task list: call `TaskList`, then `TaskCreate` for any missing tasks — match by subject before creating. Print task list with completion status.
+Read plan and design in full. Read `.mmd` diagrams from `.work/designs/diagrams/` to understand proposed architecture. The plan's `- [ ]` checkboxes are the authoritative completion state — print the task list with status.
 
 ## Pick task
 
-If $ARGUMENTS includes a task number, use it. Otherwise ask. Warn if dependencies are incomplete. Mark `in_progress` with `TaskUpdate`.
+If $ARGUMENTS includes a task number, use it. Otherwise ask. Warn if dependencies are incomplete.
 
 ## Apply rules
 
@@ -46,7 +46,7 @@ If the task spec has a `**Rules:**` line, apply the rules in `devloop/rules/` wh
 
 ## Execute
 
-Read all relevant files before editing. Run relevant tests to establish a baseline. Implement against the task spec (Goal, Interfaces, Acceptance criteria from design). Re-run tests — note failures or unexpected results. Mark `completed` with `TaskUpdate` when fully done.
+Read all relevant files before editing. Run relevant tests to establish a baseline. Implement against the task spec (Goal, Interfaces, Acceptance criteria from design). Re-run tests — note failures or unexpected results. When fully done, check off the task's box in the plan file.
 
 ## Implementation note
 
@@ -63,5 +63,5 @@ Summarize changes (files created/modified). Note deviations — suggest `/design
 ## Rules
 
 - Do not start without a design file (mini-spec features excepted).
-- Do not duplicate tasks — match by subject before creating.
+- The plan file's checkboxes are the authoritative progress state — check off completed tasks there.
 - Implement only the selected task; note out-of-scope discoveries in the implementation note.
