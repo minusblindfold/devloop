@@ -1,6 +1,5 @@
 ---
-keywords: [skill, skills, SKILL.md, instruction, prompt, workflow, plugin]
-scope: always
+keywords: [skill, SKILL.md, plugin]
 ---
 # Skill Authoring Rules
 
