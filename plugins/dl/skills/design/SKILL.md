@@ -23,7 +23,7 @@ Task Progress:
 - [ ] Determine mode
 - [ ] If refine: show current design, ask what to change, iterate, write once
 - [ ] Read plan: extract tasks and dependencies
-- [ ] Gather context: CLAUDE.md, project scan, bootstrap.md if present
+- [ ] Gather context: CLAUDE.md, project scan
 - [ ] Ask 2-3 clarifying questions (only unresolved items)
 - [ ] Write Overview and Architecture
 - [ ] Write Task Specs
@@ -35,7 +35,7 @@ Task Progress:
 
 ## Context gathering
 
-Read the plan — extract name, tasks, and dependencies. List them in your response. Read `CLAUDE.md` if present. Scan the project directory. Check for `.work/bootstrap.md` — if found, reference the bootstrapped stack as established context.
+Read the plan — extract name, tasks, and dependencies. List them in your response. Read `CLAUDE.md` if present. Scan the project directory.
 
 ## Clarifying questions
 

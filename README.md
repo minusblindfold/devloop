@@ -48,7 +48,7 @@ Use `/reload-plugins` after making changes during development.
 | `/dl:plan` | Ask clarifying questions, create a vertically-sliced task list. Detects greenfield projects. |
 | `/dl:design` | Primary review checkpoint. Generate architecture, Mermaid diagrams, and per-task specs. |
 | `/dl:implement` | Implement one task at a time against the spec. Tracks progress across sessions. |
-| `/dl:review` | Load rules and design context, review code for rule violations and security issues. Works standalone or after `/dl:implement`. |
+| `/dl:review` | Load rules and design context, review code for rule violations and security issues. Works standalone or after `/dl:implement`. Archives the feature marker on completion. |
 `/dl:plan` and `/dl:design` support refine mode — invoke with no args when existing artifacts are found.
 
 ## What you get
@@ -65,16 +65,7 @@ For a deeper walkthrough, see [docs/workflow.md](docs/workflow.md).
 
 ## Rules
 
-Rules are markdown files that guide skills at runtime — coding patterns, project structure, naming conventions. Skills resolve rules from four layers, highest precedence first:
-
-| Precedence | Layer | Path | Description |
-|---|---|---|---|
-| 1 (highest) | User | `~/.claude/rules/` | Claude Code native, personal overrides |
-| 2 | Project | `{cwd}/devloop/rules/` | Project-specific rules |
-| 3 | Shared/org | `~/devloop/rules/` | Rule packs managed by devloop CLI |
-| 4 (lowest) | Plugin-bundled | `${CLAUDE_PLUGIN_ROOT}/rules/` | Defaults shipped with devloop |
-
-Drop `.md` files with YAML frontmatter into any of these directories and skills pick them up automatically via keyword matching. For project-specific rules, create a `devloop/rules/` directory in your project root and commit it to version control.
+Rules are markdown files that guide skills at runtime — coding patterns, project structure, naming conventions. They live in one place: `devloop/rules/` in your project root, committed to version control. Skills pick them up automatically via keyword matching; a rule without `keywords` applies to every task.
 
 ```yaml
 ---
@@ -98,7 +89,7 @@ repos: [~/code/payments-service, ~/code/shared-types]
 
 When `/dl:brainstorm` or `/dl:research` resolve a rule with `repos`, they scan those directories for relevant code, API contracts, and shared types. Paths must be home-relative (`~/...`). See [`devloop/rules/ecosystem.md`](devloop/rules/ecosystem.md) for a working example.
 
-Rules are optional. Without them, skills work from codebase context alone. Start by dropping `.md` files with keyword frontmatter into `~/.claude/rules/` — skills discover them automatically. When you want organized, reusable rule sets, see [devloop-rules](https://github.com/minusblindfold/devloop-rules) for packs with a management CLI. The full format spec is in [`plugins/dl/rules/rules.md`](plugins/dl/rules/rules.md).
+Rules are optional. Without them, skills work from codebase context alone. For ready-made rule sets, copy a pack from [`examples/rule-packs/`](examples/rule-packs/) into your project's `devloop/rules/`. Prose rules are for patterns and judgment — anything a command can check belongs in a hook instead ([`examples/hooks/`](examples/hooks/)). The full format spec is in [`docs/rules.md`](docs/rules.md).
 
 ## Working directory
 
