@@ -84,10 +84,16 @@ The design is the primary review checkpoint — review it thoroughly before impl
 ## /dl:implement
 
 ```
-/dl:implement
+/dl:implement                   # pick a task
+/dl:implement <slug> <N>        # implement task N
+/dl:implement <slug> all        # run every unchecked task in order
 ```
 
-Claude loads the plan and design, displays the task list with completion status, and implements one task at a time. It reads relevant files first, checks which rules apply, runs existing tests to establish a baseline, implements against the spec, and re-runs tests. An implementation note is saved to `.work/implementations/`.
+Claude acts as a foreman: it loads the plan and design, displays the task list with completion status, and delegates the selected task to a fresh-context worker subagent. The worker receives a payload — the task entry, its design spec, applicable rules, and prior implementation notes — then reads the relevant files, runs existing tests to establish a baseline, implements against the spec, and re-runs tests. An implementation note is saved to `.work/implementations/`, and the foreman verifies the worker's return before checking the task off.
+
+**Single-task mode** implements one task per invocation and suggests a commit at the end.
+
+**All mode** (`all`) requires a clean working tree, then loops over every unchecked task in plan order, committing each task's changes separately as it completes. The line halts — leaving the box unchecked — when a task fails, targets a separate repo, or declares an interface-changing deviation that affects unstarted tasks; re-run `/dl:implement <slug> all` to resume from the first unchecked task. When the last task lands, it automatically runs `/dl:review` in a forked subagent and surfaces the findings without acting on them. All mode requires Claude Code ≥ 2.1.172 (nested subagent spawning).
 
 Completed tasks are checked off in the plan file itself — the artifact is the authoritative progress state, so you pick up exactly where you left off across sessions.
 
@@ -113,8 +119,8 @@ If you've corrected Claude multiple times on the same issue, the context can bec
 - **Start small.** Don't plan 15 tasks. Start with 3-5. You can always `/dl:plan refine` to add more.
 - **Let Claude interview you.** Give a short description and let Claude ask the clarifying questions. They often surface constraints you hadn't considered.
 - **Review artifacts, not just code.** Check `.work/brainstorms/`, `.work/plans/`, `.work/designs/`, and `.work/implementations/` between sessions. The artifacts capture decisions and rationale that git commits don't.
-- **One task at a time.** `/dl:implement` works on a single task per invocation. This keeps context focused and changes reviewable.
-- **Commit after each task.** Small, well-described commits make review and rollback easy.
+- **One task per worker.** Every task runs in its own fresh-context worker, whether you invoke `/dl:implement` per task or once with `all`. This keeps each task's context focused; reviewability comes from the per-task commits.
+- **Commit after each task.** Small, well-described commits make review and rollback easy. All mode does this for you.
 - **Use /dl:research as a re-entry point.** Discovered something unexpected? Run `/dl:research` to capture it, then refine the plan or design. The workflow is a loop, not a line.
 
 ## Further reading
