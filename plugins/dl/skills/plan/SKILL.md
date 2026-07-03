@@ -21,8 +21,7 @@ If $ARGUMENTS (or auto-selected slug) matches a file in `.work/plans/` → **ref
 Task Progress:
 - [ ] Determine mode
 - [ ] If refine: read current plan, check for new brainstorm/research artifacts
-- [ ] Gather context: CLAUDE.md, project scan, brainstorm/research artifacts
-- [ ] If greenfield: run /resolve-rules scope:bootstrap for stack detection
+- [ ] Gather context: project rules, CLAUDE.md, project scan, brainstorm/research artifacts
 - [ ] List context and ask clarifying questions (only unresolved items)
 - [ ] Create tasks with TaskCreate
 - [ ] Write plan to .work/plans/
@@ -32,7 +31,7 @@ Task Progress:
 
 ## Context gathering
 
-Read `CLAUDE.md` if present. Scan project directory structure. Check `.work/brainstorms/` and `.work/research/` for matching artifacts — read them if found. If research contains linked repo context, note it. If greenfield (no `CLAUDE.md`, near-empty directory), run `/resolve-rules mode:all scope:bootstrap` — if stack rule found, add scaffold as task 1.
+Read `devloop/rules/*.md` if present — apply rules whose `keywords` match the feature; rules without `keywords` always apply. Read `CLAUDE.md` if present. Scan project directory structure. Check `.work/brainstorms/` and `.work/research/` for matching artifacts — read them if found. If research contains linked repo context, note it.
 
 ## Clarifying questions
 

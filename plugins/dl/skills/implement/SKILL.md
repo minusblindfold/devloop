@@ -23,7 +23,7 @@ Task Progress:
 - [ ] Read plan, design, and .mmd diagrams
 - [ ] Sync plan tasks to Claude Code task list (match by subject, don't duplicate)
 - [ ] Pick task (from args or ask) and mark in_progress
-- [ ] Run /resolve-rules for applicable rules
+- [ ] Apply project rules from devloop/rules/
 - [ ] Read relevant files and run baseline tests
 - [ ] Implement against task spec
 - [ ] Re-run tests; mark completed
@@ -42,7 +42,7 @@ If $ARGUMENTS includes a task number, use it. Otherwise ask. Warn if dependencie
 
 ## Apply rules
 
-If the task spec has a `**Rules:**` line, run `/resolve-rules mode:explicit <titles>` as a subtask. Otherwise, run `/resolve-rules mode:keyword <task terms>`. If unavailable, continue without rules. Follow matched rules when modifying files under their scope. List applied rules in your response.
+If the task spec has a `**Rules:**` line, apply the rules in `devloop/rules/` whose H1 titles match. Otherwise apply rules whose `keywords` match the task; rules without `keywords` always apply. Follow matched rules when modifying files under their scope. List applied rules in your response.
 
 ## Execute
 

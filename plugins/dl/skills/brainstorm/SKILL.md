@@ -21,7 +21,7 @@ Parse `$ARGUMENTS` (or auto-selected slug): matches existing file in `.work/brai
 Task Progress:
 - [ ] Determine mode and update active marker
 - [ ] If re-entry: read existing artifact, present prior decisions and open questions
-- [ ] Gather context: /resolve-rules, CLAUDE.md, project scan, linked repos, codebase search
+- [ ] Gather context: project rules, CLAUDE.md, project scan, linked repos, codebase search
 - [ ] Summarize context; surface findings during conversation
 - [ ] Collaborative exploration with user
 - [ ] Write artifact (create: new file; re-entry: rewrite)
@@ -35,7 +35,7 @@ Derive slug from topic (lowercase, hyphens, strip non-alphanumeric). Create or u
 
 ## Context gathering
 
-Run `/resolve-rules mode:keyword <topic>` as a subtask. Read `CLAUDE.md` if present. Scan project directory structure. For linked repos from resolve-rules, scan for topic-relevant patterns. Search the project codebase for existing implementations and naming patterns. Summarize briefly — hold details back to surface naturally during conversation.
+Read `devloop/rules/*.md` if present — apply rules whose `keywords` match the topic; rules without `keywords` always apply. Read `CLAUDE.md` if present. Scan project directory structure. If a matched rule declares `repos:`, scan those repos for topic-relevant patterns. Search the project codebase for existing implementations and naming patterns. Summarize briefly — hold details back to surface naturally during conversation.
 
 ## Collaborative exploration
 

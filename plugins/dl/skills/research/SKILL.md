@@ -24,7 +24,7 @@ Task Progress:
 - [ ] Determine mode; find and read brainstorm artifact
 - [ ] If brainstorm missing: stop with message
 - [ ] If re-entry: read existing research artifact
-- [ ] Run /resolve-rules mode:keyword <topic>
+- [ ] Read project rules from devloop/rules/
 - [ ] Execute each research query as targeted search
 - [ ] List findings per query in response
 - [ ] Synthesize: identify gaps across queries
@@ -35,7 +35,7 @@ Task Progress:
 
 ## Query execution
 
-Run `/resolve-rules mode:keyword <topic>` as a subtask. For each query from the brainstorm artifact, search the codebase with targeted reads and greps. For linked repos from resolve-rules, include them in the search. Record findings per query — keep findings factual, not opinionated. When a query touches an existing feature, note how it's structured through the stack (e.g., route → service → model → test) — this gives plan concrete examples for vertical slicing.
+Read `devloop/rules/*.md` if present — apply rules whose `keywords` match the topic; rules without `keywords` always apply. If a matched rule declares `repos:`, include those repos in the search. For each query from the brainstorm artifact, search the codebase with targeted reads and greps. Record findings per query — keep findings factual, not opinionated. When a query touches an existing feature, note how it's structured through the stack (e.g., route → service → model → test) — this gives plan concrete examples for vertical slicing.
 
 ## Synthesis
 

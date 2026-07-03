@@ -33,11 +33,11 @@ Task Progress:
 
 ## Resolve rules and load context
 
-**Workflow mode:** Read plan and design. Extract rule titles from task specs. Run `/resolve-rules mode:explicit <titles>` as a subtask. Read implementation notes matching slug — note intentional deviations (do not flag as violations).
+**Workflow mode:** Read plan and design. Extract rule titles from task specs and apply the rules in `devloop/rules/` whose H1 titles match. Read implementation notes matching slug — note intentional deviations (do not flag as violations).
 
-**Standalone mode:** Derive keywords from slug or branch name. Run `/resolve-rules mode:keyword <terms>`. No design or implementation notes.
+**Standalone mode:** Derive keywords from slug or branch name and apply rules in `devloop/rules/` whose `keywords` match; rules without `keywords` always apply. No design or implementation notes.
 
-If `/resolve-rules` unavailable, continue without rules. List matched rules in your response.
+List matched rules in your response.
 
 ## Load diff
 
