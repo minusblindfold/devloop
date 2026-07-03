@@ -13,7 +13,7 @@ Execute each section in order. Copy the checklist and check off items as you com
 
 ## Mode
 
-Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them and ask. Arguments always override.
+Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them, offer to archive any with `date` older than 30 days to `.work/archive/`, then ask. Arguments always override.
 
 Parse `$ARGUMENTS` (or auto-selected slug): matches existing file in `.work/brainstorms/` by slug → **re-entry**. Set but no match → **create**. Empty → ask what to brainstorm, then proceed in create mode.
 

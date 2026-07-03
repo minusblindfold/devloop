@@ -107,6 +107,7 @@ Skills read and write artifacts to `.work/` in the current project directory:
 ```
 .work/
 ├── active/          # Active feature markers for workflow continuity
+├── archive/         # Markers of completed features
 ├── brainstorms/     # Feature brainstorm decision logs
 ├── research/        # Research artifacts
 ├── plans/           # Task lists

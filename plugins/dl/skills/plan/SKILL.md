@@ -13,7 +13,7 @@ Execute each section in order. Copy the checklist and check off items as you com
 
 ## Mode
 
-Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them and ask. Arguments always override.
+Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them, offer to archive any with `date` older than 30 days to `.work/archive/`, then ask. Arguments always override.
 
 If $ARGUMENTS (or auto-selected slug) matches a file in `.work/plans/` → **refine** mode. If ambiguous, list and ask. Set but no match → **create** mode. Empty → list `.work/plans/`; none: ask what to plan; one: offer refine or new; many: numbered list, ask to pick.
 

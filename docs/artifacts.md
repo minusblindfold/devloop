@@ -6,6 +6,8 @@ Skills communicate through files in `.work/`. Each phase reads the previous phas
 
 ```
 .work/
+├── active/             # Active feature markers (one per in-flight feature)
+├── archive/            # Markers of completed features
 ├── brainstorms/        # Feature brainstorm decision logs
 ├── research/           # Context scans
 ├── plans/              # Ordered task lists
@@ -14,6 +16,20 @@ Skills communicate through files in `.work/`. Each phase reads the previous phas
 ├── implementations/    # Per-task implementation notes
 └── reviews/            # Code review findings
 ```
+
+## Active markers
+
+Each in-flight feature has a marker at `.work/active/<slug>.md` recording where it is in the workflow. Skills auto-select the feature when exactly one marker exists and update the marker's stage as phases complete. The format is fixed:
+
+```markdown
+---
+slug: user-auth
+stage: brainstorm | mini-spec | research | plan | design | implement | reviewed
+date: 2026-03-11
+---
+```
+
+`/dl:review` moves the marker to `.work/archive/` when it sets `stage: reviewed` — the feature is done. When multiple markers accumulate and block auto-selection, skills offer to archive any untouched for more than 30 days.
 
 ## Naming convention
 
