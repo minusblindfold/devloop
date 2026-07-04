@@ -42,7 +42,7 @@ If $ARGUMENTS includes a task number, use it; if it says `all`, follow All mode 
 
 `all` runs every unchecked task in plan order — position = task number, no dependency graph. Mini-spec features have no plan checkboxes: treat `all` as a single-task run and skip the loop.
 
-**Precondition:** `git status --porcelain` must print nothing; otherwise stop and tell the user to commit or stash first — never auto-stash.
+**Precondition:** First ensure `.gitignore` ignores `.work/` — if no existing pattern already covers it, append a `.work/` line (creating the file if it doesn't exist) and commit that change alone (e.g. `Ignore devloop .work/ artifacts`), so the bootstrap edit never registers as dirt itself. Then `git status --porcelain` must print nothing; otherwise stop and tell the user to commit or stash first — never auto-stash.
 
 Loop over the unchecked tasks in order, halting the line when a trigger fires:
 
