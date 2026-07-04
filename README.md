@@ -16,7 +16,7 @@ A Claude Code plugin that structures AI-assisted development into phases. Withou
 - **research** — execute research queries from brainstorm as targeted codebase searches
 - **plan** — ask clarifying questions, produce an ordered task list
 - **design** — generate architecture, Mermaid diagrams, and a detailed spec for each task
-- **implement** — implement one task at a time against the spec, track completion
+- **implement** — delegate each task to a fresh-context worker subagent, one task per run or `all` for the whole plan, track completion
 - **review** — load rules and design context, review code for rule violations and security issues
 
 Start with `/dl:brainstorm` — it sizes the work and routes it: **small** changes get a mini-spec and go straight to `/dl:implement`; **medium** work skips research and goes to `/dl:plan`; **large** features run the full pipeline with design review as the mandatory checkpoint. `/dl:research` can re-enter at any stage when discoveries surface during implementation.
@@ -47,14 +47,14 @@ Use `/reload-plugins` after making changes during development.
 | `/dl:research` | Execute research queries from brainstorm as targeted codebase searches, or research a topic directly. Runs in a forked subagent — scan noise stays out of your session. |
 | `/dl:plan` | Ask clarifying questions, create a vertically-sliced task list. Detects greenfield projects. |
 | `/dl:design` | Primary review checkpoint. Generate architecture, Mermaid diagrams, and per-task specs. |
-| `/dl:implement` | Implement one task at a time against the spec. Tracks progress across sessions. |
+| `/dl:implement` | Implement tasks against the spec. Each task runs in a fresh-context worker subagent; run a single task, or `all` to work through every unchecked task with a commit per task and an automatic review at the end. Tracks progress across sessions. |
 | `/dl:review` | Load rules and design context, review code for rule violations and security issues. Works standalone or after `/dl:implement`. Runs in a forked subagent; archives the feature marker on completion. |
-`/dl:plan` and `/dl:design` support refine mode — invoke with no args when existing artifacts are found.
+`/dl:plan` and `/dl:design` support refine mode — invoke with no args when existing artifacts are found. `/dl:implement all` requires Claude Code ≥ 2.1.172 (nested subagent spawning).
 
 ## What you get
 
 - **Architecture diagrams** — `/dl:design` generates Mermaid diagrams (architecture, data flow, component, sequence) saved as `.mmd` files in `.work/designs/diagrams/`.
-- **Cross-session tracking** — Task completion lives as checkboxes in the plan artifact itself. Run `/dl:implement` in a new session and pick up where you left off.
+- **Cross-session tracking** — Task completion lives as checkboxes in the plan artifact itself. Run `/dl:implement` in a new session and pick up where you left off — including resuming an `all` run that halted partway: re-running starts at the first unchecked task.
 - **Refine mode** — Run `/dl:plan` or `/dl:design` with no args to iterate on existing artifacts.
 - **Greenfield detection** — In a new project with no existing structure, `/dl:plan` suggests scaffolding as the first task.
 - **Active feature tracking** — Skills auto-detect the active feature via `.work/active/<slug>.md` markers. Start a brainstorm or plan, and every downstream skill auto-selects it — no re-specifying slugs. Supports multiple concurrent features for multi-agent workflows.

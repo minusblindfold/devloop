@@ -70,7 +70,7 @@ Slugs are how skills find related artifacts. When you run `/dl:design`, it match
 - `/dl:research` executes the brainstorm's Research Queries section as targeted codebase searches rather than broad scans; without a brainstorm artifact it derives queries from the topic.
 - `/dl:plan` reads brainstorm and research artifacts. Decisions from brainstorming and gaps from research inform clarifying questions and task ordering. Tasks are vertically-sliced.
 - `/dl:design` requires a plan. It produces a spec for each task and is the primary review checkpoint — reviewed thoroughly before implementation.
-- `/dl:implement` requires a plan and design (or a mini-spec for small work). It implements one task at a time against the spec.
+- `/dl:implement` requires a plan and design (or a mini-spec for small work). It delegates each task to a fresh-context worker subagent — a single task per invocation, or `all` to run every unchecked task in order.
 - `/dl:review` is optional. It reviews changes for rule violations and security issues. Works standalone or after `/dl:implement`.
 
 ## Diagrams
