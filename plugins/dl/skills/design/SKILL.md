@@ -2,7 +2,7 @@
 name: design
 description: Generates design documents with architecture, diagrams, and task specs from a plan. Primary review checkpoint before implementation. Use when designing, architecting, or speccing out a feature.
 argument-hint: "[plan slug]"
-allowed-tools: Read Write Bash TaskCreate
+allowed-tools: Read Write Bash
 ---
 
 Execute each section in order. Copy the checklist and check off items as you complete them. Do not proceed past a **Gate** until verified.
@@ -43,7 +43,7 @@ Ask 2-3 clarifying questions. Read prior artifact decisions — only ask about g
 
 ## Task specs
 
-Write a spec for each plan task: Goal, Interfaces, Implementation notes, Acceptance criteria, Tests, Dependencies. In the Tests field, write concrete verification steps that implement can run immediately after completing the slice — not a deferred test plan. Note applicable rules by title (e.g., `**Rules:** JPA Entity Rules`) — this tells `/implement` which rule docs from `devloop/rules/` to apply.
+Write a spec for each plan task: Goal, Interfaces, Implementation notes, Acceptance criteria, Tests, Dependencies. In the Tests field, write concrete verification steps that implement can run immediately after completing the slice — not a deferred test plan. Note applicable rules by title (e.g., `**Rules:** JPA Entity Rules`) — this tells `/dl:implement` which rule docs from `devloop/rules/` to apply.
 
 ## Diagrams
 

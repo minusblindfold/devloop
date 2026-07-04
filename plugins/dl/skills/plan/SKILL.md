@@ -2,7 +2,7 @@
 name: plan
 description: Plans features as task lists, decomposes work into ordered steps, and saves plan artifacts. Use when planning, decomposing, or organising work into tasks.
 argument-hint: "[feature description]"
-allowed-tools: Read Write Bash TaskCreate
+allowed-tools: Read Write Bash
 ---
 
 Execute each section in order. Copy the checklist and check off items as you complete them. Do not proceed past a **Gate** until verified.
@@ -23,7 +23,7 @@ Task Progress:
 - [ ] If refine: read current plan, check for new brainstorm/research artifacts
 - [ ] Gather context: project rules, CLAUDE.md, project scan, brainstorm/research artifacts
 - [ ] List context and ask clarifying questions (only unresolved items)
-- [ ] Create tasks with TaskCreate
+- [ ] Decompose the work into plan tasks (checkbox list)
 - [ ] Write plan to .work/plans/
 - [ ] Gate: verify plan with ls; update active marker
 - [ ] Present plan for spot-check
@@ -39,7 +39,7 @@ List what you found before asking. Ask 3-5 clarifying questions. Read decisions 
 
 ## Task creation
 
-Create tasks with `TaskCreate`. Decompose by user-visible behavior or capability, not by architectural layer. Do not create tasks like "set up all database models," "build the service layer," or "add tests for everything" — each task should touch all relevant layers for its slice. Order by dependency, then by what unblocks the most follow-up work.
+Write each task as a `- [ ]` checkbox in the plan — the checkboxes are the authoritative completion state that `/dl:implement` tracks. Decompose by user-visible behavior or capability, not by architectural layer. Do not create tasks like "set up all database models," "build the service layer," or "add tests for everything" — each task should touch all relevant layers for its slice. Order by dependency, then by what unblocks the most follow-up work.
 
 ## Refine mode
 

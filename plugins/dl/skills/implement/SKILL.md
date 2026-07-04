@@ -15,7 +15,7 @@ Execute each section in order. Copy the checklist and check off items as you com
 
 Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them, offer to archive any with `date` older than 30 days to `.work/archive/`, then ask. Arguments always override.
 
-Parse $ARGUMENTS as `<slug>`, `<slug> <task-N>`, or `<slug> all`. If the marker has `stage: mini-spec`, read the brainstorm artifact's `## Mini-Spec` section as the spec — a single task (N = 1), no plan or design required; skip task picking. Otherwise find the plan in `.work/plans/` and matching design in `.work/designs/`. Missing design → print "No design found. Run /design first." and stop. No argument → list plan/design pairs; none: stop; one: confirm; many: ask to pick.
+Parse $ARGUMENTS as `<slug>`, `<slug> <task-N>`, or `<slug> all`. If the marker has `stage: mini-spec`, read the brainstorm artifact's `## Mini-Spec` section as the spec — a single task (N = 1), no plan or design required; skip task picking. Otherwise find the plan in `.work/plans/` and matching design in `.work/designs/`. Missing design → print "No design found. Run /dl:design first." and stop. No argument → list plan/design pairs; none: stop; one: confirm; many: ask to pick.
 
 ```
 Task Progress:
@@ -67,7 +67,7 @@ Assemble the payload:
 - Paths of prior implementation notes for the slug, and the path of [implementation-note.md](implementation-note.md)
 - Mini-spec features: the `## Mini-Spec` section replaces the plan/design excerpts
 
-Spawn one general-purpose subagent — never fork-type; the worker must start from fresh context — whose prompt is the full text of [task-worker.md](task-worker.md) followed by the payload.
+Spawn one general-purpose subagent in the foreground — wait for its return (subagents default to background since v2.1.198). Never fork-type; the worker must start from fresh context. Its prompt is the full text of [task-worker.md](task-worker.md) followed by the payload.
 
 ## Verify return
 
@@ -79,7 +79,7 @@ Verify the implementation note(s) with `ls`, then update `.work/active/<slug>.md
 
 ## Wrap up
 
-Summarize the worker's return: files created/modified, test results, deviations, and the rule docs the payload applied. Significant deviations → suggest `/design refine`; out-of-scope discoveries → suggest `/plan refine`. Single-task mode only: suggest a git commit scoped to this task (all mode has already committed).
+Summarize the worker's return: files created/modified, test results, deviations, and the rule docs the payload applied. Significant deviations → suggest `/dl:design refine`; out-of-scope discoveries → suggest `/dl:plan refine`. Single-task mode only: suggest a git commit scoped to this task (all mode has already committed).
 
 ## Rules
 
