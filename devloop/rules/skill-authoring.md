@@ -3,47 +3,45 @@ keywords: [skill, SKILL.md, plugin]
 ---
 # Skill Authoring Rules
 
-> Principles for writing and modifying devloop skill files, derived from the QRISPY analysis.
+> Principles for writing and modifying devloop skill files, grounded in Anthropic's skill-authoring best practices and devloop conventions.
 
-## Instruction budget
+## Context budget via progressive disclosure
 
-- Each skill file must stay under 40 imperative instructions. Models follow ~150-200 instructions consistently across an entire session; skills share that budget with CLAUDE.md, system prompt, tools, and MCP overhead.
-- Count actual imperative sentences, not lines. A template in a code block counts as 1 instruction total, not per-heading.
-- If a skill is over budget, cut structural and template instructions first. Never cut behavioral instructions — these are the ones that affect output quality (collaborative exploration, two-pass review, task isolation, deviation tracking).
+- Keep the SKILL.md body under 500 lines (per Anthropic's skill-authoring best practices). What loads by default is the budget — push detail into sibling files read on demand, the way implement's `implementation-note.md` and `task-worker.md` load only when a worker needs them.
+- Cut explanations, never workflow steps. For each sentence, ask: does Claude really need this? Strip field descriptions from artifact templates — section headings alone carry meaning.
 
-## Compression patterns
+## Description is the trigger
 
-When reducing instruction count, apply these in order of ROI:
+- The frontmatter `description` drives skill selection: Claude uses it to choose from potentially 100+ skills (per Anthropic's skill-authoring best practices). State both what the skill does *and* when to use it.
+- Include the trigger vocabulary users actually type ("brainstorm", "plan", "review"). A description that only explains internals never fires.
 
-1. **Merge create/re-entry checklists** — One checklist with conditional branches ("If re-entry: read existing artifact. If new: gather context.") replaces two separate checklists. Saves 4-8 instructions.
-2. **Consolidate gate instructions** — Multi-step gates ("verify artifact exists; write if missing; update marker stage; update marker date") become a single compound instruction.
-3. **Simplify artifact templates** — Strip field descriptions from templates. Section headings alone are sufficient — models know what `## Decisions` means.
+## Frontmatter conventions
 
-## Structural vs behavioral
+- `allowed-tools` pre-approves tools rather than restricting them. Both forms are valid: plain names (`Read`) and scoped filters (`Bash(git:*)`). Devloop convention: use the narrowest form that covers the skill's real needs.
+- `context: fork` runs the skill in a forked subagent. Pair it with an explicit `agent:` type — don't rely on the default — and write the body for isolation: a forked skill cannot converse, so it must return everything the caller needs in its final output.
+- `disable-model-invocation: true` marks user-only skills, keeping them out of Claude's automatic selection.
 
-- **Behavioral instructions** affect output quality. Examples: how brainstorm explores ideas, how review separates concerns into two passes, how implement tracks deviations. Preserve these.
-- **Structural instructions** are checklists, gates, markers, wrap-ups. These are the primary cut target when a skill is over budget.
-- **Template instructions** are artifact format specs. Secondary cut target — headings alone carry meaning.
+## Checklists and gates are quality-critical
 
-## Artifact chaining
+- The copy-the-checklist pattern is vendor-documented best practice: give Claude a checklist to copy into its response and check off as it progresses — clear steps prevent skipping critical validation (per Anthropic's skill-authoring best practices).
+- Never cut checklists, gates, or validation steps for space. Cut explanation and template verbosity instead. This inverts earlier devloop doctrine that treated structural instructions as the primary cut target.
 
-- Each skill produces a markdown artifact that becomes the next skill's input. This is the core reliability mechanism — static artifacts survive context compaction.
-- The chain scales with work size: small work runs brainstorm -> implement via Mini-Spec; medium runs brainstorm -> plan -> implement; large features use the full chain (brainstorm -> research -> plan -> design -> implement -> review).
-- Missing upstream artifacts produce a warning and a degraded path, not a hard stop. The one hard gate: large features must have their design reviewed before implementation.
+## Worker orchestration
 
-## Vertical slicing
+Devloop convention, corroborated by ecosystem convergence (Anthropic's orchestrator/worker pattern, Superpowers-style subagent-driven development):
 
-- Plan tasks must be vertically sliced — each task delivers a testable end-to-end slice through the stack, not a horizontal layer.
-- Prohibit standalone "create all models" or "set up database schema" tasks. Each task should touch all relevant layers.
-- Each task should include a test expectation, not a separate "add tests" task at the end.
+- The foreman stays in the main context; each task runs in a fresh-context `general-purpose` worker — never a fork-type skill invocation.
+- The worker prompt is a sibling template file plus a payload manifest (task entry, design spec, rule paths, prior notes).
+- Workers end with a fenced structured return block (`STATUS`/`FILES`/`TESTS`/`DEVIATIONS`/`NOTE`) that the foreman parses.
+- Spawn workers in the foreground for sequential task lines — subagents are background-by-default (≥2.1.198), which would otherwise decouple the foreman from returns.
+- Workers are isolated and cannot converse: blocked decisions come back as `STATUS: blocked` with options, not questions.
 
-## Separation of concerns
+## Behavioral invariants — never cut when editing skills
 
-- Research produces facts, not opinions. When research knows what's being built, it injects implementation opinions into what should be objective findings.
-- Brainstorm owns decisions. Research queries come from brainstorm to keep research targeted.
-- Design is the primary review checkpoint. Plan gets a spot-check; design gets full review before implementation.
+Tripwire list; extended rationale lives in `docs/workflow.md`, not here:
 
-## Review gates
-
-- Use distinct language for different gate strengths. "Spot-check" for plan (lightweight). "Primary checkpoint — must be reviewed before implementation" for design (heavyweight).
-- Don't use identical wording for gates of different importance — it flattens them to equal weight.
+- **Vertical slicing** — horizontal-layer tasks can't be tested as functionality or unwound per feature.
+- **Artifact chaining** — static markdown artifacts survive context compaction; the chain is the core reliability mechanism.
+- **Separation of concerns** — research produces facts, brainstorm owns decisions, design is the review checkpoint; mixing them injects opinion into findings.
+- **Gate-strength language** — distinct wording for gates of different weight ("spot-check" vs "primary checkpoint"); identical wording flattens them.
+- **Checklist-copying** — visible progress state prevents step-skipping.
