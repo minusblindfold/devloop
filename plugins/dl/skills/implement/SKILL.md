@@ -47,10 +47,11 @@ If $ARGUMENTS includes a task number, use it; if it says `all`, follow All mode 
 Loop over the unchecked tasks in order, halting the line when a trigger fires:
 
 1. **Cross-repo:** the task prose puts the work in a separate repo → halt before spawning.
-2. Run Build payload and Verify return (below) for task N.
-3. **Failure:** STATUS not `complete`, or tests failing → revert the partial work (`git reset --hard`, then `git clean -f` the untracked FILES paths — excluding the NOTE path: the note preserves the failure story) and halt; the box stays unchecked.
-4. **Escalation:** on `DEVIATIONS: interface-changing`, grep each named interface across the design specs of unstarted tasks only — any hit → halt; no hits → record it for the wrap-up and continue.
-5. Check the task's plan box, then commit only this task's changes: subject = the task title, body = `Task N of <plan-filename>`, no Co-Authored-By line. Never `cd` — the line assumes a single repo.
+2. Re-read the plan and design fresh from disk before building the payload — don't rely on the initial Load; this keeps state correct across a long run even if context has been compacted since.
+3. Run Build payload and Verify return (below) for task N.
+4. **Failure:** STATUS not `complete`, or tests failing → revert the partial work (`git reset --hard`, then `git clean -f` the untracked FILES paths — excluding the NOTE path: the note preserves the failure story) and halt; the box stays unchecked.
+5. **Escalation:** on `DEVIATIONS: interface-changing`, grep each named interface across the design specs of unstarted tasks only — any hit → halt; no hits → record it for the wrap-up and continue.
+6. Check the task's plan box, then commit only this task's changes: subject = the task title, body = `Task N of <plan-filename>`, no Co-Authored-By line. Never `cd` — the line assumes a single repo.
 
 **Halt report:** give the task number, title, reason, and tree state (failure halts: "partial work reverted — see the implementation note"; escalation halts: "work complete but uncommitted — commit or revert it before resuming"), ending with "Re-run `/dl:implement <slug> all` to resume." Checkboxes are the resume state — a re-run starts at the first unchecked box.
 
