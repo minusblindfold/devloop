@@ -45,4 +45,6 @@ Claude Code natively loads every file in `.claude/rules/` into every session (op
 
 ## Rules vs hooks
 
-Prose rules are for patterns and judgment. Anything a command can check — lint, typecheck, tests — belongs in a [hook](https://docs.claude.com/en/docs/claude-code/hooks): instructions can get dropped under context pressure, hooks always run. See [`examples/hooks/`](../examples/hooks/) for a template.
+Prose rules are for patterns and judgment. Anything a command can check — lint, typecheck, tests — belongs in a [hook](https://docs.claude.com/en/docs/claude-code/hooks): instructions can get dropped under context pressure, hooks always run.
+
+Hooks now cover more than shell commands. Five hook types handle different enforcement shapes: `command` runs a shell command, `prompt` injects instructions into the conversation, `agent` dispatches a subagent to evaluate the event, `http` calls an external endpoint, and `mcp_tool` invokes an MCP tool. Conditional `if` matchers fire a hook only when an expression matches (tool name, file path, and so on). Skills can also declare their own hooks in frontmatter, scoping enforcement to when that skill is active. devloop wires no hooks itself — which checks to enforce is your call. See [`examples/hooks/`](../examples/hooks/) for a command-type PostToolUse template.

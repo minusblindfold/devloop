@@ -49,7 +49,7 @@ Use `/reload-plugins` after making changes during development.
 | `/dl:design` | Primary review checkpoint. Generate architecture, Mermaid diagrams, and per-task specs. |
 | `/dl:implement` | Implement tasks against the spec. Each task runs in a fresh-context worker subagent; run a single task, or `all` to work through every unchecked task with a commit per task and an automatic review at the end. Tracks progress across sessions. |
 | `/dl:review` | Load rules and design context, review code for rule violations and security issues. Works standalone or after `/dl:implement`. Runs in a forked subagent; archives the feature marker on completion. |
-`/dl:plan` and `/dl:design` support refine mode — invoke with no args when existing artifacts are found. `/dl:implement all` requires Claude Code ≥ 2.1.172 (nested subagent spawning).
+`/dl:plan` and `/dl:design` support refine mode — invoke with no args when existing artifacts are found. devloop requires Claude Code ≥ 2.1.181; `/dl:implement all` requires ≥ 2.1.198 (background-default subagents — the foreman spawns workers in the foreground explicitly).
 
 ## What you get
 
