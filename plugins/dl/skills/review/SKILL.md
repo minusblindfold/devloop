@@ -81,7 +81,7 @@ Verify artifact with `ls`; write if missing. Update `.work/active/<slug>.md` wit
 
 ## Wrap up
 
-Summarize: rule violations, general findings, security findings. If findings exist, suggest addressing them. If clean, confirm. Suggest `/dl:review <slug>` again after fixes.
+Summarize: rule violations, general findings, security findings. If findings exist, suggest addressing them. If clean, confirm. Suggest `/dl:review <slug>` again after fixes. The marker is archived and the feature's state is fully captured in commits and `.work/` artifacts — suggest the user run `/compact` (or start a fresh session) before beginning the next feature.
 
 ## Rules
 
