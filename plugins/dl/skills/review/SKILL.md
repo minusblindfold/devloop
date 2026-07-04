@@ -4,6 +4,7 @@ description: Load rules and design context, then review code changes for rule vi
 argument-hint: "[feature-slug]"
 allowed-tools: Read Write Bash Glob Grep
 context: fork
+agent: general-purpose
 ---
 
 Execute each section in order. Copy the checklist and check off items as you complete them. Do not proceed past a **Gate** until verified.
