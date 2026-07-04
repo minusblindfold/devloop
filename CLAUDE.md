@@ -18,6 +18,10 @@ Bump rules:
 
 Always work on a feature branch off `main`. Never commit directly to `main`.
 
+## Testing skill changes
+
+Editing `plugins/dl/skills/` does not affect running sessions — the installed plugin cache lags this repo. Skill changes only take effect after reinstalling the plugin or running with `claude --plugin-dir .`; live-test them that way before release.
+
 ## Doc sync
 
 When changing skills or plugin config, update documentation to match.
@@ -26,7 +30,7 @@ When changing skills or plugin config, update documentation to match.
 
 - `plugins/dl/skills/*/SKILL.md` → Skills table in `README.md`
 - `docs/rules.md` → Rules section in `README.md`
-- `plugins/dl/.claude-plugin/plugin.json` → version, description in `README.md`
+- `plugins/dl/.claude-plugin/plugin.json` → description in `README.md` intro (README carries no version string)
 
 ### Structural sync
 
