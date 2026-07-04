@@ -6,6 +6,8 @@ Skills communicate through files in `.work/`. Each phase reads the previous phas
 
 ```
 .work/
+├── active/             # Active feature markers (one per in-flight feature)
+├── archive/            # Markers of completed features
 ├── brainstorms/        # Feature brainstorm decision logs
 ├── research/           # Context scans
 ├── plans/              # Ordered task lists
@@ -14,6 +16,20 @@ Skills communicate through files in `.work/`. Each phase reads the previous phas
 ├── implementations/    # Per-task implementation notes
 └── reviews/            # Code review findings
 ```
+
+## Active markers
+
+Each in-flight feature has a marker at `.work/active/<slug>.md` recording where it is in the workflow. Skills auto-select the feature when exactly one marker exists and update the marker's stage as phases complete. The format is fixed:
+
+```markdown
+---
+slug: user-auth
+stage: brainstorm | mini-spec | research | plan | design | implement | reviewed
+date: 2026-03-11
+---
+```
+
+`/dl:review` moves the marker to `.work/archive/` when it sets `stage: reviewed` — the feature is done. When multiple markers accumulate and block auto-selection, skills offer to archive any untouched for more than 30 days.
 
 ## Naming convention
 
@@ -50,11 +66,11 @@ Slugs are how skills find related artifacts. When you run `/dl:design`, it match
 /dl:review     → .work/reviews/<slug>-review.md
 ```
 
-- `/dl:brainstorm` is the required entry point. It produces decisions, research queries, and codebase context through iterative conversation.
-- `/dl:research` requires a brainstorm artifact. It executes the Research Queries section as targeted codebase searches rather than broad scans.
+- `/dl:brainstorm` is the recommended entry point. It sizes the work (small work gets a `## Mini-Spec` consumed directly by `/dl:implement`) and produces decisions, research queries, and codebase context through iterative conversation.
+- `/dl:research` executes the brainstorm's Research Queries section as targeted codebase searches rather than broad scans; without a brainstorm artifact it derives queries from the topic.
 - `/dl:plan` reads brainstorm and research artifacts. Decisions from brainstorming and gaps from research inform clarifying questions and task ordering. Tasks are vertically-sliced.
 - `/dl:design` requires a plan. It produces a spec for each task and is the primary review checkpoint — reviewed thoroughly before implementation.
-- `/dl:implement` requires a plan and design. It implements one task at a time against the spec.
+- `/dl:implement` requires a plan and design (or a mini-spec for small work). It delegates each task to a fresh-context worker subagent — a single task per invocation, or `all` to run every unchecked task in order.
 - `/dl:review` is optional. It reviews changes for rule violations and security issues. Works standalone or after `/dl:implement`.
 
 ## Diagrams

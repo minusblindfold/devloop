@@ -25,7 +25,7 @@ When changing skills or plugin config, update documentation to match.
 ### Content mapping
 
 - `plugins/dl/skills/*/SKILL.md` → Skills table in `README.md`
-- `plugins/dl/rules/rules.md` → Rules section in `README.md`
+- `docs/rules.md` → Rules section in `README.md`
 - `plugins/dl/.claude-plugin/plugin.json` → version, description in `README.md`
 
 ### Structural sync

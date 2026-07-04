@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'out=$(your-check-command 2>&1) || { echo \"$out\" >&2; exit 2; }'"
+          }
+        ]
+      }
+    ]
+  }
+}

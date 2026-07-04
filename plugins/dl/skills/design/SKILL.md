@@ -2,7 +2,7 @@
 name: design
 description: Generates design documents with architecture, diagrams, and task specs from a plan. Primary review checkpoint before implementation. Use when designing, architecting, or speccing out a feature.
 argument-hint: "[plan slug]"
-allowed-tools: Read Write Bash TaskCreate
+allowed-tools: Read Write Bash
 ---
 
 Execute each section in order. Copy the checklist and check off items as you complete them. Do not proceed past a **Gate** until verified.
@@ -13,7 +13,7 @@ Execute each section in order. Copy the checklist and check off items as you com
 
 ## Mode
 
-Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them and ask. Arguments always override.
+Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them, offer to archive any with `date` older than 30 days to `.work/archive/`, then ask. Arguments always override.
 
 If $ARGUMENTS (or auto-selected slug) is set → check designs for match (refine), then plans for match (create). No match → print "Run /dl:plan first." and stop. Ambiguous → list and ask.
 If $ARGUMENTS is empty → list designs; none: fall through to plan picker; one: offer refine or new; many: numbered list. Plan picker: list plans; none → stop; one → auto-select; many → ask.
@@ -23,7 +23,7 @@ Task Progress:
 - [ ] Determine mode
 - [ ] If refine: show current design, ask what to change, iterate, write once
 - [ ] Read plan: extract tasks and dependencies
-- [ ] Gather context: CLAUDE.md, project scan, bootstrap.md if present
+- [ ] Gather context: CLAUDE.md, project scan
 - [ ] Ask 2-3 clarifying questions (only unresolved items)
 - [ ] Write Overview and Architecture
 - [ ] Write Task Specs
@@ -35,7 +35,7 @@ Task Progress:
 
 ## Context gathering
 
-Read the plan — extract name, tasks, and dependencies. List them in your response. Read `CLAUDE.md` if present. Scan the project directory. Check for `.work/bootstrap.md` — if found, reference the bootstrapped stack as established context.
+Read the plan — extract name, tasks, and dependencies. List them in your response. Read `CLAUDE.md` if present. Scan the project directory.
 
 ## Clarifying questions
 
@@ -43,7 +43,7 @@ Ask 2-3 clarifying questions. Read prior artifact decisions — only ask about g
 
 ## Task specs
 
-Write a spec for each plan task: Goal, Interfaces, Implementation notes, Acceptance criteria, Tests, Dependencies. In the Tests field, write concrete verification steps that implement can run immediately after completing the slice — not a deferred test plan. Note applicable rules by title (e.g., `**Rules:** JPA Entity Rules`) — this tells `/implement` which docs to apply via `/resolve-rules` explicit mode.
+Write a spec for each plan task: Goal, Interfaces, Implementation notes, Acceptance criteria, Tests, Dependencies. In the Tests field, write concrete verification steps that implement can run immediately after completing the slice — not a deferred test plan. Note applicable rules by title (e.g., `**Rules:** JPA Entity Rules`) — this tells `/dl:implement` which rule docs from `devloop/rules/` to apply.
 
 ## Diagrams
 

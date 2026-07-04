@@ -2,7 +2,7 @@
 name: plan
 description: Plans features as task lists, decomposes work into ordered steps, and saves plan artifacts. Use when planning, decomposing, or organising work into tasks.
 argument-hint: "[feature description]"
-allowed-tools: Read Write Bash TaskCreate
+allowed-tools: Read Write Bash
 ---
 
 Execute each section in order. Copy the checklist and check off items as you complete them. Do not proceed past a **Gate** until verified.
@@ -13,7 +13,7 @@ Execute each section in order. Copy the checklist and check off items as you com
 
 ## Mode
 
-Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them and ask. Arguments always override.
+Check `.work/active/` for marker files. If exactly one exists and no $ARGUMENTS provided, auto-select that feature's slug. If multiple markers exist, list them, offer to archive any with `date` older than 30 days to `.work/archive/`, then ask. Arguments always override.
 
 If $ARGUMENTS (or auto-selected slug) matches a file in `.work/plans/` → **refine** mode. If ambiguous, list and ask. Set but no match → **create** mode. Empty → list `.work/plans/`; none: ask what to plan; one: offer refine or new; many: numbered list, ask to pick.
 
@@ -21,10 +21,9 @@ If $ARGUMENTS (or auto-selected slug) matches a file in `.work/plans/` → **ref
 Task Progress:
 - [ ] Determine mode
 - [ ] If refine: read current plan, check for new brainstorm/research artifacts
-- [ ] Gather context: CLAUDE.md, project scan, brainstorm/research artifacts
-- [ ] If greenfield: run /resolve-rules scope:bootstrap for stack detection
+- [ ] Gather context: project rules, CLAUDE.md, project scan, brainstorm/research artifacts
 - [ ] List context and ask clarifying questions (only unresolved items)
-- [ ] Create tasks with TaskCreate
+- [ ] Decompose the work into plan tasks (checkbox list)
 - [ ] Write plan to .work/plans/
 - [ ] Gate: verify plan with ls; update active marker
 - [ ] Present plan for spot-check
@@ -32,7 +31,7 @@ Task Progress:
 
 ## Context gathering
 
-Read `CLAUDE.md` if present. Scan project directory structure. Check `.work/brainstorms/` and `.work/research/` for matching artifacts — read them if found. If research contains linked repo context, note it. If greenfield (no `CLAUDE.md`, near-empty directory), run `/resolve-rules mode:all scope:bootstrap` — if stack rule found, add scaffold as task 1.
+Read `devloop/rules/*.md` if present — apply rules whose `keywords` match the feature; rules without `keywords` always apply. Read `CLAUDE.md` if present. Scan project directory structure. Check `.work/brainstorms/` and `.work/research/` for matching artifacts — read them if found. If research contains linked repo context, note it.
 
 ## Clarifying questions
 
@@ -40,7 +39,7 @@ List what you found before asking. Ask 3-5 clarifying questions. Read decisions 
 
 ## Task creation
 
-Create tasks with `TaskCreate`. Decompose by user-visible behavior or capability, not by architectural layer. Do not create tasks like "set up all database models," "build the service layer," or "add tests for everything" — each task should touch all relevant layers for its slice. Order by dependency, then by what unblocks the most follow-up work.
+Write each task as a `- [ ]` checkbox in the plan — the checkboxes are the authoritative completion state that `/dl:implement` tracks. Decompose by user-visible behavior or capability, not by architectural layer. Do not create tasks like "set up all database models," "build the service layer," or "add tests for everything" — each task should touch all relevant layers for its slice. Order by dependency, then by what unblocks the most follow-up work.
 
 ## Refine mode
 
