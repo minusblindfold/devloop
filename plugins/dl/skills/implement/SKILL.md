@@ -48,11 +48,11 @@ Loop over the unchecked tasks in order, halting the line when a trigger fires:
 
 1. **Cross-repo:** the task prose puts the work in a separate repo → halt before spawning.
 2. Run Build payload and Verify return (below) for task N.
-3. **Failure:** STATUS not `complete`, or tests failing → revert the partial work (`git reset --hard`, then delete untracked files the return's FILES lists — the implementation note preserves the failure story) and halt; the box stays unchecked.
+3. **Failure:** STATUS not `complete`, or tests failing → revert the partial work (`git reset --hard`, then `git clean -f` the untracked FILES paths — excluding the NOTE path: the note preserves the failure story) and halt; the box stays unchecked.
 4. **Escalation:** on `DEVIATIONS: interface-changing`, grep each named interface across the design specs of unstarted tasks only — any hit → halt; no hits → record it for the wrap-up and continue.
 5. Check the task's plan box, then commit only this task's changes: subject = the task title, body = `Task N of <plan-filename>`, no Co-Authored-By line. Never `cd` — the line assumes a single repo.
 
-**Halt report:** give the task number, title, reason, and tree state (failure halts: "partial work reverted — see the implementation note"), ending with "Re-run `/dl:implement <slug> all` to resume." Checkboxes are the resume state — a re-run starts at the first unchecked box.
+**Halt report:** give the task number, title, reason, and tree state (failure halts: "partial work reverted — see the implementation note"; escalation halts: "work complete but uncommitted — commit or revert it before resuming"), ending with "Re-run `/dl:implement <slug> all` to resume." Checkboxes are the resume state — a re-run starts at the first unchecked box.
 
 **End of line:** When no unchecked tasks remain, do Gate once — updating the marker to `stage: implement` + today's date is your last write to `.work/` — then invoke forked `/dl:review <slug>`, whose own gate archives the marker: make no marker or `.work/` writes after invoking review. End the line with a single final response — per-task results, commits, recorded deviations, and the review's findings presented without acting on them (fixes are the user's call); halted lines and single-task runs stop at their normal wrap-ups and never auto-run review.
 
@@ -83,6 +83,5 @@ Summarize the worker's return: files created/modified, test results, deviations,
 
 ## Rules
 
-- Do not start without a design file (mini-spec features excepted).
 - You are the foreman: the worker implements and writes the note — never do either yourself (stub-on-missing-note excepted).
 - The plan file's checkboxes are the authoritative progress state — check off only verified completions.
