@@ -1,6 +1,6 @@
 # devloop
 
-A Claude Code plugin that structures AI-assisted development into phases. Without structure, coding agents generate inconsistent patterns and one-shot attempts that miss edge cases. devloop fixes this by breaking work into brainstorming, research, planning, design, implementation, and review — each phase produces an artifact the next one reads. No step touches code until `/dl:implement`.
+A Claude Code plugin that structures AI-assisted development into phases, each producing a markdown artifact the next phase reads. Decisions survive across sessions and context windows, and no step touches code until `/dl:implement`.
 
 ## The loop
 
@@ -11,13 +11,6 @@ A Claude Code plugin that structures AI-assisted development into phases. Withou
                    re-enter research when
                    discoveries surface
 ```
-
-- **brainstorm** — recommended entry point; sizes the work, then iterative questioning to refine a feature idea, producing decisions and research queries
-- **research** — execute research queries from brainstorm as targeted codebase searches
-- **plan** — ask clarifying questions, produce an ordered task list
-- **design** — generate architecture, Mermaid diagrams, and a detailed spec for each task
-- **implement** — delegate each task to a fresh-context worker subagent, one task per run or `all` for the whole plan, track completion
-- **review** — load rules and design context, review code for rule violations and security issues
 
 Start with `/dl:brainstorm` — it sizes the work and routes it: **small** changes get a mini-spec and go straight to `/dl:implement`; **medium** work skips research and goes to `/dl:plan`; **large** features run the full pipeline with design review as the mandatory checkpoint. `/dl:research` can re-enter at any stage when discoveries surface during implementation.
 
@@ -37,7 +30,7 @@ git clone https://github.com/minusblindfold/devloop.git
 claude --plugin-dir ./devloop
 ```
 
-Use `/reload-plugins` after making changes during development.
+Use `/reload-skills` after making changes during development.
 
 ## Skills
 
@@ -49,7 +42,7 @@ Use `/reload-plugins` after making changes during development.
 | `/dl:design` | Primary review checkpoint. Generate architecture, Mermaid diagrams, and per-task specs. |
 | `/dl:implement` | Implement tasks against the spec. Each task runs in a fresh-context worker subagent; run a single task, or `all` to work through every unchecked task with a commit per task and an automatic review at the end. Tracks progress across sessions. |
 | `/dl:review` | Load rules and design context, review code for rule violations and security issues. Works standalone or after `/dl:implement`. Runs in a forked subagent; archives the feature marker on completion. |
-`/dl:plan` and `/dl:design` support refine mode — invoke with no args when existing artifacts are found. devloop requires Claude Code ≥ 2.1.181; `/dl:implement all` requires ≥ 2.1.198 (background-default subagents — the foreman spawns workers in the foreground explicitly).
+**Requires** Claude Code ≥ 2.1.181 (≥ 2.1.198 for `/dl:implement all`).
 
 ## What you get
 
@@ -57,7 +50,7 @@ Use `/reload-plugins` after making changes during development.
 - **Cross-session tracking** — Task completion lives as checkboxes in the plan artifact itself. Run `/dl:implement` in a new session and pick up where you left off — including resuming an `all` run that halted partway: re-running starts at the first unchecked task.
 - **Refine mode** — Run `/dl:plan` or `/dl:design` with no args to iterate on existing artifacts.
 - **Greenfield detection** — In a new project with no existing structure, `/dl:plan` suggests scaffolding as the first task.
-- **Active feature tracking** — Skills auto-detect the active feature via `.work/active/<slug>.md` markers. Start a brainstorm or plan, and every downstream skill auto-selects it — no re-specifying slugs. Supports multiple concurrent features for multi-agent workflows.
+- **Active feature tracking** — Skills auto-detect the active feature via `.work/active/<slug>.md` markers. Start a brainstorm or plan, and every downstream skill auto-selects it — no re-specifying slugs.
 - **Rule-driven consistency** — Skills match task descriptions against rule keywords, so the same patterns apply everywhere.
 - **Linked repositories** — Declare related repos in rule frontmatter and `/dl:brainstorm` and `/dl:research` will scan them for cross-repo context.
 
